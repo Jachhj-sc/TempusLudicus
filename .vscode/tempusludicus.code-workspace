@@ -4,5 +4,10 @@
 			"path": "../"
 		}
 	],
-	"settings": {}
+	"settings": {
+		"files.associations": {
+			"mkl25z4.h": "c",
+			"system_mkl25z4.h": "c"
+		}
+	}
 }
