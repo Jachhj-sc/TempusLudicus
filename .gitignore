@@ -55,9 +55,3 @@ dkms.conf
 # Keil
 *uvguix*
 *uvoptx*
-
-# Vscode
-#c_cpp_properties.json
-#settings.json
-#tempusludicus.code-workspace
-#.vscode/
