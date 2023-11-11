@@ -58,3 +58,4 @@ dkms.conf
 
 # Vscode
 #c_cpp_properties.json
+.vscode/*
