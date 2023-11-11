@@ -1,0 +1,19 @@
+BasedOnStyle: LLVM
+UseTab: Never
+IndentWidth: 4
+TabWidth: 4
+ColumnLimit: 120
+BinPackParameters: false
+BinPackArguments: false
+BreakBeforeBraces: Linux
+BraceWrapping:
+  AfterEnum: true
+AlwaysBreakAfterReturnType: None
+PenaltyReturnTypeOnItsOwnLine: 65000
+InsertNewlineAtEOF: true
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortEnumsOnASingleLine: false
+AllowAllArgumentsOnNextLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AlignConsecutiveMacros: true
+AlignAfterOpenBracket: Align

@@ -1,0 +1,8 @@
+{
+	"files.associations": {
+		"*.dox": "markdown",
+		"delay.h": "c",
+		"mkl25z4.h": "c"
+	},
+	"C_Cpp.clang_format_style": "file"
+}
