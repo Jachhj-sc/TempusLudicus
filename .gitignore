@@ -55,3 +55,8 @@ dkms.conf
 # Keil
 *uvguix*
 *uvoptx*
+
+# vscode
+.vscode/*
+
+.vscode/c_cpp_properties.json
