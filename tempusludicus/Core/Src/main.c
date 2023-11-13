@@ -16,6 +16,8 @@
 
 int main()
 {
+		uart0_init();
+	
     init_rgb();
 
     init_sysTick();
