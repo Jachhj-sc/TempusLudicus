@@ -13,6 +13,7 @@
 #include "delay.h"
 #include "rgb.h"
 #include "sysTick.h"
+#include "uart0.h"
 
 int main()
 {
