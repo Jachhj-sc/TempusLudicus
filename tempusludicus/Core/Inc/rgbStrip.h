@@ -11,4 +11,9 @@
 #ifndef RGBSTRIP_H
 #define RGBSTRIP_H
 
+#include "main.h"
+#include "ledcontrol.h"
+#include "light_ws2812.h"
+#include "ws2812_config.h"
+
 #endif

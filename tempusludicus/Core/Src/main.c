@@ -9,7 +9,7 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
-
+#include "rgbStrip.h"
 #include "delay.h"
 #include "rgb.h"
 #include "sysTick.h"
