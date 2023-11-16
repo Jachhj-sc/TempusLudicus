@@ -16,8 +16,8 @@
 // Define I/O pin
 ///////////////////////////////////////////////////////////////////////
 
-#define ws2812_port C // Data port
-#define ws2812_pin  5 // Data out pin
+#define ws2812_port E // Data port
+#define ws2812_pin  4 // Data out pin
 
 #define LEDPIXELCOUNT (30) /*46*/
 
@@ -31,11 +31,11 @@
 
     RES  low voltage time 	 		>50µs
 */
-#define ws2812_T0H (0.35 * F_CPU / 1000000)
-#define ws2812_T0L (0.80 * F_CPU / 1000000)
-#define ws2812_T1H (0.70 * F_CPU / 1000000)
-#define ws2812_T1L (0.60 * F_CPU / 1000000)
-#define ws2812_RES (80 * F_CPU / 1000000)
+#define ws2812_T0H (350)
+#define ws2812_T0L (800)
+#define ws2812_T1H (700)
+#define ws2812_T1L (600)
+#define ws2812_RES (80000)
 
 //data structure
 // 0x00GGRRBB

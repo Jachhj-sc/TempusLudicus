@@ -8,17 +8,13 @@
 /*
 max update speed ledstrip = x ms per frame & x fps
 */
-
-#include <avr/io.h>
-#include <avr/pgmspace.h>
-#include <util/delay.h>
-
+#include "delay.h"
+#include "sysTick.h"
 
 #include "ledcontrol.h"
 #include "ws2812_config.h"
 
-#include "light_ws2812.h"
-#include "timer.h"
+#include "bitbang_ws2812.h"
 
 /* A PROGMEM (flash mem) table containing 8-bit unsigned sine wave (0-255).
    Copy & paste this snippet into a Python REPL to regenerate:
@@ -27,7 +23,7 @@ for x in range(256):
     print("{:3},".format(int((math.sin(x/128.0*math.pi)+1.0)*127.5+0.5))),
     if x&15 == 15: print
 */
-static const uint8_t _NeoPixelSineTable[256] PROGMEM = {
+static const uint8_t _NeoPixelSineTable[256] = {
   128,131,134,137,140,143,146,149,152,155,158,162,165,167,170,173,
   176,179,182,185,188,190,193,196,198,201,203,206,208,211,213,215,
   218,220,222,224,226,228,230,232,234,235,237,238,240,241,243,244,
@@ -53,7 +49,7 @@ for x in range(256):
     print("{:3},".format(int(math.pow((x)/255.0,gamma)*255.0+0.5))),
     if x&15 == 15: print
 */
-static const uint8_t _NeoPixelGammaTable[256] PROGMEM = {
+static const uint8_t _NeoPixelGammaTable[256] = {
     0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,
     0,  0,  0,  0,  0,  0,  0,  0,  1,  1,  1,  1,  1,  1,  1,  1,
     1,  1,  1,  1,  2,  2,  2,  2,  2,  2,  2,  2,  3,  3,  3,  3,
@@ -413,15 +409,12 @@ void effect_pulse_b(int delay, int maxBrightness, uint32_t color){
 	}	
 }
 
-#ifndef TIMER_H_
-	#warning "the custom 'timer.h' library is not correctly setup, 'effect_pulse_nb();' will not work as intended"
-#else
 void effect_pulse_nb(int delay, int maxBrightness, uint32_t color){
 	static uint8_t ramp_up = 1;
 	static uint8_t i = 0;
-	static uint16_t prev_time = 0;
+	static uint32_t prev_time = 0;
 	
-	if ((Get_time_ms() - prev_time) > delay || delay == 0)//if loop for delay implementation
+	if ((get_millis() - prev_time) > delay || delay == 0)//if loop for delay implementation
 	{
 		setStrip_Brightness(i);
 		setStrip_all(color);
@@ -438,11 +431,10 @@ void effect_pulse_nb(int delay, int maxBrightness, uint32_t color){
 			}else{
 			ramp_up = 1;
 		}
-		
-		prev_time = Get_time_ms();
-	}
+
+        prev_time = get_millis();
+    }
 }
-#endif
 
 void effect_travelingTwinkel(void){
 	for(int i = 0; i < LEDPIXELCOUNT; i++){//go through every color in order grbw and then succeed to the next pixel
@@ -470,7 +462,7 @@ void effect_travelingTwinkel(void){
             output is often used for pixel brightness in animation effects.
 */
 uint8_t sine8(uint8_t x) {
-	return pgm_read_byte(&_NeoPixelSineTable[x]); // 0-255 in, 0-255 out
+    return _NeoPixelSineTable[x]; // 0-255 in, 0-255 out
 }
 
 /*!
@@ -485,7 +477,7 @@ uint8_t sine8(uint8_t x) {
             need to provide your own gamma-correction function instead.
 */
 uint8_t gamma8(uint8_t x) {
-	return pgm_read_byte(&_NeoPixelGammaTable[x]); // 0-255 in, 0-255 out
+	return _NeoPixelGammaTable[x]; // 0-255 in, 0-255 out
 }
 
 // A 32-bit variant of gamma8() that applies the same function

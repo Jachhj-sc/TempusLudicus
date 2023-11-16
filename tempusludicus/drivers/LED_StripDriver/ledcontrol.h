@@ -8,6 +8,9 @@
 
 #ifndef LEDCONTROL_H_
 #define LEDCONTROL_H_
+
+#include <stdint.h>
+
 //                         RRGGBBWW
 #define COLOR_BLACK      0x00000000
 #define COLOR_RED        0xFF000000
@@ -35,11 +38,11 @@ void setStrip_Brightness(uint8_t bright);
 
 void setStrip_all(uint32_t color);
 void setStrip_pixel(uint16_t pixel, uint32_t color);
-void setStrip_clear();
+void setStrip_clear(void);
 
 void calcBrightness(uint32_t *color, uint8_t _brightness);
 
-void Strip_send();
+void Strip_send(void);
 
 uint32_t ColorHSV(uint16_t hue, uint8_t sat, uint8_t val, uint8_t whiteness);
 uint32_t color32(uint8_t r, uint8_t g, uint8_t b, uint8_t w);

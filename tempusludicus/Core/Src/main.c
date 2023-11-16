@@ -9,9 +9,9 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
-#include "rgbStrip.h"
 #include "delay.h"
 #include "rgb.h"
+#include "rgbStrip.h"
 #include "sysTick.h"
 
 int main()
@@ -28,6 +28,12 @@ int main()
 
     __enable_irq();
 
+    setStrip_clear();
+
     while (1) {
+        setStrip_all(color32(255, 0, 0, 0));
+        _delay_ms(500);
+        setStrip_all(color32(0, 0, 0, 0));
+        _delay_ms(500);
     }
 }

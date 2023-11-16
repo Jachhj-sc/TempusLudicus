@@ -9,10 +9,8 @@
 *
 * License: GNU GPL v2+ (see License.txt)
 */
-#include "light_ws2812.h"
-#include <avr/interrupt.h>
-#include <avr/io.h>
-#include <util/delay.h>
+#include "bitbang_ws2812.h"
+#include "delay.h"
 
 // Normally ws2812_sendarray_mask() runs under disabled-interrupt condition,
 // undefine if you want to accept interrupts in that function.
@@ -21,25 +19,25 @@
 // Setleds for standard RGB 
 void inline ws2812_setleds(struct cRGB *ledarray, uint16_t leds)
 {
-   ws2812_setleds_pin(ledarray,leds, _BV(ws2812_pin));
+   ws2812_setleds_pin(ledarray,leds, MASK(ws2812_pin));
 }
 
 void inline ws2812_setleds_pin(struct cRGB *ledarray, uint16_t leds, uint8_t pinmask)
 {
   ws2812_sendarray_mask((uint8_t*)ledarray,leds+leds+leds,pinmask);
-  _delay_us(ws2812_resettime);
+  delay_us(ws2812_resettime);
 }
 
 // Setleds for SK6812RGBW
 void inline ws2812_setleds_rgbw(struct cRGBW *ledarray, uint16_t leds)
 {
-  ws2812_sendarray_mask((uint8_t*)ledarray,leds<<2,_BV(ws2812_pin));
-  _delay_us(ws2812_resettime);
+  ws2812_sendarray_mask((uint8_t*)ledarray, leds << 2, MASK(ws2812_pin));
+  delay_us(ws2812_resettime);
 }
 
 void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 {
-  ws2812_sendarray_mask(data,datlen,_BV(ws2812_pin));
+  ws2812_sendarray_mask(data,datlen,MASK(ws2812_pin));
 }
 
 /*
@@ -107,26 +105,27 @@ void ws2812_sendarray(uint8_t *data,uint16_t datlen)
 #define w_nop8  w_nop4 w_nop4
 #define w_nop16 w_nop8 w_nop8
 
-void inline ws2812_sendarray_mask(uint8_t *data,uint16_t datlen,uint8_t maskhi)
+void ws2812_sendarray_mask(uint8_t *data, uint16_t datlen, uint32_t maskhi)
 {
-  uint8_t curbyte,ctr,masklo;
-  uint8_t sreg_prev;
+  uint32_t curbyte,ctr,masklo;
+  uint32_t sreg_prev;
   
   ws2812_DDRREG |= maskhi; // Enable output
-  
-  masklo	=~maskhi&ws2812_PORTREG;
+
+  masklo	= ~maskhi&ws2812_PORTREG;
   maskhi |=        ws2812_PORTREG;
-  
-  sreg_prev=SREG;
+
+  sreg_prev = __get_PRIMASK();
+
 #ifdef interrupt_is_disabled
-  cli();  
+  __disable_irq();
 #endif  
 
   while (datlen--) {
     curbyte=*data++;
     
-    asm volatile(
-    "       ldi   %0,8  \n\t"
+    __ASM volatile(
+    "       ldr   %0,8  \n\t"
 #ifndef interrupt_is_disabled
     "       clt         \n\t"
 #endif
@@ -184,10 +183,12 @@ w_nop16
 
     "       dec   %0    \n\t"    //  '1' [+2] '0' [+2]
     "       brne  loop%=\n\t"    //  '1' [+3] '0' [+4]
-    :	"=&d" (ctr)
-    :	"r" (curbyte), "I" (_SFR_IO_ADDR(ws2812_PORTREG)), "r" (maskhi), "r" (masklo)
-    );
+    :	"=&r" (ctr)
+ //   :	"r" (curbyte), "I" (&(ws2812_PORTREG)), "r" (maskhi), "r" (masklo)
+	: "r" (curbyte), "r" (&(ws2812_PORTREG)), "r" (maskhi), "r" (masklo)
+
+	);//portb high or low
   }
-  
-  SREG=sreg_prev;
+
+  __ASM volatile("MSR primask, %0" : : "r"(sreg_prev) : "memory"); //__set_PRIMASK(sreg_prev);
 }
