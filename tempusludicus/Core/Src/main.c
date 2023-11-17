@@ -29,7 +29,7 @@ int main()
 
     init_sysTick();
 		
-		uint32_t unixtest = 17001550850;
+		uint32_t unixtest = 1700264890;
 		datetime_t unixTime;
 		
 		lcd_clear();
@@ -44,7 +44,10 @@ int main()
     __enable_irq();
 
     while (1) {
-		RTC_HAL_ConvertDatetimeToSecs(&unixTime,&unixtest);
+		delay_us(1000000);
+		unixtest++;
+		
+		RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
 		
 		lcd_putdatetime(unixTime);
 		
