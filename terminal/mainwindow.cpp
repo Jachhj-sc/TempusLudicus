@@ -56,41 +56,49 @@
 
 #include <QLabel>
 #include <QMessageBox>
-
+#include <QTimer>
 #include <QDebug>
-
+#include <QTime>
 //! [0]
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_ui(new Ui::MainWindow),
     m_status(new QLabel),
+    m_time(new QLabel(this)),
     m_console(new Console),
     m_settings(new SettingsDialog),
-//! [1]
+    //! [1]
     m_serial(new QSerialPort(this))
 //! [1]
 {
-//! [0]
+    //! [0]
     m_ui->setupUi(this);
     m_console->setEnabled(false);
-    //setCentralWidget(m_console);
-
     m_ui->actionConnect->setEnabled(true);
     m_ui->actionDisconnect->setEnabled(false);
     m_ui->actionQuit->setEnabled(true);
     m_ui->actionConfigure->setEnabled(true);
 
     m_ui->statusBar->addWidget(m_status);
+    m_ui->centralWidget->layout()->addWidget(m_time);
 
     initActionsConnections();
 
     connect(m_serial, &QSerialPort::errorOccurred, this, &MainWindow::handleError);
-
-//! [2]
+    //! [2]
     connect(m_serial, &QSerialPort::readyRead, this, &MainWindow::readData);
-//! [2]
+    //! [2]
     connect(m_console, &Console::getData, this, &MainWindow::writeData);
-//! [3]
+    //! [3]
+    //!     // Set up the initial text
+    setText("Initial Value");
+
+    // Create a QTimer to update the value at regular intervals
+    QTimer *timer = new QTimer(this);
+    connect(timer, &QTimer::timeout, this, &MainWindow::updateValue);
+
+    // Set the update interval (in milliseconds)
+    timer->start(1000); // Update every 1000 milliseconds (1 second)
 }
 //! [3]
 
@@ -128,8 +136,8 @@ void MainWindow::openSerialPort()
         m_ui->actionDisconnect->setEnabled(true);
         m_ui->actionConfigure->setEnabled(false);
         showStatusMessage(tr("Connected to %1 : %2, %3, %4, %5, %6")
-                          .arg(p.name).arg(p.stringBaudRate).arg(p.stringDataBits)
-                          .arg(p.stringParity).arg(p.stringStopBits).arg(p.stringFlowControl));
+                              .arg(p.name).arg(p.stringBaudRate).arg(p.stringDataBits)
+                              .arg(p.stringParity).arg(p.stringStopBits).arg(p.stringFlowControl));
     } else {
         QMessageBox::critical(this, tr("Error"), m_serial->errorString());
 
@@ -199,4 +207,19 @@ void MainWindow::initActionsConnections()
 void MainWindow::showStatusMessage(const QString &message)
 {
     m_status->setText(message);
+}
+
+
+void MainWindow::updateValue() {
+    // Update the displayed value (you would replace this with your variable)
+    // For example, if your variable is the current time:
+    QTime currentTime = QTime::currentTime();
+    QString timeText = currentTime.toString("hh:mm:ss");
+
+    // Set the text in the m_time label
+    m_time->setText("Current Time: " + timeText);
+}
+
+void MainWindow::setText(const QString &text) {
+    m_time->setText(text);
 }

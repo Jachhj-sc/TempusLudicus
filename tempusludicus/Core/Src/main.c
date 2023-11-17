@@ -17,12 +17,15 @@
 
 int main()
 {
+	char c = 0;
 		uart0_init();
 	
     init_rgb();
 
     init_sysTick();
-
+		uart0_get_char();
+		uart0_put_char(c);
+	
     set_rgb(1, 0, 0);
     delay_us(1000000);
     set_rgb(0, 1, 0);

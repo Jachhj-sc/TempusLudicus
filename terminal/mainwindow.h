@@ -54,6 +54,8 @@
 
 #include <QMainWindow>
 #include <QSerialPort>
+#include <QLabel>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 
@@ -74,8 +76,11 @@ class MainWindow : public QMainWindow
 
 public:
     explicit MainWindow(QWidget *parent = nullptr);
+
     ~MainWindow();
 
+public slots:
+    void updateValue();
 private slots:
     void openSerialPort();
     void closeSerialPort();
@@ -89,12 +94,14 @@ private slots:
 
 private:
     void initActionsConnections();
+    void setText(const QString &text);
 
 private:
     void showStatusMessage(const QString &message);
 
     Ui::MainWindow *m_ui = nullptr;
     QLabel *m_status = nullptr;
+    QLabel *m_time = nullptr;
     Console *m_console = nullptr;
     SettingsDialog *m_settings = nullptr;
     QSerialPort *m_serial = nullptr;

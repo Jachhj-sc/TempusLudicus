@@ -52,6 +52,8 @@
 #include "mainwindow.h"
 
 #include <QApplication>
+#include <QLabel>
+#include <QTimer>
 
 int main(int argc, char *argv[])
 {
