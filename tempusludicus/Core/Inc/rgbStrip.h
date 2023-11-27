@@ -13,7 +13,7 @@
 
 #include "main.h"
 #include "ledcontrol.h"
-#include "spi_ws2812.h"
+//#include "spi_ws2812.h"
 #include "ws2812_config.h"
 
 #endif
