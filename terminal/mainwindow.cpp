@@ -132,6 +132,7 @@ void MainWindow::buttonClicked(void)
 
         // Send serial data
         m_serial->write(QString::number(timestamp).toUtf8());
+        m_serial->write("r");
 
         // Update m_time QTextEdit with the timestamp
         m_timeStamp->setPlainText("Unix Timestamp: " + QString::number(timestamp) +
@@ -188,10 +189,9 @@ void MainWindow::closeSerialPort()
 
 void MainWindow::about()
 {
-    QMessageBox::about(this, tr("About Simple Terminal"),
-                       tr("The <b>Simple Terminal</b> example demonstrates how to "
-                          "use the Qt Serial Port module in modern GUI applications "
-                          "using Qt, with a menu bar, toolbars, and a status bar."));
+    QMessageBox::about(this, tr("UART Terminal"),
+                       tr("The <b>UART Terminal</b> fetches and sends UNIX timestamp \n"
+                          "HAN ESE 2023 "));
 }
 
 //! [6]
@@ -207,6 +207,7 @@ void MainWindow::readData()
 {
     const QByteArray data = m_serial->readAll();
     m_console->putData(data);
+    qDebug() << "Recieved" << data << "through UART!";
 }
 //! [7]
 
