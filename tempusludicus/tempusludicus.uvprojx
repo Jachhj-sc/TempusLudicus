@@ -403,6 +403,16 @@
               <FileType>1</FileType>
               <FilePath>.\Core\Src\sysTick.c</FilePath>
             </File>
+            <File>
+              <FileName>timer_dma_ws2812.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\timer_dma_ws2812.c</FilePath>
+            </File>
+            <File>
+              <FileName>rgbStrip.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\rgbStrip.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -428,6 +438,21 @@
               <FileType>5</FileType>
               <FilePath>.\Core\Inc\sysTick.h</FilePath>
             </File>
+            <File>
+              <FileName>timer_dma_ws2812.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\timer_dma_ws2812.h</FilePath>
+            </File>
+            <File>
+              <FileName>common.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\common.h</FilePath>
+            </File>
+            <File>
+              <FileName>rgbStrip.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\rgbStrip.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -449,14 +474,9 @@
               <FilePath>.\drivers\LED_StripDriver\ws2812_config.h</FilePath>
             </File>
             <File>
-              <FileName>bitbang_ws2812.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\drivers\LED_StripDriver\bitbang_ws2812.c</FilePath>
-            </File>
-            <File>
-              <FileName>bitbang_ws2812.h</FileName>
+              <FileName>sk6812_config.h</FileName>
               <FileType>5</FileType>
-              <FilePath>.\drivers\LED_StripDriver\bitbang_ws2812.h</FilePath>
+              <FilePath>.\drivers\LED_StripDriver\sk6812_config.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -16,14 +16,15 @@
 ///////////////////////////////////////////////////////////////////////
 // Define I/O pin
 ///////////////////////////////////////////////////////////////////////
-#define RGB
-//#define RGBW
+//#define RGB
+#define RGBW
 
 #define sk6812_port C // Data port
 #define sk6812_pin  5 // Data out pin
 
-#define LEDPIXELCOUNT (300)
+#define LEDPIXELCOUNT (10)
 
+#define STRIP_COUNT (1)
 /*
     Timing specifications
     T0H 0 code ,high voltage time 	0.3us
@@ -34,15 +35,15 @@
     RES  low voltage time 			>50µs(80µs)
 */
 //in ns
-#define sk6812_T0H (300u)
-#define sk6812_T0L (900u)
-#define sk6812_T1H (600u)
-#define sk6812_T1L (600u)
-#define sk6812_TTOT (1200u)
+#define STRIP_T0H (300u)
+#define STRIP_T0L (900u)
+#define STRIP_T1H (600u)
+#define STRIP_T1L (600u)
+#define STRIP_TTOT (1200u)
 
-#define sk6812_RES (80000u)
+#define STRIP_RES (80000u)
 
-#define sk6812_T_IS_SYMETRICAL (1)
+#define STRIP_T_IS_SYMETRICAL (1)
 // data structure
 // 0x00GGRRBB
 
