@@ -50,7 +50,7 @@ void uart0_init(void)
     UART0->C2 &=  ~(UARTLP_C2_TE_MASK | UARTLP_C2_RE_MASK);
         
     // Set baud rate to baud rate
-    uint32_t divisor = 48000000UL/(115200*16);
+    uint32_t divisor = 48000000UL/(9600*16);
     UART0->BDH = UART_BDH_SBR(divisor>>8);
     UART0->BDL = UART_BDL_SBR(divisor);
     
