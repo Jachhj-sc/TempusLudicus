@@ -5,12 +5,14 @@ TARGET = terminal
 TEMPLATE = app
 
 SOURCES += \
+    fetchtimestamp.cpp \
     main.cpp \
     mainwindow.cpp \
     settingsdialog.cpp \
     console.cpp
 
 HEADERS += \
+    fetchTimestamp.h \
     mainwindow.h \
     settingsdialog.h \
     console.h

@@ -52,6 +52,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "qtextedit.h"
 #include <QMainWindow>
 #include <QSerialPort>
 #include <QLabel>
@@ -87,9 +88,7 @@ private slots:
     void about();
     void writeData(const QByteArray &data);
     void readData();
-
     void buttonClicked(void);
-
     void handleError(QSerialPort::SerialPortError error);
 
 private:
@@ -101,7 +100,8 @@ private:
 
     Ui::MainWindow *m_ui = nullptr;
     QLabel *m_status = nullptr;
-    QLabel *m_time = nullptr;
+    QTextEdit *m_timeStamp= nullptr;
+    QTextEdit *m_time = nullptr;
     Console *m_console = nullptr;
     SettingsDialog *m_settings = nullptr;
     QSerialPort *m_serial = nullptr;

@@ -53,18 +53,22 @@
 #include "ui_mainwindow.h"
 #include "console.h"
 #include "settingsdialog.h"
+#include "fetchtimestamp.h"
 
 #include <QLabel>
 #include <QMessageBox>
 #include <QTimer>
 #include <QDebug>
 #include <QTime>
+#include <iostream>
+
 //! [0]
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
     m_ui(new Ui::MainWindow),
     m_status(new QLabel),
-    m_time(new QLabel(this)),
+    m_timeStamp(new QTextEdit(this)),
+    m_time(new QTextEdit(this)),
     m_console(new Console),
     m_settings(new SettingsDialog),
     //! [1]
@@ -81,6 +85,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
     m_ui->statusBar->addWidget(m_status);
     m_ui->centralWidget->layout()->addWidget(m_time);
+    m_ui->centralWidget->layout()->addWidget(m_timeStamp);
 
     initActionsConnections();
 
@@ -110,14 +115,36 @@ MainWindow::~MainWindow()
 
 void MainWindow::buttonClicked(void)
 {
+    // Create an instance of FetchTimestamp
+    FetchTimestamp fetcher;
+
+    // Call the function to fetch the Unix timestamp
     qDebug() << "ButtonClicked, Fetching info through HTTP..";
-    //Code to fetch data//
-    qDebug() << "Unixtime is 10, sending info through UART..";
+    long long timestamp = fetcher.fetchUnixTimestamp();
 
-    //Send serial data//
-    m_serial->write("r");
+    if (timestamp != -1) {
+        // Print the Unix timestamp
+        std::cout << "Unix Timestamp: " << timestamp << std::endl;
 
+        // You can convert the timestamp to a human-readable format if needed
+        std::time_t t = static_cast<std::time_t>(timestamp);
+        qDebug() << "Unixtime is" << timestamp << "Sending time through UART!";
+
+        // Send serial data
+        m_serial->write(QString::number(timestamp).toUtf8());
+
+        // Update m_time QTextEdit with the timestamp
+        m_timeStamp->setPlainText("Unix Timestamp: " + QString::number(timestamp) +
+                             "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
+    } else {
+        std::cerr << "Failed to fetch Unix Timestamp." << std::endl;
+
+        // If fetching fails, you may want to display an error message in m_time
+        m_timeStamp->setPlainText("Error: Failed to fetch Unix Timestamp");
+    }
 }
+
+
 
 //! [4]
 void MainWindow::openSerialPort()

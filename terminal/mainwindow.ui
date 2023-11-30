@@ -16,16 +16,9 @@
   <widget class="QWidget" name="centralWidget">
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
-     <widget class="QLabel" name="m_time">
-      <property name="text">
-       <string>Timestamp:</string>
-      </property>
-     </widget>
-    </item>
-    <item>
      <widget class="QPushButton" name="pushButton">
       <property name="text">
-       <string>Send Unix </string>
+       <string>Fetch and send Unix </string>
       </property>
      </widget>
     </item>
