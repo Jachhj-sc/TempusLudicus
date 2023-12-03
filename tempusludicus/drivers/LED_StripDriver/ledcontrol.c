@@ -70,7 +70,7 @@ static uint8_t brightness = 255;
 static uint16_t exLow = -1;
 static uint16_t exHigh = -1;
 
-void init_strip(){
+void init_strip(void){
 	init_ws2812();
 }
 
@@ -282,6 +282,7 @@ void effect_snakeGrow_b(int growSpd, uint32_t color)
     for (int len = 1; len < LEDPIXELCOUNT; len += growSpd) {
         for (int f = 0; f < LEDPIXELCOUNT; f++) { // finish full animation frame
             effect_snake_nb(len, color);
+            //delay_us(10000);
         }
     }
 }
@@ -333,7 +334,7 @@ void effect_snakeBounce_b(int length, uint32_t color)
         setStrip_pixel((uint16_t)tail, 0);
         Strip_send();
     }
-    for (uint16_t i = LEDPIXELCOUNT - 1; i >= 0; i--) {
+    for (uint16_t i = LEDPIXELCOUNT - 1; i > 0; i--) {
         setStrip_pixel(i, color);
         tail = i + length;
         if (tail > LEDPIXELCOUNT - 1) {
@@ -401,7 +402,7 @@ void effect_chase_b(uint32_t color)
 
 */
 
-void effect_pulse_b(uint32_t delay, uint8_t maxBrightness, uint32_t color)
+void effect_pulse_b(uint8_t maxBrightness, uint32_t color)
 {
 
     for (uint8_t i = 0; i < maxBrightness; i++) { // ramp up loop

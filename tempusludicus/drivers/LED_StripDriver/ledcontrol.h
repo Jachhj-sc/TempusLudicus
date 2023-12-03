@@ -39,7 +39,7 @@ struct cRGBW {
 #define COLOR_CRIMSON    0xDC283C00
 #define COLOR_PURPLE     0x8C00FF00
 
-void init_strip();
+void init_strip(void);
 void setStrip_ExBounds(uint16_t low, uint16_t high);
 void setStrip_Brightness(uint8_t bright);
 
@@ -70,6 +70,6 @@ void effect_snakeGrowHue_nb(int growSpd, int hueSpd);
 void effect_snakeGrow_b(int growSpd, uint32_t color);
 void effect_snakeGrow_nb(int growSpd, uint32_t color);
 
-void effect_pulse_b(uint32_t delay, uint8_t maxBrightness, uint32_t color);
+void effect_pulse_b(uint8_t maxBrightness, uint32_t color);
 
 #endif /* LEDCONTROL_H_ */
