@@ -80,7 +80,6 @@ void sw_init(void)
 
 void PORTD_IRQHandler(void)
 {  
-	
 	// Clear pending interrupts
 	NVIC_ClearPendingIRQ(PORTD_IRQn);
 
@@ -91,7 +90,6 @@ void PORTD_IRQHandler(void)
 				{
 					choice = 1;
 				}
-        
         // Clear the flag
         PORTD->ISFR = (1<<0);
     }
@@ -103,7 +101,6 @@ void PORTD_IRQHandler(void)
 				{
 					choice++;
 				}
-        
         // Clear the flag
         PORTD->ISFR = (1<<3);
     }
@@ -119,7 +116,6 @@ void PORTD_IRQHandler(void)
 				{
 				calculate();
 				}
-
         // Clear the flag
         PORTD->ISFR = (1<<5);
     }

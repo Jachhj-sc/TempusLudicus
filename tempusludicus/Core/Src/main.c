@@ -34,22 +34,20 @@ int main()
 		tpm1_init();
 		lcd_init();
 		sw_init();
- //   init_sysTick();
+//   init_sysTick();
 		
 		uint32_t unixtest = 1701608547;
 		datetime_t unixTime;
 
-
+		// systick init, for working with the ultrasoonsensor
 		SysTick->LOAD = 0x00FFFFFF;
     SysTick->VAL = 0;
     SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
     SysTick->CTRL &= ~(SysTick_CTRL_TICKINT_Msk);
     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;		
+	
 
-		
-		lcd_clear();
-    lcd_bl_pwmcontrol(0x2000);
-
+		// startup led 
     set_rgb(1, 0, 0);
     delay_us(1000000);
     set_rgb(0, 1, 0);
@@ -62,37 +60,36 @@ int main()
 		
 		char text[80];
 
-    while (1) {
-	
-		
-		RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
+    while (1) 
+		{
+			
+			RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
 
 			switch(choice)
 			{
-			case 1:
-			LCD_putDateTime(unixTime);
-			unixtest++;
-			delay_us(1000000);
-			break;
+				case 1:
+						LCD_putDateTime(unixTime);
+						unixtest++;
+						delay_us(1000000);
+						break;
 			
-			case 2:
-			lcd_set_cursor(0,0);
-			lcd_print("ultrasoon sensor");
-			lcd_set_cursor(0,1);
-			sprintf(text, "distance cm = %d   ", teller);
-			lcd_print(text);
-			break;
+				case 2:
+						lcd_set_cursor(0,0);
+						lcd_print("ultrasoon sensor");
+						lcd_set_cursor(0,1);
+						sprintf(text, "distance cm = %d   ", teller);
+						lcd_print(text);
+						break;
 			
-			case 5:
-			lcd_clear();
-			lcd_set_cursor(0,0);
-			lcd_print("***debug***");
-			break;
-			case 6:
-			choice = 1;
-			break;
+				case 5:
+						lcd_clear();
+						lcd_set_cursor(0,0);
+						lcd_print("***debug***");
+						break;
 			
+				case 6:
+						choice = 1;
+						break;
 			}	
-		
     }
 }

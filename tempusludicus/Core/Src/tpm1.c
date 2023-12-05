@@ -63,7 +63,7 @@ void tpm1_init(void)
 
 void calculate(void)
 {
-// calculate the distance from the ultra soon sensor in cm
+				// calculate the distance from the ultra soon sensor in cm
 				teller = 0;
 				teller = 0x00FFFFFF - SysTick->VAL;
 				teller = (teller / 48);

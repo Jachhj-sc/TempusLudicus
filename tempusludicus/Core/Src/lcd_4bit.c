@@ -223,31 +223,6 @@ void lcd_write_data(const uint8_t c)
  * All pins for DB4-DB7, E, RW and RS are configured to GPIO output pins.
  */
 
-/*
-void lcd_init_port(void)
-{
-		// Enable clocks for peripherals
-		ENABLE_LCD_PORT_CLOCKS;
-
-		// Setting all pins to output mode
-		PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
-		PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
-		PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
-		PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
-		PIN_E_PT->PDDR   = PIN_E_PT->PDDR   | PIN_E;
-		PIN_RS_PT->PDDR  = PIN_RS_PT->PDDR  | PIN_RS;
-		PIN_RW_PT->PDDR  = PIN_RW_PT->PDDR  | PIN_RW;
-
-		// Setting all pin mux to GPIO
-		PIN_DB4_PORT->PCR[PIN_DB4_SHIFT] = PORT_PCR_MUX(1);
-		PIN_DB5_PORT->PCR[PIN_DB5_SHIFT] = PORT_PCR_MUX(1);
-		PIN_DB6_PORT->PCR[PIN_DB6_SHIFT] = PORT_PCR_MUX(1);
-		PIN_DB7_PORT->PCR[PIN_DB7_SHIFT] = PORT_PCR_MUX(1);
-		PIN_E_PORT->PCR[PIN_E_SHIFT]     = PORT_PCR_MUX(1);
-		PIN_RS_PORT->PCR[PIN_RS_SHIFT]   = PORT_PCR_MUX(1);
-		PIN_RW_PORT->PCR[PIN_RW_SHIFT]   = PORT_PCR_MUX(1);
-}
-*/
 
 void lcd_init_port(void)
 {
@@ -287,7 +262,9 @@ void lcd_init_port(void)
 		// start tpm, prescaler at default
 		TPM0->SC = TPM_SC_CMOD(1);
 		
-		
+		// init backlight 
+		lcd_clear();
+    lcd_bl_pwmcontrol(0x2000);
 	
 }
 
