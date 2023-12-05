@@ -102,3 +102,4 @@ void RTC_HAL_ConvertDatetimeToSecs(const datetime_t * datetime, uint32_t * secon
  *seconds = ((*seconds) * SECONDS_IN_A_DAY) + (datetime->hour * SECONDS_IN_A_HOUR) +
  (datetime->minute * SECONDS_IN_A_MIN) + datetime->second;
 }
+

@@ -117,7 +117,7 @@ void lcd_set_cursor(const uint8_t column, const uint8_t row);
 void lcd_putchar(const char c);
 void lcd_print(const char *string);
 void lcd_write_data(const uint8_t c);
-void lcd_putdatetime(const datetime_t  time);
+void LCD_putDateTime(const datetime_t  time);
 
 void lcd_bl_on(const bool led);
 void lcd_bl_pwmcontrol(const uint16_t val);

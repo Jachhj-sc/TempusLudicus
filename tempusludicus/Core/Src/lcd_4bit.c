@@ -360,7 +360,7 @@ void lcd_putchar(const char c)
 		lcd_write_data(c);
 }
 
-void lcd_putdatetime(const datetime_t  t) // puts integers into a string for printing
+void LCD_putDateTime(const datetime_t  t) // puts integers into a string for printing
 {
 // declaration of variables  
 	char buffer[10];  // buffersize 

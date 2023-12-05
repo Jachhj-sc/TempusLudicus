@@ -15,22 +15,36 @@
 #include "sysTick.h"
 #include "lcd_4bit.h"
 #include "unixFunction.h"
+#include "tpm1.h"
+#include "switches.h"
 
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
 #include <MKL25Z4.h>
 
+
+volatile uint32_t teller = 0;
+volatile uint8_t choice = 0;
+
 int main()
 {
     init_rgb();
-		
+		tpm1_init();
 		lcd_init();
-
-    init_sysTick();
+		sw_init();
+ //   init_sysTick();
 		
-		uint32_t unixtest = 1700264890;
+		uint32_t unixtest = 1701608547;
 		datetime_t unixTime;
+
+
+		SysTick->LOAD = 0x00FFFFFF;
+    SysTick->VAL = 0;
+    SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
+    SysTick->CTRL &= ~(SysTick_CTRL_TICKINT_Msk);
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;		
+
 		
 		lcd_clear();
     lcd_bl_pwmcontrol(0x2000);
@@ -42,17 +56,36 @@ int main()
     set_rgb(0, 0, 0);
 
     __enable_irq();
+		
+
+		
+		char text[80];
 
     while (1) {
-		delay_us(1000000);
-		unixtest++;
+	
 		
 		RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
-		
-		lcd_putdatetime(unixTime);
-		
 
-		
+
+			switch(choice)
+			{
+			case 1:			
+			lcd_set_cursor(0,1);
+			sprintf(text, "distance cm = %d   ", teller);
+			lcd_print(text);
+			break;
+			case 2:			
+			LCD_putDateTime(unixTime);
+			
+			break;
+			case 0:
+			LCD_putDateTime(unixTime);
+			
+			break;
+			
+
+			}
+
 		
     }
 }
