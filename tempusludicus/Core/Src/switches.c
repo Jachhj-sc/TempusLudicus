@@ -53,7 +53,7 @@ void sw_init(void)
 	// interrupt handlers config
 	
 	// switch 1
-	PORTD->PCR[1] = PORT_PCR_IRQC(11) |
+	PORTD->PCR[0] = PORT_PCR_IRQC(11) |
 									PORT_PCR_MUX(1) | 
                   PORT_PCR_PS(1) | 
 									PORT_PCR_PE(1);
@@ -85,15 +85,15 @@ void PORTD_IRQHandler(void)
 	NVIC_ClearPendingIRQ(PORTD_IRQn);
 
     // switch 1 
-    if((PORTD->ISFR & (1<<1)))
+    if((PORTD->ISFR & (1<<0)))
     {
-			if (PTD->PDIR & MASK(1))
+			if (PTD->PDIR & MASK(0))
 				{
 					choice = 1;
 				}
         
         // Clear the flag
-        PORTD->ISFR = (1<<1);
+        PORTD->ISFR = (1<<0);
     }
 		
 		// switch 2 
@@ -101,7 +101,7 @@ void PORTD_IRQHandler(void)
     {
 			if (PTD->PDIR & MASK(3))
 				{
-					choice = 2;
+					choice++;
 				}
         
         // Clear the flag

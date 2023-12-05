@@ -377,7 +377,7 @@ void LCD_putDateTime(const datetime_t  t) // puts integers into a string for pri
 	date[2] = t.year; 
 
 	lcd_set_cursor(0,0); // set cursor at top side of the screen.
-	lcd_print("TIME  "); // puts TIME + two spaces
+	lcd_print("TIME    "); // puts TIME + four spaces
 	
 // next loop puts time into a string and print them to the screen. 
 	for(int i = 0; i < 3; i++)
@@ -402,7 +402,14 @@ void LCD_putDateTime(const datetime_t  t) // puts integers into a string for pri
 	// next function puts date into a string and print them to the screen. 
 	for(int i = 0; i < 3; i++)
 	{
-		sprintf(buffer, "%d", date[i]);
+		if (date[i] < 10)
+		{
+			sprintf(buffer, "0%d", date[i]); // this function makes a 0 before a single number like 01 and not 1.
+		}
+		else
+		{
+			sprintf(buffer, "%d", date[i]); // function to put time in a string.
+		}
 		lcd_print(buffer);
 		if (i < 2)
 		{

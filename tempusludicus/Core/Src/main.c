@@ -25,11 +25,12 @@
 
 
 volatile uint32_t teller = 0;
-volatile uint8_t choice = 0;
+volatile uint8_t choice = 1;
 
 int main()
 {
-    init_rgb();
+		
+		init_rgb();
 		tpm1_init();
 		lcd_init();
 		sw_init();
@@ -66,26 +67,32 @@ int main()
 		
 		RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
 
-
 			switch(choice)
 			{
-			case 1:			
+			case 1:
+			LCD_putDateTime(unixTime);
+			unixtest++;
+			delay_us(1000000);
+			break;
+			
+			case 2:
+			lcd_set_cursor(0,0);
+			lcd_print("ultrasoon sensor");
 			lcd_set_cursor(0,1);
 			sprintf(text, "distance cm = %d   ", teller);
 			lcd_print(text);
 			break;
-			case 2:			
-			LCD_putDateTime(unixTime);
 			
+			case 5:
+			lcd_clear();
+			lcd_set_cursor(0,0);
+			lcd_print("***debug***");
 			break;
-			case 0:
-			LCD_putDateTime(unixTime);
-			
+			case 6:
+			choice = 1;
 			break;
 			
-
-			}
-
+			}	
 		
     }
 }
