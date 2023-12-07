@@ -13,21 +13,25 @@
 #include "delay.h"
 #include "rgb.h"
 #include "sysTick.h"
+#include "uart0.h"
 
 int main()
 {
+		uart0_init();
+	
     init_rgb();
-
     init_sysTick();
-
+		
     set_rgb(1, 0, 0);
-    delay_us(1000000);
+    //delay_us(1000000);
     set_rgb(0, 1, 0);
-    delay_us(1000000);
+    //delay_us(1000000);
     set_rgb(0, 0, 0);
 
     __enable_irq();
 
     while (1) {
+			char c = uart0_get_char();
+			uart0_put_char(c);
     }
 }
