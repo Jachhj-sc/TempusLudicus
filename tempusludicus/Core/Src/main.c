@@ -3,13 +3,12 @@
     @author
     @brief
 
-    @version 0.1
+    @version 0.2
     @date	11/11/23
 
     @copyright Copyright (c) 2023
  */
 #include "main.h"
-
 #include "delay.h"
 #include "rgb.h"
 #include "sysTick.h"
@@ -17,7 +16,7 @@
 #include "unixFunction.h"
 #include "tpm1.h"
 #include "switches.h"
-
+#include "uart0.h"
 #include <stdio.h>
 #include <stdint.h>
 #include <stdbool.h>
@@ -34,8 +33,10 @@ int main()
 		tpm1_init();
 		lcd_init();
 		sw_init();
-//   init_sysTick();
-		
+    init_sysTick();
+  	uart0_init();
+    __enable_irq();
+
 		uint32_t unixtest = 1701608547;
 		datetime_t unixTime;
 
@@ -49,20 +50,19 @@ int main()
 
 		// startup led 
     set_rgb(1, 0, 0);
-    delay_us(1000000);
+    //delay_us(1000000);
     set_rgb(0, 1, 0);
-    delay_us(1000000);
+    //delay_us(1000000);
     set_rgb(0, 0, 0);
 
-    __enable_irq();
-		
 
-		
 		char text[80];
 
     while (1) 
 		{
 			
+			char c = uart0_get_char();
+			uart0_put_char(c);
 			RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
 
 			switch(choice)
