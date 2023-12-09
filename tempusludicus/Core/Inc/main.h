@@ -3,4 +3,7 @@
 
 #include "common.h"
 
+
+int main();
+
 #endif

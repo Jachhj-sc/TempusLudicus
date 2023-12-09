@@ -45,6 +45,8 @@
  *
  * \param[in]  d  delay in microseconds
  */
+//*
+
 void delay_us(uint32_t d)
 {
 

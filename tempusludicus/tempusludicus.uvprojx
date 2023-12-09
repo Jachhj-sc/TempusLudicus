@@ -10,7 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x4</ToolsetNumber>
       <ToolsetName>ARM-ADS</ToolsetName>
-      <pCCUsed>6160000::V6.16::ARMCLANG</pCCUsed>
+      <pCCUsed>6190000::V6.19::ARMCLANG</pCCUsed>
       <uAC6>1</uAC6>
       <TargetOption>
         <TargetCommonOption>
@@ -186,10 +186,11 @@
             <RvdsVP>0</RvdsVP>
             <RvdsMve>0</RvdsMve>
             <RvdsCdeCp>0</RvdsCdeCp>
+            <nBranchProt>0</nBranchProt>
             <hadIRAM2>0</hadIRAM2>
             <hadIROM2>0</hadIROM2>
             <StupSel>8</StupSel>
-            <useUlib>0</useUlib>
+            <useUlib>1</useUlib>
             <EndSel>0</EndSel>
             <uLtcg>0</uLtcg>
             <nSecure>0</nSecure>
@@ -313,7 +314,7 @@
           </ArmAdsMisc>
           <Cads>
             <interw>1</interw>
-            <Optim>2</Optim>
+            <Optim>4</Optim>
             <oTime>0</oTime>
             <SplitLS>0</SplitLS>
             <OneElfS>1</OneElfS>
@@ -330,8 +331,8 @@
             <useXO>0</useXO>
             <v6Lang>6</v6Lang>
             <v6LangP>4</v6LangP>
-            <vShortEn>0</vShortEn>
-            <vShortWch>0</vShortWch>
+            <vShortEn>1</vShortEn>
+            <vShortWch>1</vShortWch>
             <v6Lto>0</v6Lto>
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
@@ -408,6 +409,36 @@
               <FileType>1</FileType>
               <FilePath>.\Core\Src\timer_dma_ws2812.c</FilePath>
             </File>
+            <File>
+              <FileName>lcd_4bit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\lcd_4bit.c</FilePath>
+            </File>
+            <File>
+              <FileName>unixFunction.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\unixFunction.c</FilePath>
+            </File>
+            <File>
+              <FileName>tpm1.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\tpm1.c</FilePath>
+            </File>
+            <File>
+              <FileName>switches.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\switches.c</FilePath>
+            </File>
+            <File>
+              <FileName>queue.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\queue.c</FilePath>
+            </File>
+            <File>
+              <FileName>uart0.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\uart0.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -468,6 +499,36 @@
               <FileType>5</FileType>
               <FilePath>.\drivers\LED_StripDriver\sk6812_config.h</FilePath>
             </File>
+            <File>
+              <FileName>lcd_4bit.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\lcd_4bit.h</FilePath>
+            </File>
+            <File>
+              <FileName>unixFunction.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\unixFunction.h</FilePath>
+            </File>
+            <File>
+              <FileName>tpm1.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\tpm1.h</FilePath>
+            </File>
+            <File>
+              <FileName>switches.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\switches.h</FilePath>
+            </File>
+            <File>
+              <FileName>uart0.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\uart0.h</FilePath>
+            </File>
+            <File>
+              <FileName>queue.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\queue.h</FilePath>
+            </File>         
           </Files>
         </Group>
         <Group>

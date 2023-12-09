@@ -57,6 +57,4 @@ dkms.conf
 *uvoptx*
 
 # vscode
-.vscode/*
-
-.vscode/c_cpp_properties.json
+.vscode/
