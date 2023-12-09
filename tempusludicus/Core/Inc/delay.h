@@ -14,5 +14,6 @@
 #include <stdint.h>
 
 void delay_us(uint32_t d);
+void _delay_ms(uint32_t delay);
 
 #endif

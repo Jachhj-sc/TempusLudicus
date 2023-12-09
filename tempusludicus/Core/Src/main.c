@@ -9,6 +9,12 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
+
+#include <stdio.h>
+#include <stdint.h>
+#include <stdbool.h>
+#include <MKL25Z4.h>
+
 #include "delay.h"
 #include "rgb.h"
 #include "sysTick.h"
@@ -17,27 +23,24 @@
 #include "tpm1.h"
 #include "switches.h"
 #include "uart0.h"
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
-#include <MKL25Z4.h>
-
+#include "timer_dma_ws2812.h"
 
 volatile uint32_t teller = 0;
 volatile uint8_t choice = 1;
 
 int main()
 {
-		
 		init_rgb();
 		tpm1_init();
 		lcd_init();
 		sw_init();
     init_sysTick();
   	uart0_init();
+
+    init_strip();
     __enable_irq();
 
-		uint32_t unixtest = 1701608547;
+  	uint32_t unixtest = 1701608547;
 		datetime_t unixTime;
 
 		// systick init, for working with the ultrasoonsensor
@@ -48,13 +51,25 @@ int main()
     SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;		
 	
 
-		// startup led 
+      // startup blink
+    setStrip_all(color32(2, 3, 0, 0));
+    Strip_send();
     set_rgb(1, 0, 0);
-    //delay_us(1000000);
-    set_rgb(0, 1, 0);
-    //delay_us(1000000);
-    set_rgb(0, 0, 0);
+    _delay_ms(200);
 
+    setStrip_all(color32(0, 3, 2, 0));
+    Strip_send();
+    set_rgb(0, 1, 0);
+    _delay_ms(200);
+
+    setStrip_all(color32(0, 3, 0, 2));
+    Strip_send();
+    set_rgb(0, 1, 1);
+    _delay_ms(200);
+
+    setStrip_clear();
+    Strip_send();
+    set_rgb(0, 0, 0);
 
 		char text[80];
 
