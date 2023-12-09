@@ -263,8 +263,8 @@ void effect_snakeGrow_nb(int growSpd, uint32_t color)
     static int len = 1;
     static int f = 0;
 
-    if (len < LEDPIXELCOUNT) {
-        if (f < LEDPIXELCOUNT) {
+    if (len < (int)LEDPIXELCOUNT) {
+        if (f < (int)LEDPIXELCOUNT) {
             effect_snake_nb(len, color);
             f++;
         } else {
@@ -279,8 +279,8 @@ void effect_snakeGrow_nb(int growSpd, uint32_t color)
 
 void effect_snakeGrow_b(int growSpd, uint32_t color)
 {
-    for (int len = 1; len < LEDPIXELCOUNT; len += growSpd) {
-        for (int f = 0; f < LEDPIXELCOUNT; f++) { // finish full animation frame
+    for (int len = 1; len < (int)LEDPIXELCOUNT; len += growSpd) {
+        for (int f = 0; f < (int)LEDPIXELCOUNT; f++) { // finish full animation frame
             effect_snake_nb(len, color);
             //delay_us(10000);
         }
@@ -308,14 +308,14 @@ void effect_snake_nb(int length, uint32_t color)
         setStrip_pixel((uint16_t)tail, 0);
     }
     tail++;
-    if (tail >= LEDPIXELCOUNT) { // loop for tail
+    if (tail >= (int)LEDPIXELCOUNT) { // loop for tail
         tail = 0;
     }
 
     setStrip_pixel((uint16_t)head, color);
 
     head++;
-    if (head >= LEDPIXELCOUNT) { // loop for head
+    if (head >= (int)LEDPIXELCOUNT) { // loop for head
         head = 0;
     }
 
@@ -337,7 +337,7 @@ void effect_snakeBounce_b(int length, uint32_t color)
     for (uint16_t i = LEDPIXELCOUNT - 1; i > 0; i--) {
         setStrip_pixel(i, color);
         tail = i + length;
-        if (tail > LEDPIXELCOUNT - 1) {
+        if (tail > (int)LEDPIXELCOUNT - 1) {
             tail = LEDPIXELCOUNT - 1;
         }
         setStrip_pixel((uint16_t)tail, 0);
@@ -367,7 +367,7 @@ void effect_snakeBounce_nb(int length, uint32_t color)
     if (i > 0 && reverse) {
         setStrip_pixel(i, color);
         tail = i + length;
-        if (tail > LEDPIXELCOUNT - 1) {
+        if (tail > (int)LEDPIXELCOUNT - 1) {
             tail = LEDPIXELCOUNT - 1;
         }
         setStrip_pixel((uint16_t)tail, 0);

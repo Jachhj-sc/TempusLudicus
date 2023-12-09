@@ -28,8 +28,6 @@ static STRIP_timing_t STRIP_TPM0_timing;
     uint8_t arr[pixel][bit] = CnV value;
 
  */
-static const uint32_t zero = 0;
-static const uint32_t val = 2u;
 static volatile uint8_t DMA_Frame_Update_Done = 1;
 static volatile uint8_t resetPulseFlag = 0;
 
@@ -105,7 +103,7 @@ void strip_sendContinuous() {}
 
 void strip_write()
 {
-    // wait for ongoing write to finish
+    // wait for an ongoing write to finish
     while (!DMA_Frame_Update_Done)
         ;
 
@@ -148,6 +146,9 @@ void DMA0_IRQHandler()
 
         NVIC_ClearPendingIRQ(TPM0_IRQn);
         NVIC_EnableIRQ(TPM0_IRQn);
+
+        NVIC_DisableIRQ(DMA0_IRQn);
+
         resetPulseFlag = 1;
     }
 }
@@ -159,11 +160,14 @@ void TPM0_IRQHandler()
         TPM0->MOD = (uint16_t)(((uint32_t)(F_CPU / 1000000u) * (uint32_t)STRIP_RES) / 1000u) - 1u;
         TPM0->CONTROLS[3].CnV = 0;
         TPM0->CNT = 0;
+
     } else {
        	NVIC_DisableIRQ(TPM0_IRQn);
         TPM0->MOD = (uint16_t)(((F_CPU / 1000000u) * STRIP_TTOT) / 1000u) - 1u;
         TPM0->CONTROLS[3].CnV = 0;
         DMA_Frame_Update_Done = 1u;
-        // NVIC_EnableIRQ(DMA0_IRQn);
+
+        NVIC_ClearPendingIRQ(DMA0_IRQn);
+        NVIC_EnableIRQ(DMA0_IRQn);
     }
 }

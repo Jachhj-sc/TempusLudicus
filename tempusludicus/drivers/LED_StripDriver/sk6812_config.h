@@ -44,6 +44,11 @@
 #define STRIP_RES (80000u)
 
 #define STRIP_T_IS_SYMETRICAL (1)
+
+#if ((STRIP_T0H + STRIP_T0L) != STRIP_TTOT) || ((STRIP_T1H + STRIP_T1L) != STRIP_TTOT)
+#warning "timing is not symetrical, please check timing values (sk6812_config.h)"
+#endif
+
 // data structure
 // 0x00GGRRBB
 

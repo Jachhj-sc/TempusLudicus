@@ -408,11 +408,6 @@
               <FileType>1</FileType>
               <FilePath>.\Core\Src\timer_dma_ws2812.c</FilePath>
             </File>
-            <File>
-              <FileName>rgbStrip.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\Core\Src\rgbStrip.c</FilePath>
-            </File>
           </Files>
         </Group>
         <Group>
@@ -447,11 +442,6 @@
               <FileName>common.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Core\Inc\common.h</FilePath>
-            </File>
-            <File>
-              <FileName>rgbStrip.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Core\Inc\rgbStrip.h</FilePath>
             </File>
           </Files>
         </Group>

@@ -9,11 +9,11 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
+
 #include "delay.h"
 #include "rgb.h"
-
-#include "rgbStrip.h"
 #include "sysTick.h"
+
 #include "timer_dma_ws2812.h"
 
 int main()
@@ -24,43 +24,25 @@ int main()
     init_strip();
     __enable_irq();
 
+
+
+
+    // startup blink
+    setStrip_all(color32(2, 3, 0, 0));
+    Strip_send();
+    _delay_ms(200);
+
+    setStrip_all(color32(0, 3, 2, 0));
+    Strip_send();
+    _delay_ms(200);
+
+    setStrip_all(color32(0, 3, 0, 2));
+    Strip_send();
+    _delay_ms(200);
+
     setStrip_clear();
     Strip_send();
-    strip_sendContinuous();
-
-    setStrip_all(color32(10, 10, 10, 10));
 
     while (1) {
-        setStrip_all(color32(2, 0, 0, 0));
-        Strip_send();
-        set_rgb(1, 0, 0);
-        //_delay_ms(2000);
-        delay_us(500000);
-
-        setStrip_all(color32(0, 2, 0, 0));
-        Strip_send();
-        set_rgb(1, 0, 0);
-        //_delay_ms(2000);
-        delay_us(500000);
-
-        setStrip_all(color32(0, 0, 2, 0));
-        Strip_send();
-        set_rgb(1, 0, 0);
-        //_delay_ms(2000);
-        delay_us(500000);
-
-        setStrip_all(color32(0, 0, 0, 2));
-        Strip_send();
-        set_rgb(1, 0, 0);
-        //_delay_ms(2000);
-        delay_us(500000);
-
-        setStrip_all(color32(0, 0, 0, 0));
-        Strip_send();
-        set_rgb(0, 1, 0);
-        //_delay_ms(2000);
-        delay_us(500000);
-
-        effect_snakeGrow_b(1, color32(2, 2, 0, 0));
     }
 }
