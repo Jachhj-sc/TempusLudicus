@@ -55,3 +55,6 @@ dkms.conf
 # Keil
 *uvguix*
 *uvoptx*
+
+# vscode
+.vscode/
