@@ -84,22 +84,22 @@ uint8_t get_switchState(void)
 static uint16_t timer = 0;
 static uint8_t state = 1;
 
+if ((buttonState_1 == 1) && (buttonState_2 == 1))
+{
+	state = 4;
+	buttonState_1 = 0;
+	buttonState_2 = 0;
+}
+
 if (buttonState_1 == 1)
 {
 	state = 2;
-	
+	buttonState_1 = 0;
 }
 
 if (buttonState_2 == 1)
 {
 	state = 3;
-	
-}
-
-if ((buttonState_1 == 1) && (buttonState_2 == 1))
-{
-	state = 4;
-	buttonState_1 = 0;
 	buttonState_2 = 0;
 }
 
