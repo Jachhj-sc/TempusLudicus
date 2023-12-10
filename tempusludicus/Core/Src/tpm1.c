@@ -58,7 +58,7 @@ void tpm1_init(void)
 
 }
 
-int read_distance(void)
+uint32_t read_distance(void)
 {
 return teller;
 }

@@ -37,7 +37,7 @@
 
 
 
-int read_distance(void);
+uint32_t read_distance(void);
 
 void tpm1_init(void);
 

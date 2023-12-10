@@ -23,7 +23,9 @@
 #include <MKL25Z4.h>
 
 
-volatile uint8_t choice = 1;
+static uint32_t distance = 0;
+static uint8_t switchstate = 1;
+
 
 int main()
 {
@@ -60,11 +62,16 @@ int main()
     while (1) 
 		{
 			
-			char c = uart0_get_char();
-			uart0_put_char(c);
+//			char c = uart0_get_char();
+//			uart0_put_char(c);
+			
+			distance = read_distance(); // get the value of the ultrasoon sensor in cm 
+			
+			switchstate = get_switchState(); // get the value of wich button is pressed
+			
 			RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
 
-			switch(choice)
+			switch(switchstate)
 			{
 				case 1:
 						LCD_putDateTime(unixTime);
@@ -76,19 +83,21 @@ int main()
 						lcd_set_cursor(0,0);
 						lcd_print("ultrasoon sensor");
 						lcd_set_cursor(0,1);
-						sprintf(text, "distance cm = %d   ", teller);
+						sprintf(text, "distance cm = %d   ", distance);
 						lcd_print(text);
 						break;
-			
-				case 5:
-						lcd_clear();
+						
+				case 3:
 						lcd_set_cursor(0,0);
-						lcd_print("***debug***");
+						lcd_print("tijd <> pensioen");
 						break;
 			
-				case 6:
-						choice = 1;
+				case 4:
+						lcd_set_cursor(0,0);
+						lcd_print("***debug***     ");
 						break;
+			
+			
 			}	
     }
 }
