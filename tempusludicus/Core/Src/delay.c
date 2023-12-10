@@ -46,7 +46,7 @@
  */
 //*
 
-/*!
+
 void delay_us(uint32_t d)
 {
 
@@ -61,4 +61,4 @@ void delay_us(uint32_t d)
         __asm("nop");
     }
 }
- */
+ 
