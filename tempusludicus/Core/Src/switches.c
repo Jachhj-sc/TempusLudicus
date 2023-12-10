@@ -41,6 +41,7 @@
  
 extern volatile uint8_t choice;
 
+
 /*!
  * \brief Initialises the switches on the shield
  *

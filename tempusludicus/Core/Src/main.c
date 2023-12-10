@@ -23,7 +23,6 @@
 #include <MKL25Z4.h>
 
 
-volatile uint32_t teller = 0;
 volatile uint8_t choice = 1;
 
 int main()
