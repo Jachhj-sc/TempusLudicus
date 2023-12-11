@@ -30,8 +30,10 @@
  *
  *****************************************************************************/
 #include "switches.h"
-
 #include "tpm1.h"
+#include "lcd_4bit.h"
+#include "delay.h"
+
 #include <stdio.h>
 
 
@@ -39,7 +41,8 @@
 #define MASK(x)       (1UL << (x))
 
  
-extern volatile uint8_t choice;
+static uint8_t buttonState_1 = 0;
+static uint8_t buttonState_2 = 0;
 
 /*!
  * \brief Initialises the switches on the shield
@@ -76,11 +79,53 @@ void sw_init(void)
 	NVIC_EnableIRQ(PORTD_IRQn);
 }
 
+uint8_t get_switchState(void)
+{
+static uint16_t timer = 0;
+static uint8_t state = 1;
+
+if ((buttonState_1 == 1) && (buttonState_2 == 1))
+{
+	state = 4;
+	buttonState_1 = 0;
+	buttonState_2 = 0;
+}
+
+if (buttonState_1 == 1)
+{
+	state = 2;
+	buttonState_1 = 0;
+}
+
+if (buttonState_2 == 1)
+{
+	state = 3;
+	buttonState_2 = 0;
+}
+
+if (state != 1)
+{
+timer++;
+}
+
+if (timer == 2000)
+{
+	state = 1;
+	timer = 0;
+}
+
+buttonState_1 = 0;
+buttonState_2 = 0;
+
+return state;
+}
+
+
 
 
 void PORTD_IRQHandler(void)
-{  
-	// Clear pending interrupts
+{
+// Clear pending interrupts
 	NVIC_ClearPendingIRQ(PORTD_IRQn);
 
     // switch 1 
@@ -88,10 +133,12 @@ void PORTD_IRQHandler(void)
     {
 			if (PTD->PDIR & MASK(0))
 				{
-					choice = 1;
+					buttonState_1 = 1;
 				}
+
         // Clear the flag
         PORTD->ISFR = (1<<0);
+				
     }
 		
 		// switch 2 
@@ -99,10 +146,12 @@ void PORTD_IRQHandler(void)
     {
 			if (PTD->PDIR & MASK(3))
 				{
-					choice++;
+					buttonState_2 = 1;
 				}
+
         // Clear the flag
         PORTD->ISFR = (1<<3);
+				
     }
 		
 		// pulse from ultrasoon sensor interrupt

@@ -38,7 +38,7 @@
  #define mask(x) (1<<x)
 
 
-extern volatile uint32_t teller;
+static uint32_t teller = 0;
  
 void tpm1_init(void)
 {
@@ -50,16 +50,18 @@ void tpm1_init(void)
 	PORTB->PCR[1] = PORT_PCR_MUX(3); // pwm option
 	GPIOB->PDDR |= mask(1); // output portb 0
 	TPM1->SC |= mask (1) | mask (0) | mask(2);// prescaler 128x
-	TPM1->MOD = 22454; 
+	TPM1->MOD = 37499; 
 	TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);
 	TPM1->CONTROLS[1].CnV = 4;
-	TPM1->SC |= TPM_SC_CMOD(1);
+	TPM1->SC |= TPM_SC_CMOD(1); // pwm disabled 
 	
 
 }
 
-
-
+uint32_t read_distance(void)
+{
+return teller;
+}
 
 void calculate(void)
 {

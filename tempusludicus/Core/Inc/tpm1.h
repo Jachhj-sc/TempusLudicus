@@ -35,9 +35,9 @@
 #include <MKL25Z4.h>
 #include <stdbool.h>
 
-extern volatile bool interruptflag;
 
 
+uint32_t read_distance(void);
 
 void tpm1_init(void);
 

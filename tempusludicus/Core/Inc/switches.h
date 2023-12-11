@@ -36,17 +36,13 @@
 #include <stdbool.h>
 
 /// The number of keys available
-#define N_KEYS (4)
+
 
 /// Defines the type for the keys
-typedef enum
-{
-    KEY1 = 0,
 
-} key_t;
 
 // Function prototypes
 void sw_init(void);
-bool sw_pressed(const key_t key); 
+uint8_t get_switchState(void);
 
 #endif // SWITCHES_H
