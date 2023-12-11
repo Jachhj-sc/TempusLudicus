@@ -18,8 +18,9 @@ int init_sysTick()
     return SysTick_Config(DEFAULT_SYSTEM_CLOCK / 1000);
 }
 
+/* SysTick interrupt Handler. */
 void SysTick_Handler(void)
-{              /* SysTick interrupt Handler. */
+{              
     msTicks++; /* See startup file startup_LPC17xx.s for SysTick vector */
 }
 
