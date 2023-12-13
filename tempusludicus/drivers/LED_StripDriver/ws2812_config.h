@@ -37,7 +37,7 @@
 #define ws2812_T1L (600)
 #define ws2812_RES (80000)
 
-//data structure
-// 0x00GGRRBB
+// data structure
+//  0x00GGRRBB
 
 #endif /* WS2812_CONFIG_H_ */

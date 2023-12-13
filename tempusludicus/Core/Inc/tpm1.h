@@ -35,13 +35,10 @@
 #include <MKL25Z4.h>
 #include <stdbool.h>
 
-
-
 uint32_t read_distance(void);
 
 void tpm1_init(void);
 
 void calculate(void);
-
 
 #endif // TPM1_H

@@ -10,49 +10,47 @@
  */
 #include "main.h"
 
-#include <stdio.h>
-#include <stdint.h>
-#include <stdbool.h>
 #include <MKL25Z4.h>
+#include <stdbool.h>
+#include <stdint.h>
+#include <stdio.h>
 
 #include "delay.h"
-#include "rgb.h"
-#include "sysTick.h"
 #include "lcd_4bit.h"
-#include "unixFunction.h"
-#include "tpm1.h"
+#include "rgb.h"
 #include "switches.h"
-#include "uart0.h"
+#include "sysTick.h"
 #include "timer_dma_ws2812.h"
+#include "tpm1.h"
+#include "uart0.h"
+#include "unixFunction.h"
 
 static uint32_t distance = 0;
 static uint8_t switchstate = 1;
 
-
 int main()
 {
-		init_rgb();
-		tpm1_init();
-		lcd_init();
-		sw_init();
+    init_rgb();
+    tpm1_init();
+    lcd_init();
+    sw_init();
     init_sysTick();
-  	uart0_init();
+    uart0_init();
 
     init_strip();
     __enable_irq();
 
-  	uint32_t unixtest = 1701608547;
-		datetime_t unixTime;
+    uint32_t unixtest = 1701608547;
+    datetime_t unixTime;
 
-		// systick init, for working with the ultrasoonsensor
-		SysTick->LOAD = 0x00FFFFFF;
+    // systick init, for working with the ultrasoonsensor
+    SysTick->LOAD = 0x00FFFFFF;
     SysTick->VAL = 0;
     SysTick->CTRL |= SysTick_CTRL_CLKSOURCE_Msk;
     SysTick->CTRL &= ~(SysTick_CTRL_TICKINT_Msk);
-    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;		
-	
+    SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
 
-      // startup blink
+    // startup blink
     setStrip_all(color32(2, 3, 0, 0));
     Strip_send();
     set_rgb(1, 0, 0);
@@ -72,47 +70,43 @@ int main()
     Strip_send();
     set_rgb(0, 0, 0);
 
-		char text[80];
+    char text[80];
 
-    while (1) 
-		{
-			
-//			char c = uart0_get_char();
-//			uart0_put_char(c);
-			
-			distance = read_distance(); // get the value of the ultrasoon sensor in cm 
-			
-			switchstate = get_switchState(); // get the value of wich button is pressed
-			
-			RTC_HAL_ConvertSecsToDatetime(&unixtest,&unixTime);
+    while (1) {
 
-			switch(switchstate)
-			{
-				case 1:
-						LCD_putDateTime(unixTime);
-						unixtest++;
-						delay_us(1000000);
-						break;
-			
-				case 2:
-						lcd_set_cursor(0,0);
-						lcd_print("ultrasoon sensor");
-						lcd_set_cursor(0,1);
-						sprintf(text, "distance cm = %d   ", distance);
-						lcd_print(text);
-						break;
-						
-				case 3:
-						lcd_set_cursor(0,0);
-						lcd_print("tijd <> pensioen");
-						break;
-			
-				case 4:
-						lcd_set_cursor(0,0);
-						lcd_print("***debug***     ");
-						break;
-			
-			
-			}	
+        //			char c = uart0_get_char();
+        //			uart0_put_char(c);
+
+        distance = read_distance(); // get the value of the ultrasoon sensor in cm
+
+        switchstate = get_switchState(); // get the value of wich button is pressed
+
+        RTC_HAL_ConvertSecsToDatetime(&unixtest, &unixTime);
+
+        switch (switchstate) {
+        case 1:
+            LCD_putDateTime(unixTime);
+            unixtest++;
+            delay_us(1000000);
+            break;
+
+        case 2:
+            lcd_set_cursor(0, 0);
+            lcd_print("ultrasoon sensor");
+            lcd_set_cursor(0, 1);
+            sprintf(text, "distance cm = %d   ", distance);
+            lcd_print(text);
+            break;
+
+        case 3:
+            lcd_set_cursor(0, 0);
+            lcd_print("tijd <> pensioen");
+            break;
+
+        case 4:
+            lcd_set_cursor(0, 0);
+            lcd_print("***debug***     ");
+            break;
+        }
     }
 }

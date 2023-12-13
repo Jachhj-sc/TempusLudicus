@@ -162,7 +162,7 @@ void TPM0_IRQHandler()
         TPM0->CNT = 0;
 
     } else {
-       	NVIC_DisableIRQ(TPM0_IRQn);
+        NVIC_DisableIRQ(TPM0_IRQn);
         TPM0->MOD = (uint16_t)(((F_CPU / 1000000u) * STRIP_TTOT) / 1000u) - 1u;
         TPM0->CONTROLS[3].CnV = 0;
         DMA_Frame_Update_Done = 1u;

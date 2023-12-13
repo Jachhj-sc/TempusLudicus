@@ -74,6 +74,4 @@ void _delay_ms(uint32_t delay)
 
     while (get_millis() < startTime + delay)
         ;
-
 }
-

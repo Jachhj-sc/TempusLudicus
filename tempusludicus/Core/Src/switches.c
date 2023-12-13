@@ -30,17 +30,14 @@
  *
  *****************************************************************************/
 #include "switches.h"
-#include "tpm1.h"
-#include "lcd_4bit.h"
 #include "delay.h"
+#include "lcd_4bit.h"
+#include "tpm1.h"
 
 #include <stdio.h>
 
+#define MASK(x) (1UL << (x))
 
-
-#define MASK(x)       (1UL << (x))
-
- 
 static uint8_t buttonState_1 = 0;
 static uint8_t buttonState_2 = 0;
 
@@ -51,121 +48,94 @@ static uint8_t buttonState_2 = 0;
  */
 void sw_init(void)
 {
-	SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
+    SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-	// interrupt handlers config
-	
-	// switch 1
-	PORTD->PCR[0] = PORT_PCR_IRQC(11) |
-									PORT_PCR_MUX(1) | 
-                  PORT_PCR_PS(1) | 
-									PORT_PCR_PE(1);
-									
-	// switch 2 								
-	PORTD->PCR[3] = PORT_PCR_IRQC(11) |
-									PORT_PCR_MUX(1) | 
-                  PORT_PCR_PS(1) | 
-									PORT_PCR_PE(1);
-	
-	// pulse from ultrasoon sensor
-	PORTD->PCR[5] = PORT_PCR_IRQC(11) |
-									PORT_PCR_MUX(1) | 
-                  PORT_PCR_PS(1) | 
-									PORT_PCR_PE(1);
-	
-	
-	NVIC_SetPriority(PORTD_IRQn, 192);
-	NVIC_ClearPendingIRQ(PORTD_IRQn); 
-	NVIC_EnableIRQ(PORTD_IRQn);
+    // interrupt handlers config
+
+    // switch 1
+    PORTD->PCR[0] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+
+    // switch 2
+    PORTD->PCR[3] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+
+    // pulse from ultrasoon sensor
+    PORTD->PCR[5] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+
+    NVIC_SetPriority(PORTD_IRQn, 192);
+    NVIC_ClearPendingIRQ(PORTD_IRQn);
+    NVIC_EnableIRQ(PORTD_IRQn);
 }
 
 uint8_t get_switchState(void)
 {
-static uint16_t timer = 0;
-static uint8_t state = 1;
+    static uint16_t timer = 0;
+    static uint8_t state = 1;
 
-if ((buttonState_1 == 1) && (buttonState_2 == 1))
-{
-	state = 4;
-	buttonState_1 = 0;
-	buttonState_2 = 0;
+    if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
+        state = 4;
+        buttonState_1 = 0;
+        buttonState_2 = 0;
+    }
+
+    if (buttonState_1 == 1) {
+        state = 2;
+        buttonState_1 = 0;
+    }
+
+    if (buttonState_2 == 1) {
+        state = 3;
+        buttonState_2 = 0;
+    }
+
+    if (state != 1) {
+        timer++;
+    }
+
+    if (timer == 2000) {
+        state = 1;
+        timer = 0;
+    }
+
+    buttonState_1 = 0;
+    buttonState_2 = 0;
+
+    return state;
 }
-
-if (buttonState_1 == 1)
-{
-	state = 2;
-	buttonState_1 = 0;
-}
-
-if (buttonState_2 == 1)
-{
-	state = 3;
-	buttonState_2 = 0;
-}
-
-if (state != 1)
-{
-timer++;
-}
-
-if (timer == 2000)
-{
-	state = 1;
-	timer = 0;
-}
-
-buttonState_1 = 0;
-buttonState_2 = 0;
-
-return state;
-}
-
-
-
 
 void PORTD_IRQHandler(void)
 {
-// Clear pending interrupts
-	NVIC_ClearPendingIRQ(PORTD_IRQn);
+    // Clear pending interrupts
+    NVIC_ClearPendingIRQ(PORTD_IRQn);
 
-    // switch 1 
-    if((PORTD->ISFR & (1<<0)))
-    {
-			if (PTD->PDIR & MASK(0))
-				{
-					buttonState_1 = 1;
-				}
+    // switch 1
+    if ((PORTD->ISFR & (1 << 0))) {
+        if (PTD->PDIR & MASK(0)) {
+            buttonState_1 = 1;
+        }
 
         // Clear the flag
-        PORTD->ISFR = (1<<0);
-				
+        PORTD->ISFR = (1 << 0);
     }
-		
-		// switch 2 
-		if((PORTD->ISFR & (1<<3)))
-    {
-			if (PTD->PDIR & MASK(3))
-				{
-					buttonState_2 = 1;
-				}
+
+    // switch 2
+    if ((PORTD->ISFR & (1 << 3))) {
+        if (PTD->PDIR & MASK(3)) {
+            buttonState_2 = 1;
+        }
 
         // Clear the flag
-        PORTD->ISFR = (1<<3);
-				
+        PORTD->ISFR = (1 << 3);
     }
-		
-		// pulse from ultrasoon sensor interrupt
-		if((PORTD->ISFR & (1<<5)))
-    {
-			if (PTD->PDIR & MASK(5))
-				{
-					SysTick->VAL = 0;
-				}
-				if (PTD->PDIR & ~MASK(5))
-				{
-				calculate();
-				}
+
+    // pulse from ultrasoon sensor interrupt
+    if ((PORTD->ISFR & (1 << 5))) {
+        if (PTD->PDIR & MASK(5)) {
+            SysTick->VAL = 0;
+        }
+        if (PTD->PDIR & ~MASK(5)) {
+            calculate();
+        }
         // Clear the flag
-        PORTD->ISFR = (1<<5);
+        PORTD->ISFR = (1 << 5);
     }
 }

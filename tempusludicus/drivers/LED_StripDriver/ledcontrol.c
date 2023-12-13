@@ -59,7 +59,7 @@ static const uint8_t _NeoPixelGammaTable[256] = {
     174, 176, 178, 180, 182, 184, 186, 188, 191, 193, 195, 197, 199, 202, 204, 206, 209, 211, 213, 215, 218, 220,
     223, 225, 227, 230, 232, 235, 237, 240, 242, 245, 247, 250, 252, 255};
 
-//static uint32_t ledPixelCount = 0; //?
+// static uint32_t ledPixelCount = 0; //?
 
 // data for ledstrip
 static struct cRGBW led[LEDPIXELCOUNT + 1]; // array that holds pixel values
@@ -70,8 +70,9 @@ static uint8_t brightness = 255;
 static uint16_t exLow = -1;
 static uint16_t exHigh = -1;
 
-void init_strip(void){
-	init_ws2812();
+void init_strip(void)
+{
+    init_ws2812();
 }
 
 void setStrip_pixel(uint16_t pixel, uint32_t color32)
@@ -201,8 +202,8 @@ uint32_t ColorHSV(uint16_t hue, uint8_t sat, uint8_t val, uint8_t whiteness)
         b = 0;
         if (hue < 255) { //   Red to Yellow-1
             r = 255;
-            g = (uint8_t)hue;       //     g = 0 to 254
-        } else {           //   Yellow to Green-1
+            g = (uint8_t)hue;         //     g = 0 to 254
+        } else {                      //   Yellow to Green-1
             r = (uint8_t)(510 - hue); //     r = 255 to 1
             g = 255;
         }
@@ -211,13 +212,13 @@ uint32_t ColorHSV(uint16_t hue, uint8_t sat, uint8_t val, uint8_t whiteness)
         if (hue < 765) { //   Green to Cyan-1
             g = 255;
             b = (uint8_t)(hue - 510);  //     b = 0 to 254
-        } else {            //   Cyan to Blue-1
+        } else {                       //   Cyan to Blue-1
             g = (uint8_t)(1020 - hue); //     g = 255 to 1
             b = 255;
         }
     } else if (hue < 1530) { // Blue to Red-1
         g = 0;
-        if (hue < 1275) {   //   Blue to Magenta-1
+        if (hue < 1275) {              //   Blue to Magenta-1
             r = (uint8_t)(hue - 1020); //     r = 0 to 254
             b = 255;
         } else { //   Magenta to Red-1
@@ -282,7 +283,7 @@ void effect_snakeGrow_b(int growSpd, uint32_t color)
     for (int len = 1; len < (int)LEDPIXELCOUNT; len += growSpd) {
         for (int f = 0; f < (int)LEDPIXELCOUNT; f++) { // finish full animation frame
             effect_snake_nb(len, color);
-            //delay_us(10000);
+            // delay_us(10000);
         }
     }
 }
@@ -449,7 +450,8 @@ void effect_pulse_nb(uint32_t delay, int maxBrightness, uint32_t color)
 
 void effect_travelingTwinkel(void)
 {
-    for (uint16_t i = 0; i < LEDPIXELCOUNT; i++) { // go through every color in order grbw and then succeed to the next pixel
+    for (uint16_t i = 0; i < LEDPIXELCOUNT;
+         i++) { // go through every color in order grbw and then succeed to the next pixel
         for (int c = 1; c >= 0; c--) {
             setStrip_pixel(i, (((uint32_t)1 << 8 * 3) >> c * 8));
             Strip_send();

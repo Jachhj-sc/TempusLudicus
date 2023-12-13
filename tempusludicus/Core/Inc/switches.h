@@ -37,9 +37,7 @@
 
 /// The number of keys available
 
-
 /// Defines the type for the keys
-
 
 // Function prototypes
 void sw_init(void);

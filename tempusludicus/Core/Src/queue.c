@@ -29,8 +29,8 @@
  *            OTHER DEALINGS IN THE SOFTWARE.
  *
  *****************************************************************************/
-#include <MKL25Z4.h>
 #include "queue.h"
+#include <MKL25Z4.h>
 
 /*!
  * \brief Initialize a queue
@@ -43,11 +43,10 @@
 void q_init(queue_t *q)
 {
     // Clear the data for debugging purpose
-    for(uint32_t i=0; i<Q_SIZE; i++) 
-    {    
+    for (uint32_t i = 0; i < Q_SIZE; i++) {
         q->data[i] = 0;
     }
-    
+
     q->head = 0;
     q->tail = 0;
     q->size = 0;
@@ -97,14 +96,14 @@ bool q_full(const queue_t *q)
  */
 uint32_t q_size(const queue_t *q)
 {
-	return q->size;
+    return q->size;
 }
 
 /*!
  * \brief Add an element to the queue
  *
  * The function can be used to add an element to the queue. If the queue is
- * full before the element could be added, the function aborts and returns 
+ * full before the element could be added, the function aborts and returns
  * false.
  *
  * \param[in]  q  Pointer to the queue
@@ -112,11 +111,10 @@ uint32_t q_size(const queue_t *q)
  *
  * \return Wether the data element was successfully added to the queue
  */
-bool q_enqueue(queue_t *q, const uint8_t d) 
+bool q_enqueue(queue_t *q, const uint8_t d)
 {
     // Is the queue not full?
-    if(!q_full(q)) 
-    {
+    if (!q_full(q)) {
         // Critical section
         uint32_t m = __get_PRIMASK();
         __disable_irq();
@@ -125,13 +123,11 @@ bool q_enqueue(queue_t *q, const uint8_t d)
         q->data[q->tail++] = d;
         q->tail %= Q_SIZE;
         q->size++;
-        
+
         __set_PRIMASK(m);
-        
+
         return true;
-    } 
-    else 
-    {
+    } else {
         // Queue is full
         return false;
     }
@@ -151,25 +147,22 @@ bool q_enqueue(queue_t *q, const uint8_t d)
 bool q_dequeue(queue_t *q, uint8_t *d)
 {
     // Is the queue not empty?
-    if(!q_empty(q)) 
-    {
+    if (!q_empty(q)) {
         // Critical section
         uint32_t m = __get_PRIMASK();
         __disable_irq();
 
         // Get and store the data element
         // Clear unused entries for debugging
-        *d = q->data[q->head];        
+        *d = q->data[q->head];
         q->data[q->head++] = 0;
         q->head %= Q_SIZE;
         q->size--;
-        
+
         __set_PRIMASK(m);
-        
+
         return true;
-    }
-    else
-    {
+    } else {
         // Queue is empty
         return false;
     }

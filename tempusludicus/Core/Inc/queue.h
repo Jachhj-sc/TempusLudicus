@@ -40,15 +40,13 @@
 /*!
  * \brief Type definition of a queue
  */
-typedef struct
-{
+typedef struct {
     uint8_t data[Q_SIZE];
-    uint32_t head; ///< Index of the oldest data element 
+    uint32_t head; ///< Index of the oldest data element
     uint32_t tail; ///< Index of the next free space
     uint32_t size; ///< Number of elements in the queue
-    
-}queue_t;
 
+} queue_t;
 
 void q_init(queue_t *q);
 uint32_t q_size(const queue_t *q);

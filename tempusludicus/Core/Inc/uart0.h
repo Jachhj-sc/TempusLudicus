@@ -32,9 +32,9 @@
 #ifndef UART0_H
 #define UART0_H
 
-#include <stdint.h>
-#include <MKL25Z4.h>
 #include "queue.h"
+#include <MKL25Z4.h>
+#include <stdint.h>
 
 extern queue_t TxQ, RxQ;
 

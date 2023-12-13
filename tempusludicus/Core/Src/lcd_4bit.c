@@ -37,13 +37,24 @@
 /// \name Macros for setting pins
 /// \{
 
-#define SET_LCD_E(x)          if(x){PIN_E_PT->PSOR = PIN_E;} \
-															else{PIN_E_PT->PCOR = PIN_E;}
-#define SET_LCD_RS(x)         if(x){PIN_RS_PT->PSOR = PIN_RS;} \
-															else{PIN_RS_PT->PCOR = PIN_RS;}
-#define SET_LCD_RW(x)         if(x){PIN_RW_PT->PSOR = PIN_RW;} \
-															else{PIN_RW_PT->PCOR = PIN_RW;}
-															
+#define SET_LCD_E(x)                                                                                                   \
+    if (x) {                                                                                                           \
+        PIN_E_PT->PSOR = PIN_E;                                                                                        \
+    } else {                                                                                                           \
+        PIN_E_PT->PCOR = PIN_E;                                                                                        \
+    }
+#define SET_LCD_RS(x)                                                                                                  \
+    if (x) {                                                                                                           \
+        PIN_RS_PT->PSOR = PIN_RS;                                                                                      \
+    } else {                                                                                                           \
+        PIN_RS_PT->PCOR = PIN_RS;                                                                                      \
+    }
+#define SET_LCD_RW(x)                                                                                                  \
+    if (x) {                                                                                                           \
+        PIN_RW_PT->PSOR = PIN_RW;                                                                                      \
+    } else {                                                                                                           \
+        PIN_RW_PT->PCOR = PIN_RW;                                                                                      \
+    }
 
 /// \}
 
@@ -64,25 +75,25 @@
  */
 void lcd_set_data(const uint8_t x)
 {
-		if(x & 0x01)
-				PIN_DB4_PT->PSOR = PIN_DB4;
-		else
-				PIN_DB4_PT->PCOR = PIN_DB4;
+    if (x & 0x01)
+        PIN_DB4_PT->PSOR = PIN_DB4;
+    else
+        PIN_DB4_PT->PCOR = PIN_DB4;
 
-		if(x & 0x02)
-				PIN_DB5_PT->PSOR = PIN_DB5;
-		else
-				PIN_DB5_PT->PCOR = PIN_DB5;
+    if (x & 0x02)
+        PIN_DB5_PT->PSOR = PIN_DB5;
+    else
+        PIN_DB5_PT->PCOR = PIN_DB5;
 
-		if(x & 0x04)
-				PIN_DB6_PT->PSOR = PIN_DB6;
-		else
-				PIN_DB6_PT->PCOR = PIN_DB6;
+    if (x & 0x04)
+        PIN_DB6_PT->PSOR = PIN_DB6;
+    else
+        PIN_DB6_PT->PCOR = PIN_DB6;
 
-		if(x & 0x08)
-				PIN_DB7_PT->PSOR = PIN_DB7;
-		else
-				PIN_DB7_PT->PCOR = PIN_DB7;
+    if (x & 0x08)
+        PIN_DB7_PT->PSOR = PIN_DB7;
+    else
+        PIN_DB7_PT->PCOR = PIN_DB7;
 }
 
 /*!
@@ -102,21 +113,21 @@ void lcd_set_data(const uint8_t x)
  */
 uint8_t lcd_get_data(void)
 {
-		uint8_t x = 0;
-		
-		if(PIN_DB4_PT->PDIR & PIN_DB4)
-				x |= 0x01;
-		
-		if(PIN_DB5_PT->PDIR & PIN_DB5)
-				x |= 0x02;
+    uint8_t x = 0;
 
-		if(PIN_DB6_PT->PDIR & PIN_DB6)
-				x |= 0x04;
+    if (PIN_DB4_PT->PDIR & PIN_DB4)
+        x |= 0x01;
 
-		if(PIN_DB7_PT->PDIR & PIN_DB7)
-				x |= 0x08;
-		
-		return x;
+    if (PIN_DB5_PT->PDIR & PIN_DB5)
+        x |= 0x02;
+
+    if (PIN_DB6_PT->PDIR & PIN_DB6)
+        x |= 0x04;
+
+    if (PIN_DB7_PT->PDIR & PIN_DB7)
+        x |= 0x08;
+
+    return x;
 }
 
 /*!
@@ -127,42 +138,40 @@ uint8_t lcd_get_data(void)
  */
 void lcd_wait_while_busy(void)
 {
-		// Make all databus pins input
-		PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR & ~PIN_DB4;
-		PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR & ~PIN_DB5;
-		PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR & ~PIN_DB6;
-		PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR & ~PIN_DB7;
+    // Make all databus pins input
+    PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR & ~PIN_DB4;
+    PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR & ~PIN_DB5;
+    PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR & ~PIN_DB6;
+    PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR & ~PIN_DB7;
 
-		SET_LCD_E(0);
-		SET_LCD_RS(0);
-		SET_LCD_RW(1);
-		
-		int status;
-		
-		do
-		{
-				delay_us(10);
-				SET_LCD_E(1);
-				delay_us(10);
-				
-				status = lcd_get_data() << 4;
-				
-				SET_LCD_E(0);
-				delay_us(10);
-				SET_LCD_E(1);
-				delay_us(10);
-				
-				status |= lcd_get_data();
-				
-				SET_LCD_E(0);
-		}
-		while((status & 0x80) != 0);
+    SET_LCD_E(0);
+    SET_LCD_RS(0);
+    SET_LCD_RW(1);
 
-		// Make all databus pins output
-		PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
-		PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
-		PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
-		PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;    
+    int status;
+
+    do {
+        delay_us(10);
+        SET_LCD_E(1);
+        delay_us(10);
+
+        status = lcd_get_data() << 4;
+
+        SET_LCD_E(0);
+        delay_us(10);
+        SET_LCD_E(1);
+        delay_us(10);
+
+        status |= lcd_get_data();
+
+        SET_LCD_E(0);
+    } while ((status & 0x80) != 0);
+
+    // Make all databus pins output
+    PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
+    PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
+    PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
+    PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
 }
 
 /*!
@@ -175,12 +184,12 @@ void lcd_wait_while_busy(void)
  */
 void lcd_write_4bit(const uint8_t c)
 {
-		SET_LCD_RW(0);
-		SET_LCD_E(1);
-		lcd_set_data(c);
-		delay_us(10);
-		SET_LCD_E(0);
-		delay_us(10);
+    SET_LCD_RW(0);
+    SET_LCD_E(1);
+    lcd_set_data(c);
+    delay_us(10);
+    SET_LCD_E(0);
+    delay_us(10);
 }
 
 /*!
@@ -192,11 +201,11 @@ void lcd_write_4bit(const uint8_t c)
  */
 void lcd_write_cmd(const uint8_t c)
 {
-		lcd_wait_while_busy();
+    lcd_wait_while_busy();
 
-		SET_LCD_RS(0);
-		lcd_write_4bit(c>>4);
-		lcd_write_4bit(c);
+    SET_LCD_RS(0);
+    lcd_write_4bit(c >> 4);
+    lcd_write_4bit(c);
 }
 
 /*!
@@ -208,14 +217,12 @@ void lcd_write_cmd(const uint8_t c)
  */
 void lcd_write_data(const uint8_t c)
 {
-		lcd_wait_while_busy();
+    lcd_wait_while_busy();
 
-		SET_LCD_RS(1);
-		lcd_write_4bit(c>>4);
-		lcd_write_4bit(c);
+    SET_LCD_RS(1);
+    lcd_write_4bit(c >> 4);
+    lcd_write_4bit(c);
 }
-
-
 
 /*!
  * \brief Initializes the GPIO pins
@@ -223,53 +230,48 @@ void lcd_write_data(const uint8_t c)
  * All pins for DB4-DB7, E, RW and RS are configured to GPIO output pins.
  */
 
-
 void lcd_init_port(void)
 {
-		// Enable clocks for peripherals
-		ENABLE_LCD_PORT_CLOCKS;
-		SIM->SCGC5 |= SIM_SCGC5_PORTB(1) | SIM_SCGC5_PORTD(1);
-  	SIM->SCGC6 |= SIM_SCGC6_TPM0(1) | SIM_SCGC6_TPM2(1);
+    // Enable clocks for peripherals
+    ENABLE_LCD_PORT_CLOCKS;
+    SIM->SCGC5 |= SIM_SCGC5_PORTB(1) | SIM_SCGC5_PORTD(1);
+    SIM->SCGC6 |= SIM_SCGC6_TPM0(1) | SIM_SCGC6_TPM2(1);
 
-		// Setting all pins to output mode
-		PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
-		PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
-		PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
-		PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
-		PIN_E_PT->PDDR   = PIN_E_PT->PDDR   | PIN_E;
-		PIN_RS_PT->PDDR  = PIN_RS_PT->PDDR  | PIN_RS;
-		PIN_RW_PT->PDDR  = PIN_RW_PT->PDDR  | PIN_RW;
+    // Setting all pins to output mode
+    PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
+    PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
+    PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
+    PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
+    PIN_E_PT->PDDR = PIN_E_PT->PDDR | PIN_E;
+    PIN_RS_PT->PDDR = PIN_RS_PT->PDDR | PIN_RS;
+    PIN_RW_PT->PDDR = PIN_RW_PT->PDDR | PIN_RW;
 
-		// Setting all pin mux to GPIO
-		PIN_DB4_PORT->PCR[PIN_DB4_SHIFT] = PORT_PCR_MUX(1);
-		PIN_DB5_PORT->PCR[PIN_DB5_SHIFT] = PORT_PCR_MUX(1);
-		PIN_DB6_PORT->PCR[PIN_DB6_SHIFT] = PORT_PCR_MUX(1);
-		PIN_DB7_PORT->PCR[PIN_DB7_SHIFT] = PORT_PCR_MUX(1);
-		PIN_E_PORT->PCR[PIN_E_SHIFT]     = PORT_PCR_MUX(1);
-		PIN_RS_PORT->PCR[PIN_RS_SHIFT]   = PORT_PCR_MUX(1);
-		PIN_RW_PORT->PCR[PIN_RW_SHIFT]   = PORT_PCR_MUX(1);
-		
-		// alternative function for lcd backlight
- 		PORTD->PCR[2]  = PORT_PCR_MUX(4);
-		
+    // Setting all pin mux to GPIO
+    PIN_DB4_PORT->PCR[PIN_DB4_SHIFT] = PORT_PCR_MUX(1);
+    PIN_DB5_PORT->PCR[PIN_DB5_SHIFT] = PORT_PCR_MUX(1);
+    PIN_DB6_PORT->PCR[PIN_DB6_SHIFT] = PORT_PCR_MUX(1);
+    PIN_DB7_PORT->PCR[PIN_DB7_SHIFT] = PORT_PCR_MUX(1);
+    PIN_E_PORT->PCR[PIN_E_SHIFT] = PORT_PCR_MUX(1);
+    PIN_RS_PORT->PCR[PIN_RS_SHIFT] = PORT_PCR_MUX(1);
+    PIN_RW_PORT->PCR[PIN_RW_SHIFT] = PORT_PCR_MUX(1);
+
+    // alternative function for lcd backlight
+    PORTD->PCR[2] = PORT_PCR_MUX(4);
+
     lcd_bl_pwmcontrol(0);
-		
-		TPM0->MOD = 0xFFFF;
-		
-		// Set channel to edge-aligned high-true PWM.
+
+    TPM0->MOD = 0xFFFF;
+
+    // Set channel to edge-aligned high-true PWM.
     TPM0->CONTROLS[2].CnSC = TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);
-		
-		// start tpm, prescaler at default
-		TPM0->SC = TPM_SC_CMOD(1);
-		
-		// init backlight 
-		lcd_clear();
+
+    // start tpm, prescaler at default
+    TPM0->SC = TPM_SC_CMOD(1);
+
+    // init backlight
+    lcd_clear();
     lcd_bl_pwmcontrol(0x2000);
-	
 }
-
-
-
 
 /*!
  * \brief Initialises the LCD
@@ -279,22 +281,22 @@ void lcd_init_port(void)
  */
 void lcd_init(void)
 {
-		lcd_init_port();
-		
-		delay_us(100);
+    lcd_init_port();
 
-		// Startup sequence
-		SET_LCD_RS(0);
-		lcd_write_4bit(0x3);
-		delay_us(100);
-		lcd_write_4bit(0x3);
-		delay_us(10);
-		lcd_write_4bit(0x3);
-		lcd_write_4bit(0x2);
-		lcd_write_cmd(0x28);
-		lcd_write_cmd(0x0C);
-		lcd_write_cmd(0x06);
-		lcd_write_cmd(0x80);
+    delay_us(100);
+
+    // Startup sequence
+    SET_LCD_RS(0);
+    lcd_write_4bit(0x3);
+    delay_us(100);
+    lcd_write_4bit(0x3);
+    delay_us(10);
+    lcd_write_4bit(0x3);
+    lcd_write_4bit(0x2);
+    lcd_write_cmd(0x28);
+    lcd_write_cmd(0x0C);
+    lcd_write_cmd(0x06);
+    lcd_write_cmd(0x80);
 }
 
 /*!
@@ -304,8 +306,8 @@ void lcd_init(void)
  */
 void lcd_clear(void)
 {
-		lcd_write_cmd(0x01);
-		lcd_set_cursor(0,0);
+    lcd_write_cmd(0x01);
+    lcd_set_cursor(0, 0);
 }
 
 /*!
@@ -318,11 +320,11 @@ void lcd_clear(void)
  */
 void lcd_set_cursor(const uint8_t column, const uint8_t row)
 {
-		uint8_t address;
+    uint8_t address;
 
-		address = (row * 0x40) + column;
-		address |= 0x80;
-		lcd_write_cmd(address);
+    address = (row * 0x40) + column;
+    address |= 0x80;
+    lcd_write_cmd(address);
 }
 
 /*!
@@ -334,84 +336,71 @@ void lcd_set_cursor(const uint8_t column, const uint8_t row)
  */
 void lcd_putchar(const char c)
 {
-		lcd_write_data(c);
+    lcd_write_data(c);
 }
 
-void LCD_putDateTime(const datetime_t  t) // puts integers into a string for printing
+void LCD_putDateTime(const datetime_t t) // puts integers into a string for printing
 {
-// declaration of variables  
-	char buffer[10];  // buffersize 
-	uint16_t time[3]; 
-	uint16_t date[3];
+    // declaration of variables
+    char buffer[10]; // buffersize
+    uint16_t time[3];
+    uint16_t date[3];
 
-// put the time and the date into an array
-	time[0] = t.hour; 
-	time[1] = t.minute; 
-	time[2] = t.second; 
-	
-	date[0] = t.day; 
-	date[1] = t.month; 
-	date[2] = t.year; 
+    // put the time and the date into an array
+    time[0] = t.hour;
+    time[1] = t.minute;
+    time[2] = t.second;
 
-	lcd_set_cursor(0,0); // set cursor at top side of the screen.
-	lcd_print("TIME    "); // puts TIME + four spaces
-	
-// next loop puts time into a string and print them to the screen. 
-	for(int i = 0; i < 3; i++)
-	{
-		if (time[i] < 10)
-		{
-			sprintf(buffer, "0%d", time[i]); // this function makes a 0 before a single number like 01 and not 1.
-		}
-		else
-		{
-			sprintf(buffer, "%d", time[i]); // function to put time in a string.
-		}
-			lcd_print(buffer);
-		if(i < 2)
-		{
-			lcd_print(":"); // between time numbers a :
-		}
-	}
-	
-	lcd_set_cursor(0,1); // set cursor on second line. 
-	lcd_print("DATE  "); // 
-	// next function puts date into a string and print them to the screen. 
-	for(int i = 0; i < 3; i++)
-	{
-		if (date[i] < 10)
-		{
-			sprintf(buffer, "0%d", date[i]); // this function makes a 0 before a single number like 01 and not 1.
-		}
-		else
-		{
-			sprintf(buffer, "%d", date[i]); // function to put time in a string.
-		}
-		lcd_print(buffer);
-		if (i < 2)
-		{
-			lcd_print("/");
-		}
-	}	
-}	
-		
+    date[0] = t.day;
+    date[1] = t.month;
+    date[2] = t.year;
+
+    lcd_set_cursor(0, 0);  // set cursor at top side of the screen.
+    lcd_print("TIME    "); // puts TIME + four spaces
+
+    // next loop puts time into a string and print them to the screen.
+    for (int i = 0; i < 3; i++) {
+        if (time[i] < 10) {
+            sprintf(buffer, "0%d", time[i]); // this function makes a 0 before a single number like 01 and not 1.
+        } else {
+            sprintf(buffer, "%d", time[i]); // function to put time in a string.
+        }
+        lcd_print(buffer);
+        if (i < 2) {
+            lcd_print(":"); // between time numbers a :
+        }
+    }
+
+    lcd_set_cursor(0, 1); // set cursor on second line.
+    lcd_print("DATE  ");  //
+    // next function puts date into a string and print them to the screen.
+    for (int i = 0; i < 3; i++) {
+        if (date[i] < 10) {
+            sprintf(buffer, "0%d", date[i]); // this function makes a 0 before a single number like 01 and not 1.
+        } else {
+            sprintf(buffer, "%d", date[i]); // function to put time in a string.
+        }
+        lcd_print(buffer);
+        if (i < 2) {
+            lcd_print("/");
+        }
+    }
+}
 
 /*!
  * \brief Writes a string of ASCII characters to the LCD
  *
- * Uses the lcd_putchar() function to write a '\0' terminated ASCII character 
+ * Uses the lcd_putchar() function to write a '\0' terminated ASCII character
  * string to the LCD.
  *
  * \param[in]  string  String of ASCII characters to display
  */
 void lcd_print(const char *string)
 {
-		while(*string)
-		{
-				lcd_putchar(*string++);
-		}
+    while (*string) {
+        lcd_putchar(*string++);
+    }
 }
-
 
 inline void lcd_bl_pwmcontrol(const uint16_t val)
 {
@@ -423,10 +412,7 @@ inline void lcd_bl_on(const bool on)
 {
     // Set convenient on value here
     uint16_t val = 0xFFFF;
-    
+
     // Set the channel compare value
     TPM0->CONTROLS[2].CnV = on ? val : 0;
 }
-
-
-

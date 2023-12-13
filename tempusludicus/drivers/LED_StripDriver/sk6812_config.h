@@ -1,12 +1,12 @@
 /**
     @file sk6812_config.h
     @author William Hak (william.hak57@gmail.com)
-    @brief 
+    @brief
     @version 0.1
     @date 2023-11-16
-    
+
     @copyright Copyright (c) 2023
-    
+
  */
 #ifndef SK6812_CONFIG_H
 #define SK6812_CONFIG_H
@@ -16,7 +16,7 @@
 ///////////////////////////////////////////////////////////////////////
 // Define I/O pin
 ///////////////////////////////////////////////////////////////////////
-//#define RGB
+// #define RGB
 #define RGBW
 
 #define sk6812_port C // Data port
@@ -34,11 +34,11 @@
 
     RES  low voltage time 			>50µs(80µs)
 */
-//in ns
-#define STRIP_T0H (300u)
-#define STRIP_T0L (900u)
-#define STRIP_T1H (600u)
-#define STRIP_T1L (600u)
+// in ns
+#define STRIP_T0H  (300u)
+#define STRIP_T0L  (900u)
+#define STRIP_T1H  (600u)
+#define STRIP_T1L  (600u)
 #define STRIP_TTOT (1200u)
 
 #define STRIP_RES (80000u)

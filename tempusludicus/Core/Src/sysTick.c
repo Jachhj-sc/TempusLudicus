@@ -20,7 +20,7 @@ int init_sysTick()
 
 /* SysTick interrupt Handler. */
 void SysTick_Handler(void)
-{              
+{
     msTicks++; /* See startup file startup_LPC17xx.s for SysTick vector */
 }
 

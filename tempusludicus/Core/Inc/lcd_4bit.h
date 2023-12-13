@@ -30,18 +30,17 @@
  *
  *****************************************************************************/
 
-
 #ifndef LCD_H
 #define LCD_H
 
-#include <MKL25Z4.h>
 #include "unixFunction.h"
+#include <MKL25Z4.h>
 
 /// \name Defines for the size of the LCD
 /// \{
 
-#define LCD_COLUMNS  16   ///< Number of LCD columns in characters
-#define LCD_ROWS      2   ///< Number of LCD rows
+#define LCD_COLUMNS 16 ///< Number of LCD columns in characters
+#define LCD_ROWS    2  ///< Number of LCD rows
 
 /// \}
 
@@ -49,65 +48,64 @@
 // LCD interface hardware mappings
 /// \name DB4
 /// \{
-#define PIN_DB4_PORT       		PORTC
-#define PIN_DB4_PT            PTC
-#define PIN_DB4_SHIFT         (0)
-#define PIN_DB4               (1<<PIN_DB4_SHIFT)
+#define PIN_DB4_PORT  PORTC
+#define PIN_DB4_PT    PTC
+#define PIN_DB4_SHIFT (0)
+#define PIN_DB4       (1 << PIN_DB4_SHIFT)
 /// \}
 
 /// \name DB5
 /// \{
-#define PIN_DB5_PORT					PORTC
-#define PIN_DB5_PT            PTC
-#define PIN_DB5_SHIFT         (4)
-#define PIN_DB5               (1<<PIN_DB5_SHIFT)
+#define PIN_DB5_PORT  PORTC
+#define PIN_DB5_PT    PTC
+#define PIN_DB5_SHIFT (4)
+#define PIN_DB5       (1 << PIN_DB5_SHIFT)
 /// \}
 
 /// \name DB6
 /// \{
-#define PIN_DB6_PORT          PORTC
-#define PIN_DB6_PT            PTC
-#define PIN_DB6_SHIFT         (5)
-#define PIN_DB6               (1<<PIN_DB6_SHIFT)
+#define PIN_DB6_PORT  PORTC
+#define PIN_DB6_PT    PTC
+#define PIN_DB6_SHIFT (5)
+#define PIN_DB6       (1 << PIN_DB6_SHIFT)
 /// \}
 
 /// \name DB7
 /// \{
-#define PIN_DB7_PORT          PORTC
-#define PIN_DB7_PT            PTC
-#define PIN_DB7_SHIFT         (6)
-#define PIN_DB7               (1<<PIN_DB7_SHIFT)
+#define PIN_DB7_PORT  PORTC
+#define PIN_DB7_PT    PTC
+#define PIN_DB7_SHIFT (6)
+#define PIN_DB7       (1 << PIN_DB7_SHIFT)
 /// \}
 
 /// \name RS
 /// \{
-#define PIN_RS_PORT           PORTC
-#define PIN_RS_PT             PTC
-#define PIN_RS_SHIFT          (11)
-#define PIN_RS                (1<<PIN_RS_SHIFT)
+#define PIN_RS_PORT  PORTC
+#define PIN_RS_PT    PTC
+#define PIN_RS_SHIFT (11)
+#define PIN_RS       (1 << PIN_RS_SHIFT)
 /// \}
 
 /// \name RW
 /// \{
-#define PIN_RW_PORT           PORTC
-#define PIN_RW_PT             PTC
-#define PIN_RW_SHIFT          (10)
-#define PIN_RW                (1<<PIN_RW_SHIFT)
+#define PIN_RW_PORT  PORTC
+#define PIN_RW_PT    PTC
+#define PIN_RW_SHIFT (10)
+#define PIN_RW       (1 << PIN_RW_SHIFT)
 /// \}
 
 /// \name E
 /// \{
-#define PIN_E_PORT            PORTC
-#define PIN_E_PT              PTC
-#define PIN_E_SHIFT           (7)
-#define PIN_E                 (1<<PIN_E_SHIFT)
+#define PIN_E_PORT  PORTC
+#define PIN_E_PT    PTC
+#define PIN_E_SHIFT (7)
+#define PIN_E       (1 << PIN_E_SHIFT)
 /// \}
 
 /// \name Enable Clock for peripheral driving LCD pins
 /// \{
 #define ENABLE_LCD_PORT_CLOCKS SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK
 /// \}
-
 
 // ----------------------------------------------------------------------------
 // Function prototypes
@@ -117,10 +115,9 @@ void lcd_set_cursor(const uint8_t column, const uint8_t row);
 void lcd_putchar(const char c);
 void lcd_print(const char *string);
 void lcd_write_data(const uint8_t c);
-void LCD_putDateTime(const datetime_t  time);
+void LCD_putDateTime(const datetime_t time);
 
 void lcd_bl_on(const bool led);
 void lcd_bl_pwmcontrol(const uint16_t val);
-
 
 #endif // LCD_H

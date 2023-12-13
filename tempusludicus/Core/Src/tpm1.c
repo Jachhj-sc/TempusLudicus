@@ -34,41 +34,36 @@
 /*!
  * \brief Initialises Timer/PWM Module 1 (TPM1)
  */
- 
- #define mask(x) (1<<x)
 
+#define mask(x) (1 << x)
 
 static uint32_t teller = 0;
- 
+
 void tpm1_init(void)
 {
-	SIM_SCGC6 |= SIM_SCGC6_TPM1_MASK; // enable clock	
-	SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
-	SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
-	
+    SIM_SCGC6 |= SIM_SCGC6_TPM1_MASK; // enable clock
+    SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+    SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-	PORTB->PCR[1] = PORT_PCR_MUX(3); // pwm option
-	GPIOB->PDDR |= mask(1); // output portb 0
-	TPM1->SC |= mask (1) | mask (0) | mask(2);// prescaler 128x
-	TPM1->MOD = 37499; 
-	TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);
-	TPM1->CONTROLS[1].CnV = 4;
-	TPM1->SC |= TPM_SC_CMOD(1); // pwm disabled 
-	
-
+    PORTB->PCR[1] = PORT_PCR_MUX(3);         // pwm option
+    GPIOB->PDDR |= mask(1);                  // output portb 0
+    TPM1->SC |= mask(1) | mask(0) | mask(2); // prescaler 128x
+    TPM1->MOD = 37499;
+    TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);
+    TPM1->CONTROLS[1].CnV = 4;
+    TPM1->SC |= TPM_SC_CMOD(1); // pwm disabled
 }
 
 uint32_t read_distance(void)
 {
-return teller;
+    return teller;
 }
 
 void calculate(void)
 {
-				// calculate the distance from the ultra soon sensor in cm
-				teller = 0;
-				teller = 0x00FFFFFF - SysTick->VAL;
-				teller = (teller / 48);
-				teller = (teller / 58);
-
+    // calculate the distance from the ultra soon sensor in cm
+    teller = 0;
+    teller = 0x00FFFFFF - SysTick->VAL;
+    teller = (teller / 48);
+    teller = (teller / 58);
 }
