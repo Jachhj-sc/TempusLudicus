@@ -11,6 +11,7 @@
 #include "main.h"
 
 #include "lcd_4bit.h"
+#include "pit.h"
 #include "rgb.h"
 #include "switches.h"
 #include "timer_dma_ws2812.h"
@@ -24,6 +25,7 @@ static uint8_t switchstate = 1;
 int main()
 {
     init_rgb();
+    pit_init(); // Initialization of Periodic Interrupt Timer
     ultraS_sensor_init();
     // lcd_init();
     sw_init();
