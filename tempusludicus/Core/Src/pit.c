@@ -8,6 +8,7 @@
 
 #include "pit.h"
 
+volatile uint32_t unix_timestamp = 0;
 // volatile bool pit_interrupt_flag = false;
 
 /*!

@@ -15,7 +15,7 @@ typedef struct {
 
 } datetime_t;
 
-void RTC_HAL_ConvertSecsToDatetime(const uint32_t *seconds, datetime_t *datetime);
+void RTC_HAL_ConvertSecsToDatetime(const volatile uint32_t *seconds, datetime_t *datetime);
 void RTC_HAL_ConvertDatetimeToSecs(const datetime_t *datetime, uint32_t *seconds);
 
 #endif

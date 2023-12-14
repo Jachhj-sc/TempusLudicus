@@ -443,6 +443,11 @@
               <FileType>1</FileType>
               <FilePath>.\Core\Src\it_handlers.c</FilePath>
             </File>
+            <File>
+              <FileName>pit.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\pit.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -512,6 +517,11 @@
               <FileName>unixFunction.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Core\Inc\unixFunction.h</FilePath>
+            </File>
+            <File>
+              <FileName>pit.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\pit.h</FilePath>
             </File>
           </Files>
         </Group>

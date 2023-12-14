@@ -19,7 +19,7 @@ static const uint8_t LY[] = {0U, 31U, 29U, 31U, 30U, 31U, 30U, 31U, 31U, 30U, 31
 /* Number of days from begin of the non Leap-year*/
 static const uint16_t MONTH_DAYS[] = {0U, 0U, 31U, 59U, 90U, 120U, 151U, 181U, 212U, 243U, 273U, 304U, 334U};
 
-void RTC_HAL_ConvertSecsToDatetime(const uint32_t *seconds, datetime_t *datetime)
+void RTC_HAL_ConvertSecsToDatetime(const volatile uint32_t *seconds, datetime_t *datetime)
 {
     uint32_t Seconds, Days, Days_in_year;
     const uint8_t *Days_in_month;
