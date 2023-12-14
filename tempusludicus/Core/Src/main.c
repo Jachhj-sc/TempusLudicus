@@ -11,6 +11,7 @@
 #include "main.h"
 
 #include "lcd_4bit.h"
+#include "pit.h"
 #include "rgb.h"
 #include "switches.h"
 #include "timer_dma_ws2812.h"
@@ -21,9 +22,14 @@
 static uint32_t distance_cm = 0;
 static uint8_t switchstate = 1;
 
+// variables for keeping track of time of ACTION
+static uint32_t prevLCDUpdate = 0;
+static uint32_t prevStripUpdate = 0;
+
 int main()
 {
     init_rgb();
+    pit_init(); // Initialization of Periodic Interrupt Timer
     ultraS_sensor_init();
     // lcd_init();
     sw_init();
@@ -33,8 +39,7 @@ int main()
     init_strip();
     __enable_irq();
 
-    uint32_t unixtest = 1701608547;
-    datetime_t unixTime;
+    datetime_t DateTime;
 
     char text[80];
 
@@ -68,9 +73,8 @@ int main()
 
         switchstate = get_switchState(); // get the value of wich button is pressed
 
-        RTC_HAL_ConvertSecsToDatetime(&unixtest, &unixTime);
+        RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
 
-        static uint32_t prevStripUpdate = 0;
         if (get_millis() > prevStripUpdate + 100) {
             if (distance_cm < 10) {
                 setStrip_all(color32(0, 3, 0, 2));
@@ -86,9 +90,11 @@ int main()
 
         switch (switchstate) {
         case 1:
-            // LCD_putDateTime(unixTime);
-            // unixtest++;
-            // delay_us(1000000);
+            // update the lcd every second
+            if (get_millis() > prevLCDUpdate + 1000) {
+                LCD_putDateTime(DateTime);
+                prevLCDUpdate = get_millis();
+            }
             break;
 
         case 2:
