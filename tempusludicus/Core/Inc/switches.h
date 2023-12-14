@@ -38,6 +38,8 @@
 /// The number of keys available
 
 /// Defines the type for the keys
+extern volatile uint8_t buttonState_1;
+extern volatile uint8_t buttonState_2;
 
 // Function prototypes
 void sw_init(void);

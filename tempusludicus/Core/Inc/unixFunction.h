@@ -11,7 +11,7 @@ typedef struct {
     uint16_t day;
     uint16_t hour;
     uint16_t minute;
-    uint8_t second;
+    uint16_t second;
 
 } datetime_t;
 

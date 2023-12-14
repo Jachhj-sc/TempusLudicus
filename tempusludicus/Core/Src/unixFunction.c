@@ -1,14 +1,14 @@
 #include "unixFunction.h"
 
-#define SECONDS_IN_A_DAY    (86400U)
-#define SECONDS_IN_A_HOUR   (3600U)
-#define SECONDS_IN_A_MIN    (60U)
-#define MINS_IN_A_HOUR      (60U)
-#define HOURS_IN_A_DAY      (24U)
-#define DAYS_IN_A_YEAR      (365U)
-#define DAYS_IN_A_LEAP_YEAR (366U)
-#define YEAR_RANGE_START    (1970U)
-#define YEAR_RANGE_END      (2099U)
+#define SECONDS_IN_A_DAY    (86400UL)
+#define SECONDS_IN_A_HOUR   (3600UL)
+#define SECONDS_IN_A_MIN    (60UL)
+#define MINS_IN_A_HOUR      (60UL)
+#define HOURS_IN_A_DAY      (24UL)
+#define DAYS_IN_A_YEAR      (365UL)
+#define DAYS_IN_A_LEAP_YEAR (366UL)
+#define YEAR_RANGE_START    (1970UL)
+#define YEAR_RANGE_END      (2099UL)
 /*******************************************************************************
  * Variables
  ******************************************************************************/
@@ -21,7 +21,6 @@ static const uint16_t MONTH_DAYS[] = {0U, 0U, 31U, 59U, 90U, 120U, 151U, 181U, 2
 
 void RTC_HAL_ConvertSecsToDatetime(const uint32_t *seconds, datetime_t *datetime)
 {
-    uint32_t x;
     uint32_t Seconds, Days, Days_in_year;
     const uint8_t *Days_in_month;
     /* Start from 1970-01-01*/
@@ -31,11 +30,11 @@ void RTC_HAL_ConvertSecsToDatetime(const uint32_t *seconds, datetime_t *datetime
     /* seconds left*/
     Seconds = Seconds % SECONDS_IN_A_DAY;
     /* hours*/
-    datetime->hour = Seconds / SECONDS_IN_A_HOUR;
+    datetime->hour = (uint16_t)(Seconds / SECONDS_IN_A_HOUR);
     /* seconds left*/
     Seconds = Seconds % SECONDS_IN_A_HOUR;
     /* minutes*/
-    datetime->minute = Seconds / SECONDS_IN_A_MIN;
+    datetime->minute = (uint16_t)(Seconds / SECONDS_IN_A_MIN);
     /* seconds*/
     datetime->second = Seconds % SECONDS_IN_A_MIN;
     /* year*/
@@ -55,15 +54,15 @@ void RTC_HAL_ConvertSecsToDatetime(const uint32_t *seconds, datetime_t *datetime
     } else {
         Days_in_month = LY;
     }
-    for (x = 1U; x <= 12U; x++) {
+    for (uint32_t x = 1U; x <= 12U; x++) {
         if (Days <= (*(Days_in_month + x))) {
-            datetime->month = x;
+            datetime->month = (uint16_t)x;
             break;
         } else {
             Days -= (*(Days_in_month + x));
         }
     }
-    datetime->day = Days;
+    datetime->day = (uint16_t)Days;
 }
 
 void RTC_HAL_ConvertDatetimeToSecs(const datetime_t *datetime, uint32_t *seconds)

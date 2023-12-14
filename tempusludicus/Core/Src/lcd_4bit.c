@@ -30,7 +30,7 @@
  *
  *****************************************************************************/
 #include "lcd_4bit.h"
-#include "delay.h"
+#include "common.h"
 #include "unixFunction.h"
 #include <stdio.h>
 
@@ -43,12 +43,14 @@
     } else {                                                                                                           \
         PIN_E_PT->PCOR = PIN_E;                                                                                        \
     }
+
 #define SET_LCD_RS(x)                                                                                                  \
     if (x) {                                                                                                           \
         PIN_RS_PT->PSOR = PIN_RS;                                                                                      \
     } else {                                                                                                           \
         PIN_RS_PT->PCOR = PIN_RS;                                                                                      \
     }
+
 #define SET_LCD_RW(x)                                                                                                  \
     if (x) {                                                                                                           \
         PIN_RW_PT->PSOR = PIN_RW;                                                                                      \
@@ -144,28 +146,34 @@ void lcd_wait_while_busy(void)
     PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR & ~PIN_DB6;
     PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR & ~PIN_DB7;
 
-    SET_LCD_E(0);
-    SET_LCD_RS(0);
-    SET_LCD_RW(1);
+    SET_LCD_E(0)
+    SET_LCD_RS(0)
+    SET_LCD_RW(1)
 
     int status;
 
-    do {
-        delay_us(10);
-        SET_LCD_E(1);
-        delay_us(10);
+    /// TODO
+    /// dangerous will break when lcd is not connected.
+    /// add a timeout and return error state when timeout is reached.
+    /// this error state then needs to be handled where this function is called.
+    /*
+        do {
+            delay_us(10);
+            SET_LCD_E(1)
+            delay_us(10);
 
-        status = lcd_get_data() << 4;
+            status = lcd_get_data() << 4;
 
-        SET_LCD_E(0);
-        delay_us(10);
-        SET_LCD_E(1);
-        delay_us(10);
+            SET_LCD_E(0)
+            delay_us(10);
+            SET_LCD_E(1)
+            delay_us(10);
 
-        status |= lcd_get_data();
+            status |= lcd_get_data();
 
-        SET_LCD_E(0);
-    } while ((status & 0x80) != 0);
+            SET_LCD_E(0)
+        } while ((status & 0x80) != 0);
+    */
 
     // Make all databus pins output
     PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
@@ -184,11 +192,11 @@ void lcd_wait_while_busy(void)
  */
 void lcd_write_4bit(const uint8_t c)
 {
-    SET_LCD_RW(0);
-    SET_LCD_E(1);
+    SET_LCD_RW(0)
+    SET_LCD_E(1)
     lcd_set_data(c);
     delay_us(10);
-    SET_LCD_E(0);
+    SET_LCD_E(0)
     delay_us(10);
 }
 
@@ -203,7 +211,7 @@ void lcd_write_cmd(const uint8_t c)
 {
     lcd_wait_while_busy();
 
-    SET_LCD_RS(0);
+    SET_LCD_RS(0)
     lcd_write_4bit(c >> 4);
     lcd_write_4bit(c);
 }
@@ -219,7 +227,7 @@ void lcd_write_data(const uint8_t c)
 {
     lcd_wait_while_busy();
 
-    SET_LCD_RS(1);
+    SET_LCD_RS(1)
     lcd_write_4bit(c >> 4);
     lcd_write_4bit(c);
 }
@@ -256,7 +264,7 @@ void lcd_init_port(void)
     PIN_RW_PORT->PCR[PIN_RW_SHIFT] = PORT_PCR_MUX(1);
 
     // alternative function for lcd backlight
-    PORTD->PCR[2] = PORT_PCR_MUX(4);
+    PORTD->PCR[2] = PORT_PCR_MUX(4); // TPM0_CH2 - PTD2
 
     lcd_bl_pwmcontrol(0);
 
@@ -286,7 +294,7 @@ void lcd_init(void)
     delay_us(100);
 
     // Startup sequence
-    SET_LCD_RS(0);
+    SET_LCD_RS(0)
     lcd_write_4bit(0x3);
     delay_us(100);
     lcd_write_4bit(0x3);

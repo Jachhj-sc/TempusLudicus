@@ -30,16 +30,14 @@
  *
  *****************************************************************************/
 #include "switches.h"
-#include "delay.h"
+#include "common.h"
 #include "lcd_4bit.h"
-#include "tpm1.h"
+#include "ultrasonic_sensor.h"
 
 #include <stdio.h>
 
-#define MASK(x) (1UL << (x))
-
-static uint8_t buttonState_1 = 0;
-static uint8_t buttonState_2 = 0;
+volatile uint8_t buttonState_1 = 0;
+volatile uint8_t buttonState_2 = 0;
 
 /*!
  * \brief Initialises the switches on the shield
@@ -58,17 +56,14 @@ void sw_init(void)
     // switch 2
     PORTD->PCR[3] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
 
-    // pulse from ultrasoon sensor
-    PORTD->PCR[5] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
-
-    NVIC_SetPriority(PORTD_IRQn, 192);
+    NVIC_SetPriority(PORTD_IRQn, 0);
     NVIC_ClearPendingIRQ(PORTD_IRQn);
     NVIC_EnableIRQ(PORTD_IRQn);
 }
 
 uint8_t get_switchState(void)
 {
-    static uint16_t timer = 0;
+    static uint16_t buttonPressCounter = 0;
     static uint8_t state = 1;
 
     if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
@@ -88,12 +83,12 @@ uint8_t get_switchState(void)
     }
 
     if (state != 1) {
-        timer++;
+        buttonPressCounter++;
     }
 
-    if (timer == 2000) {
+    if (buttonPressCounter == 2000) {
         state = 1;
-        timer = 0;
+        buttonPressCounter = 0;
     }
 
     buttonState_1 = 0;
@@ -102,40 +97,4 @@ uint8_t get_switchState(void)
     return state;
 }
 
-void PORTD_IRQHandler(void)
-{
-    // Clear pending interrupts
-    NVIC_ClearPendingIRQ(PORTD_IRQn);
-
-    // switch 1
-    if ((PORTD->ISFR & (1 << 0))) {
-        if (PTD->PDIR & MASK(0)) {
-            buttonState_1 = 1;
-        }
-
-        // Clear the flag
-        PORTD->ISFR = (1 << 0);
-    }
-
-    // switch 2
-    if ((PORTD->ISFR & (1 << 3))) {
-        if (PTD->PDIR & MASK(3)) {
-            buttonState_2 = 1;
-        }
-
-        // Clear the flag
-        PORTD->ISFR = (1 << 3);
-    }
-
-    // pulse from ultrasoon sensor interrupt
-    if ((PORTD->ISFR & (1 << 5))) {
-        if (PTD->PDIR & MASK(5)) {
-            SysTick->VAL = 0;
-        }
-        if (PTD->PDIR & ~MASK(5)) {
-            calculate();
-        }
-        // Clear the flag
-        PORTD->ISFR = (1 << 5);
-    }
-}
+/// moved interrupt handlers to it_handlers.c

@@ -11,7 +11,8 @@ void strip_sendContinuous(void);
 void strip_write(void);
 void stopStripDataTransfer(void);
 void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds);
+
 void DMA0_IRQHandler(void);
-void TPM0_IRQHandler(void);
+void TPM2_IRQHandler(void);
 
 #endif

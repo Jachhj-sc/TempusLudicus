@@ -1,0 +1,20 @@
+lcd:
+	PTC 0	(DB4)
+	PTC 4	(DB5)
+	PTC 5	(DB6)
+	PTC 6	(DB7)
+	PTC 11	(E)
+	PTC 10	(RS)
+	PTC 7	(RW)
+
+pwm signal for generating pulses for ultrasonic sensor.
+	PTB 1 (trigger pin ultrasonic sensor)
+	PTD 5 (rx ultrasonic signal)
+
+led strip
+	PTB2 	TPM2_CH0
+
+SW
+	PTD0
+	PTD3
+

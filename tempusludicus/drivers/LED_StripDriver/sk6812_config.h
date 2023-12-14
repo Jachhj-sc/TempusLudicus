@@ -22,7 +22,7 @@
 #define sk6812_port C // Data port
 #define sk6812_pin  5 // Data out pin
 
-#define LEDPIXELCOUNT (50u)
+#define LEDPIXELCOUNT (5u)
 
 #define STRIP_COUNT (1)
 /*
@@ -35,11 +35,11 @@
     RES  low voltage time 			>50µs(80µs)
 */
 // in ns
-#define STRIP_T0H  (300u)
-#define STRIP_T0L  (900u)
-#define STRIP_T1H  (600u)
+#define STRIP_T0H  (400u)
+#define STRIP_T0L  (850u)
+#define STRIP_T1H  (650u)
 #define STRIP_T1L  (600u)
-#define STRIP_TTOT (1200u)
+#define STRIP_TTOT (1250u)
 
 #define STRIP_RES (80000u)
 

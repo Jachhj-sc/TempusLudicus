@@ -1,7 +1,7 @@
 /*! ***************************************************************************
  *
- * \brief     Low level driver for TPM1
- * \file      tpm1.c
+ * \brief     Low level driver for ultrasonic_sensor
+ * \file      ultrasonic_sensor.h
  * \author    Hugo Arends
  * \date      July 2021
  *
@@ -29,41 +29,21 @@
  *            OTHER DEALINGS IN THE SOFTWARE.
  *
  *****************************************************************************/
-#include "tpm1.h"
+#ifndef ULTRASONIC_SENSOR_H
+#define ULTRASONIC_SENSOR_H
 
-/*!
- * \brief Initialises Timer/PWM Module 1 (TPM1)
- */
+#include <MKL25Z4.h>
+#include <stdbool.h>
 
-#define mask(x) (1 << x)
+void ultraS_sensor_process(void);
 
-static uint32_t teller = 0;
+uint32_t ultraS_get_distance_cm(void);
 
-void tpm1_init(void)
-{
-    SIM_SCGC6 |= SIM_SCGC6_TPM1_MASK; // enable clock
-    SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
-    SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
+void ultraS_sensor_init(void);
+uint32_t tpm1_stop(void);
+void tpm1_start(void);
+void tpm1_reset(void);
 
-    PORTB->PCR[1] = PORT_PCR_MUX(3);         // pwm option
-    GPIOB->PDDR |= mask(1);                  // output portb 0
-    TPM1->SC |= mask(1) | mask(0) | mask(2); // prescaler 128x
-    TPM1->MOD = 37499;
-    TPM1->CONTROLS[1].CnSC = TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);
-    TPM1->CONTROLS[1].CnV = 4;
-    TPM1->SC |= TPM_SC_CMOD(1); // pwm disabled
-}
+void ultraS_updateDistance(uint32_t tpm_cnt);
 
-uint32_t read_distance(void)
-{
-    return teller;
-}
-
-void calculate(void)
-{
-    // calculate the distance from the ultra soon sensor in cm
-    teller = 0;
-    teller = 0x00FFFFFF - SysTick->VAL;
-    teller = (teller / 48);
-    teller = (teller / 58);
-}
+#endif // ULTRASONIC_SENSOR_H

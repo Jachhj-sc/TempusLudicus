@@ -8,12 +8,10 @@
 /*
 max update speed ledstrip = x ms per frame & x fps
 */
-#include "delay.h"
-#include "sysTick.h"
-
 #include "ledcontrol.h"
-#include "sk6812_config.h"
 
+#include "common.h"
+#include "sk6812_config.h"
 #include "timer_dma_ws2812.h"
 
 /* A PROGMEM (flash mem) table containing 8-bit unsigned sine wave (0-255).
@@ -243,7 +241,7 @@ uint32_t color32(uint8_t r, uint8_t g, uint8_t b, uint8_t w)
 {
     uint32_t color_32 = 0;
     // pack the rgbw value in a 32 bit value
-    color_32 |= ((uint32_t)r << 8 * 3) | ((uint32_t)g << 8 * 2) | ((uint32_t)b << 8) | (w);
+    color_32 |= ((uint32_t)r << 8 * 3) | ((uint32_t)g << 8 * 2) | ((uint32_t)b << 8) | ((uint32_t)w);
     return color_32;
 }
 
