@@ -448,6 +448,11 @@
               <FileType>1</FileType>
               <FilePath>.\Core\Src\pit.c</FilePath>
             </File>
+            <File>
+              <FileName>ledStripTime.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\ledStripTime.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -522,6 +527,11 @@
               <FileName>pit.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Core\Inc\pit.h</FilePath>
+            </File>
+            <File>
+              <FileName>ledStripTime.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\ledStripTime.h</FilePath>
             </File>
           </Files>
         </Group>

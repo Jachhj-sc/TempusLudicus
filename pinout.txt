@@ -18,3 +18,7 @@ SW
 	PTD0
 	PTD3
 
+temp sensor:
+	PTC0
+
+

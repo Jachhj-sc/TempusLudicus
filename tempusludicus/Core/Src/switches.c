@@ -63,8 +63,10 @@ void sw_init(void)
 
 uint8_t get_switchState(void)
 {
-    static uint16_t buttonPressCounter = 0;
+    static uint16_t timer = 0;
+    static uint8_t timerIsRunning = 0;
     static uint8_t state = 1;
+    static uint32_t timerStart = 0;
 
     if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
         state = 4;
@@ -83,12 +85,16 @@ uint8_t get_switchState(void)
     }
 
     if (state != 1) {
-        buttonPressCounter++;
+        if (!timerIsRunning) {
+            timerStart = get_millis();
+            timerIsRunning = 1;
+        }
     }
 
-    if (buttonPressCounter == 2000) {
+    if (get_millis() > timerStart + 2000) {
         state = 1;
-        buttonPressCounter = 0;
+        timer = 0;
+        timerIsRunning = 0;
     }
 
     buttonState_1 = 0;

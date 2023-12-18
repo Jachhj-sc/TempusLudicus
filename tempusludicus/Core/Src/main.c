@@ -6,18 +6,31 @@
     @version 0.2
     @date	11/11/23
 
+    @todo main logic bijschaven.
+    @todo ledDraw functies maken. william
+    @todo temp sensor implementeren. Maarten
+    @todo
+
     @copyright Copyright (c) 2023
  */
 #include "main.h"
 
 #include "lcd_4bit.h"
+#include "ledStripTime.h"
 #include "pit.h"
 #include "rgb.h"
 #include "switches.h"
-#include "timer_dma_ws2812.h"
 #include "uart0.h"
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
+
+enum switchState {
+    DRAWSTRIP = 0,
+    TIMELCD,
+    ULTRASOON,
+    PENSIOEN,
+    DEBUG
+};
 
 static uint32_t distance_cm = 0;
 static uint8_t switchstate = 1;
@@ -26,12 +39,14 @@ static uint8_t switchstate = 1;
 static uint32_t prevLCDUpdate = 0;
 static uint32_t prevStripUpdate = 0;
 
+enum e_mood mood = NORMAL;
+
 int main()
 {
     init_rgb();
     pit_init(); // Initialization of Periodic Interrupt Timer
     ultraS_sensor_init();
-    // lcd_init();
+    lcd_init();
     sw_init();
     init_sysTick();
     uart0_init();
@@ -65,31 +80,23 @@ int main()
 
     while (1) {
 
-        //			char c = uart0_get_char();
-        //			uart0_put_char(c);
-
         ultraS_sensor_process();
-        distance_cm = ultraS_get_distance_cm(); // get the value of the ultrasoon sensor in cm
+        // uart_process();
 
-        switchstate = get_switchState(); // get the value of wich button is pressed
+        distance_cm = ultraS_get_distance_cm(); // get the value of the ultrasoon sensor in cm
+        switchstate = get_switchState();        // get the value of wich button is pressed
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
 
-        if (get_millis() > prevStripUpdate + 100) {
-            if (distance_cm < 10) {
-                setStrip_all(color32(0, 3, 0, 2));
-                Strip_send();
-                set_rgb(0, 1, 1);
-            } else {
-                setStrip_all(0);
-                Strip_send();
-                set_rgb(0, 0, 0);
-            }
-            prevStripUpdate = get_millis();
-        }
-
         switch (switchstate) {
-        case 1:
+        case DRAWSTRIP:
+            if (get_millis() > prevStripUpdate + 100) {
+                drawTimeMood(unix_timestamp, mood);
+                prevStripUpdate = get_millis();
+            }
+            break;
+
+        case TIMELCD:
             // update the lcd every second
             if (get_millis() > prevLCDUpdate + 1000) {
                 LCD_putDateTime(DateTime);
@@ -97,7 +104,7 @@ int main()
             }
             break;
 
-        case 2:
+        case ULTRASOON:
             lcd_set_cursor(0, 0);
             lcd_print("ultrasoon sensor");
             lcd_set_cursor(0, 1);
@@ -105,14 +112,28 @@ int main()
             lcd_print(text);
             break;
 
-        case 3:
+        case PENSIOEN:
             lcd_set_cursor(0, 0);
             lcd_print("tijd <> pensioen");
             break;
 
-        case 4:
+        case DEBUG:
             lcd_set_cursor(0, 0);
             lcd_print("***debug***     ");
+
+            // if object detected turn on strip
+            if (get_millis() > prevStripUpdate + 100) {
+                if (distance_cm < 10) {
+                    setStrip_all(color32(0, 3, 0, 2));
+                    Strip_send();
+                    set_rgb(0, 1, 1);
+                } else {
+                    setStrip_all(0);
+                    Strip_send();
+                    set_rgb(0, 0, 0);
+                }
+                prevStripUpdate = get_millis();
+            }
             break;
         }
     }

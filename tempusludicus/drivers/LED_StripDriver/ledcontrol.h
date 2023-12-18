@@ -44,6 +44,7 @@ void setStrip_ExBounds(uint16_t low, uint16_t high);
 void setStrip_Brightness(uint8_t bright);
 
 void setStrip_all(uint32_t color);
+void setStrip_part(uint16_t start, uint16_t end, uint32_t color);
 void setStrip_pixel(uint16_t pixel, uint32_t color);
 void setStrip_clear(void);
 
