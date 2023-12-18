@@ -38,8 +38,9 @@ static uint8_t switchstate = 1;
 // variables for keeping track of time of ACTION
 static uint32_t prevLCDUpdate = 0;
 static uint32_t prevStripUpdate = 0;
-
+static uint32_t prevPensionUpdate = 0;
 enum e_mood mood = NORMAL;
+enum e_developer person = 0;
 
 int main()
 {
@@ -91,7 +92,7 @@ int main()
         switch (switchstate) {
         case DRAWSTRIP:
             if (get_millis() > prevStripUpdate + 100) {
-                drawTimeMood(unix_timestamp, mood);
+                strip_drawTimeMood(unix_timestamp, mood);
                 prevStripUpdate = get_millis();
             }
             break;
@@ -109,12 +110,22 @@ int main()
             lcd_print("ultrasoon sensor");
             lcd_set_cursor(0, 1);
             sprintf(text, "distance cm = %d   ", distance_cm);
+            strip_drawUltrasoneDistance(distance_cm);
             lcd_print(text);
             break;
 
         case PENSIOEN:
             lcd_set_cursor(0, 0);
             lcd_print("tijd <> pensioen");
+            strip_drawPensions(person);
+			
+            if (get_millis() > prevPensionUpdate + 2000) {
+                person++;
+                if (person >= developer_amount) {
+                    person = 0;
+                }
+                prevPensionUpdate = get_millis();
+            }
             break;
 
         case DEBUG:

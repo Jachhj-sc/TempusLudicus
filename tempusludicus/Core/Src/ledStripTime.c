@@ -15,7 +15,7 @@
 
 static datetime_t dateTime;
 
-void drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
+void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
 {
     switch (mood) {
     case COOL:
@@ -35,12 +35,12 @@ void drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
 
     case NORMAL:
     default:
-        drawTimeSimple(unix_timestamp);
+        strip_drawTimeSimple(unix_timestamp);
         break;
     }
 }
 
-void drawTimeSimple(uint32_t unix_timestamp)
+void strip_drawTimeSimple(uint32_t unix_timestamp)
 {
     uint16_t startPos = 0;
     uint16_t endPos = 0;
@@ -90,13 +90,14 @@ void drawTimeSimple(uint32_t unix_timestamp)
     Strip_send();
 }
 
-void drawTimeCool(uint32_t unix_timestamp){}
+void strip_drawTimeCool(uint32_t unix_timestamp) {}
 
-void drawTimeWarm(uint32_t unix_timestamp){}
+void strip_drawTimeWarm(uint32_t unix_timestamp) {}
 
-void drawTimeExcited(uint32_t unix_timestamp){}
+void strip_drawTimeExcited(uint32_t unix_timestamp) {}
 
-void drawTimeMellow(uint32_t unix_timestamp){}
+void strip_drawTimeMellow(uint32_t unix_timestamp) {}
 
-void drawTimeChill(uint32_t unix_timestamp){}
+void strip_drawTimeChill(uint32_t unix_timestamp) {}
 
+void strip_drawUltrasoneDistance(uint16_t distance_cm) {}

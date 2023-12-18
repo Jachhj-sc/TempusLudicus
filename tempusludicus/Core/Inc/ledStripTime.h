@@ -42,12 +42,23 @@ enum e_mood {
     CHILL
 };
 
-void drawTimeMood(uint32_t unix_timestamp, enum e_mood mood);
-void drawTimeSimple(uint32_t unix_timestamp);
-void drawTimeCool(uint32_t unix_timestamp);
-void drawTimeWarm(uint32_t unix_timestamp);
-void drawTimeExcited(uint32_t unix_timestamp);
-void drawTimeMellow(uint32_t unix_timestamp);
-void drawTimeChill(uint32_t unix_timestamp);
+enum e_developer {
+    Kevin,
+    Roel,
+    Maarten,
+    William,
+    developer_amount
+};
+
+void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood);
+void strip_drawTimeSimple(uint32_t unix_timestamp);
+void strip_drawTimeCool(uint32_t unix_timestamp);
+void strip_drawTimeWarm(uint32_t unix_timestamp);
+void strip_drawTimeExcited(uint32_t unix_timestamp);
+void strip_drawTimeMellow(uint32_t unix_timestamp);
+void strip_drawTimeChill(uint32_t unix_timestamp);
+
+void strip_drawUltrasoneDistance(uint16_t distance_cm);
+void strip_drawPensions(enum e_developer person);
 
 #endif // LED_STRIP_TIME_H
