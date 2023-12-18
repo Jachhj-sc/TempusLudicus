@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_status(new QLabel),
     m_timeStamp(new QTextEdit(this)),
     m_time(new QTextEdit(this)),
+    m_debug(new QTextEdit(this)),
     m_console(new Console),
     m_settings(new SettingsDialog),
     //! [1]
@@ -86,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->statusBar->addWidget(m_status);
     m_ui->centralWidget->layout()->addWidget(m_time);
     m_ui->centralWidget->layout()->addWidget(m_timeStamp);
+    m_ui->centralWidget->layout()->addWidget(m_debug);
 
     initActionsConnections();
 
@@ -131,8 +133,9 @@ void MainWindow::buttonClicked(void)
         qDebug() << "Unixtime is" << timestamp << "Sending time through UART!";
 
         // Send serial data
-        m_serial->write(QString::number(timestamp).toUtf8());
-        m_serial->write("r");
+        m_serial->write("U:");
+        m_serial->write(QString::number(timestamp).toLocal8Bit());
+        m_serial->write("/S");
 
         // Update m_time QTextEdit with the timestamp
         m_timeStamp->setPlainText("Unix Timestamp: " + QString::number(timestamp) +

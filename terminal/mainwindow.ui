@@ -48,6 +48,7 @@
     </property>
     <addaction name="actionConfigure"/>
     <addaction name="actionClear"/>
+    <addaction name="actionDebug"/>
    </widget>
    <widget class="QMenu" name="menuHelp">
     <property name="title">
@@ -159,6 +160,14 @@
    </property>
    <property name="shortcut">
     <string>Ctrl+Q</string>
+   </property>
+  </action>
+  <action name="actionDebug">
+   <property name="icon">
+    <iconset theme="scanner"/>
+   </property>
+   <property name="text">
+    <string>Debug</string>
    </property>
   </action>
  </widget>
