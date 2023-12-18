@@ -210,7 +210,36 @@ void MainWindow::readData()
 {
     const QByteArray data = m_serial->readAll();
     m_console->putData(data);
-    qDebug() << "Recieved" << data << "through UART!";
+    qDebug() << "Received" << data << "through UART!";
+
+    // Check for "/S" indicating the end of data through "bool QByteArray::contains(const QByteArray &ba) const;" function
+    {
+        // Process the data based on the specified patterns
+        if (data.startsWith("DU:"))
+        {
+            // Extract the Unix Timestamp data and update m_debug
+            QByteArray timestampData = data.mid(3); // Skip "DU:"
+            m_debug->setPlainText("Unix Timestamp: " + QString::number(timestampData.toLong()));
+        }
+        else if (data.startsWith("DM:"))
+        {
+            // Extract the Mood setting data and update m_debug
+            QByteArray moodData = data.mid(3); // Skip "DM:"
+            m_debug->setPlainText("Mood setting: " + QString::number(moodData.toInt()));
+        }
+        else if (data.startsWith("DD:"))
+        {
+            // Extract the Distance reading data and update m_debug
+            QByteArray distanceData = data.mid(3); // Skip "DD:"
+            m_debug->setPlainText("Distance state: " + QString::number(distanceData.toInt()));
+        }
+        else if (data.startsWith("DT:"))
+        {
+            // Extract the Temperature reading data and update m_debug
+            QByteArray tempData = data.mid(3); // Skip "DT:"
+            m_debug->setPlainText("Temperature state: " + QString::number(tempData.toInt()));
+        }
+    }
 }
 //! [7]
 
