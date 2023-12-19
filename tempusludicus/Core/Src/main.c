@@ -14,7 +14,6 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
-
 #include "lcd_4bit.h"
 #include "ledStripTime.h"
 #include "pit.h"
@@ -25,6 +24,8 @@
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
 #include "queue.h"
+#include <ctype.h>
+#include "updateValues.h"
 
 static uint16_t distance_cm = 0;
 static uint8_t switchstate = 1;
@@ -76,20 +77,14 @@ int main()
 
     while (1) {
 
-<<<<<<< HEAD
-=======
-       if (q_empty(&RxQ)) 
-			{
-			}
-			 else 
-			{
-        uart0_get_char();
-			}
-			
-				//
-		    //uart0_put_char(c);
-
->>>>>>> cfb5690 (added sourcefile that handles incoming uart unix timestamp and places it in variable unix_timestamp)
+        if (!q_empty(&RxQ)) {
+					updateValue ();
+				}
+				else 
+				{
+				
+				}
+					
         ultraS_sensor_process();
         // uart_process();
 
