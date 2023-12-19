@@ -18,7 +18,7 @@ If nextChar is '3', then (nextChar - '0') evaluates to 3.
 If nextChar is '9', then (nextChar - '0') evaluates to 9.
 
 */
-					void updateValue ()	
+					void updateValue (void)	
 					{
 						char receivedChar = uart0_get_char();
 
@@ -48,28 +48,12 @@ If nextChar is '9', then (nextChar - '0') evaluates to 9.
             }
 							
 						 if (receivedChar == 'M') 
-							{
-                // Handle the Unix timestamp reception
-                uint32_t receivedTimestamp = 0;
-
-                // Assuming that the Unix timestamp is sent as a sequence of digits
-                do {									
-                    char nextChar = uart0_get_char();
-									
-                if (isdigit((unsigned char)nextChar)) 
-									{
-                        receivedTimestamp = receivedTimestamp * 10 + (nextChar - '0');
-                  } else 								
-									
-									{
-                        // Break the loop if a non-digit character is encountered
-                        break;
-                  }
-                } while (!q_empty(&RxQ));
-
-                // Now 'receivedTimestamp' contains the Unix timestamp received via UART
-                // Update unix_timestamp with the received value
-                unix_timestamp = receivedTimestamp;
-            }
+						 {
+							char receivedMoodsetting = 0;						 
+							char nextChar = uart0_get_char();
+							 
+								receivedMoodsetting = nextChar; 
+								moodSetting = receivedMoodsetting;
+							}
 						
         }

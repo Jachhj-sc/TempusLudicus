@@ -37,7 +37,10 @@ static uint32_t prevPensionUpdate = 0;
 static enum e_mood mood = NORMAL;
 static enum e_developer person = 0;
 
-int main()
+// Variable for mood setting
+char moodSetting = 0;
+
+int main(void)
 {
     init_rgb();
     pit_init(); // Initialization of Periodic Interrupt Timer
@@ -138,6 +141,11 @@ int main()
         case DEBUG:
             lcd_set_cursor(0, 0);
             lcd_print("***debug***     ");
+			
+						uart0_send_uint32(unix_timestamp);
+						uart0_send_uint32(distance_cm);
+						uart0_send_uint32(distance_cm);
+						uart0_send_string(&moodSetting);
 
             // if object detected turn on strip
             if (get_millis() > prevStripUpdate + 100) {
@@ -164,6 +172,8 @@ int main()
             sprintf(text, "Temp: %.2f C   ", averageTemperature);
             lcd_print(text);
         } break;
+	
+
         }
     }
 }
