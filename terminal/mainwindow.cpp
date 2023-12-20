@@ -133,7 +133,7 @@ void MainWindow::buttonClicked(void)
         qDebug() << "Unixtime is" << timestamp << "Sending time through UART!";
 
         // Send serial data
-        m_serial->write("U:");
+        m_serial->write("U");
         m_serial->write(QString::number(timestamp).toLocal8Bit());
         m_serial->write("/S");
 

@@ -40,7 +40,7 @@ If nextChar is '9', then (nextChar - '0') evaluates to 9.
                         // Break the loop if a non-digit character is encountered
                         break;
                   }
-                } while (!q_empty(&RxQ));
+                } while (q_empty(&RxQ) == true);
 
                 // Now 'receivedTimestamp' contains the Unix timestamp received via UART
                 // Update unix_timestamp with the received value
