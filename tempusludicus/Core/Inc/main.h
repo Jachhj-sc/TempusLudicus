@@ -9,6 +9,7 @@ enum switchState {
     ULTRASOON,
     PENSIOEN,
     DEBUG,
+	TEMPSENSOR,
     StateAmount,
     TESTSEQUENCE
 };
