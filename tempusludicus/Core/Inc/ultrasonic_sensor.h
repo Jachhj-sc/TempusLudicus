@@ -34,10 +34,11 @@
 
 #include <MKL25Z4.h>
 #include <stdbool.h>
+#include "common.h"
 
 void ultraS_sensor_process(void);
 
-uint32_t ultraS_get_distance_cm(void);
+uint16_t ultraS_get_distance_cm(void);
 
 void ultraS_sensor_init(void);
 uint32_t tpm1_stop(void);

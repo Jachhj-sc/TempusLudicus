@@ -20,20 +20,20 @@
 #include "pit.h"
 #include "rgb.h"
 #include "switches.h"
+#include "tempSensor.h"
 #include "uart0.h"
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
-#include "ir.h"
 
-static uint32_t distance_cm = 0;
+static uint16_t distance_cm = 0;
 static uint8_t switchstate = 1;
 
 // variables for keeping track of time of ACTION
 static uint32_t prevLCDUpdate = 0;
 static uint32_t prevStripUpdate = 0;
 static uint32_t prevPensionUpdate = 0;
-enum e_mood mood = NORMAL;
-enum e_developer person = 0;
+static enum e_mood mood = NORMAL;
+static enum e_developer person = 0;
 
 int main()
 {
@@ -44,7 +44,7 @@ int main()
     sw_init();
     init_sysTick();
     uart0_init();
-		init_adc_lm35();
+    init_adc_lm35();
 
     init_strip();
     __enable_irq();
@@ -143,19 +143,17 @@ int main()
                 prevStripUpdate = get_millis();
             }
             break;
-						
-						case TEMPSENSOR:
-                {
-                    uint16_t adc_result = read_adc_lm35();
-                    float temperature = calculate_temperature_from_lm35(adc_result);
-                    addTemperatureToBuffer(temperature);
-                    float averageTemperature = calculateAverageTemperature();
 
-                    lcd_set_cursor(0, 0);
-                    sprintf(text, "Temp: %.2f C   ", averageTemperature);
-                    lcd_print(text);
-                }
-                break;
+        case TEMPSENSOR: {
+            uint16_t adc_result = read_adc_lm35();
+            float temperature = calculate_temperature_from_lm35(adc_result);
+            addTemperatureToBuffer(temperature);
+            float averageTemperature = calculateAverageTemperature();
+
+            lcd_set_cursor(0, 0);
+            sprintf(text, "Temp: %.2f C   ", averageTemperature);
+            lcd_print(text);
+        } break;
         }
     }
 }

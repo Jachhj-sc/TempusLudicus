@@ -33,8 +33,6 @@
 #include "delay.h"
 #include "sysTick.h"
 
-#include "common.h"
-
 /*!
  * \brief Initialises Timer/PWM Module 1 (TPM1)
  */
@@ -98,9 +96,9 @@ void tpm1_reset(void)
     TPM1->CNT = 0;
 }
 
-uint32_t ultraS_get_distance_cm(void)
+uint16_t ultraS_get_distance_cm(void)
 {
-    return distance_cm;
+    return (uint16_t)distance_cm;
 }
 
 // calculate the distance from the ultra soon sensor in cm
