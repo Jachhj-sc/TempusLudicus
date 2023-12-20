@@ -34,6 +34,8 @@
 #include "unixFunction.h"
 #include <stdio.h>
 
+#define LCD_WAIT_TIMEOUT 5000ul
+
 /// \name Macros for setting pins
 /// \{
 
@@ -59,6 +61,8 @@
     }
 
 /// \}
+
+uint8_t lcdConnected = 1;
 
 /*!
  * \brief Translate the logic values in x to pin values DB4-DB7
@@ -152,34 +156,36 @@ void lcd_wait_while_busy(void)
 
     int status;
 
-    /// TODO
-    /// dangerous will break when lcd is not connected.
-    /// add a timeout and return error state when timeout is reached.
-    /// this error state then needs to be handled where this function is called.
-    /*
-        do {
-            delay_us(10);
-            SET_LCD_E(1)
-            delay_us(10);
+    uint32_t startTimeWait = get_millis();
+    do {
+        delay_us(10);
+        SET_LCD_E(1)
+        delay_us(10);
 
-            status = lcd_get_data() << 4;
+        status = lcd_get_data() << 4;
 
-            SET_LCD_E(0)
-            delay_us(10);
-            SET_LCD_E(1)
-            delay_us(10);
+        SET_LCD_E(0)
+        delay_us(10);
+        SET_LCD_E(1)
+        delay_us(10);
 
-            status |= lcd_get_data();
+        status |= lcd_get_data();
 
-            SET_LCD_E(0)
-        } while ((status & 0x80) != 0);
-    */
+        SET_LCD_E(0)
 
-    // Make all databus pins output
-    PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
-    PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
-    PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
-    PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
+        if (get_millis() > startTimeWait + LCD_WAIT_TIMEOUT) {
+            lcdConnected = 0;
+            break;
+        }
+    } while ((status & 0x80) != 0);
+
+    if (lcdConnected) {
+        // Make all databus pins output
+        PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
+        PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
+        PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
+        PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
+    }
 }
 
 /*!
@@ -192,12 +198,14 @@ void lcd_wait_while_busy(void)
  */
 void lcd_write_4bit(const uint8_t c)
 {
-    SET_LCD_RW(0)
-    SET_LCD_E(1)
-    lcd_set_data(c);
-    delay_us(10);
-    SET_LCD_E(0)
-    delay_us(10);
+    if (lcdConnected) {
+        SET_LCD_RW(0)
+        SET_LCD_E(1)
+        lcd_set_data(c);
+        delay_us(10);
+        SET_LCD_E(0)
+        delay_us(10);
+    }
 }
 
 /*!
@@ -209,11 +217,13 @@ void lcd_write_4bit(const uint8_t c)
  */
 void lcd_write_cmd(const uint8_t c)
 {
-    lcd_wait_while_busy();
+    if (lcdConnected) {
+        lcd_wait_while_busy();
 
-    SET_LCD_RS(0)
-    lcd_write_4bit(c >> 4);
-    lcd_write_4bit(c);
+        SET_LCD_RS(0)
+        lcd_write_4bit(c >> 4);
+        lcd_write_4bit(c);
+    }
 }
 
 /*!
@@ -225,11 +235,13 @@ void lcd_write_cmd(const uint8_t c)
  */
 void lcd_write_data(const uint8_t c)
 {
-    lcd_wait_while_busy();
+    if (lcdConnected) {
+        lcd_wait_while_busy();
 
-    SET_LCD_RS(1)
-    lcd_write_4bit(c >> 4);
-    lcd_write_4bit(c);
+        SET_LCD_RS(1)
+        lcd_write_4bit(c >> 4);
+        lcd_write_4bit(c);
+    }
 }
 
 /*!

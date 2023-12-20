@@ -3,4 +3,14 @@
 
 #include "common.h"
 
+enum switchState {
+    DRAWSTRIP = 0,
+    TIMELCD,
+    ULTRASOON,
+    PENSIOEN,
+    DEBUG,
+    StateAmount,
+    TESTSEQUENCE
+};
+
 #endif

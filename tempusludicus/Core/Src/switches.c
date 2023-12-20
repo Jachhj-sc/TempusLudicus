@@ -32,6 +32,7 @@
 #include "switches.h"
 #include "common.h"
 #include "lcd_4bit.h"
+#include "main.h"
 #include "ultrasonic_sensor.h"
 
 #include <stdio.h>
@@ -65,36 +66,27 @@ uint8_t get_switchState(void)
 {
     static uint16_t timer = 0;
     static uint8_t timerIsRunning = 0;
-    static uint8_t state = 1;
+    static uint8_t state = 0;
     static uint32_t timerStart = 0;
 
     if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
-        state = 4;
+        state = TESTSEQUENCE;
         buttonState_1 = 0;
         buttonState_2 = 0;
     }
 
     if (buttonState_1 == 1) {
-        state = 2;
+        state = DRAWSTRIP;
         buttonState_1 = 0;
     }
 
     if (buttonState_2 == 1) {
-        state = 3;
+        if (state < StateAmount) {
+            state++;
+        }else{
+			state = DRAWSTRIP;
+		}
         buttonState_2 = 0;
-    }
-
-    if (state != 1) {
-        if (!timerIsRunning) {
-            timerStart = get_millis();
-            timerIsRunning = 1;
-        }
-    }
-
-    if (get_millis() > timerStart + 2000) {
-        state = 1;
-        timer = 0;
-        timerIsRunning = 0;
     }
 
     buttonState_1 = 0;
