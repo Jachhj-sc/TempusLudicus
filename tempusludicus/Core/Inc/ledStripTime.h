@@ -59,6 +59,6 @@ void strip_drawTimeMellow(uint32_t unix_timestamp);
 void strip_drawTimeChill(uint32_t unix_timestamp);
 
 void strip_drawUltrasoneDistance(uint16_t distance_cm);
-void strip_drawPensions(enum e_developer person);
+void strip_drawPensions(enum e_developer person, uint16_t distance_cm);
 
 #endif // LED_STRIP_TIME_H

@@ -25,15 +25,6 @@
 #include "unixFunction.h"
 #include "ir.h"
 
-enum switchState {
-    DRAWSTRIP = 0,
-    TIMELCD,
-    ULTRASOON,
-    PENSIOEN,
-    DEBUG,
-		TEMPSENSOR 
-};
-
 static uint32_t distance_cm = 0;
 static uint8_t switchstate = 1;
 
@@ -89,18 +80,21 @@ int main()
 
         distance_cm = ultraS_get_distance_cm(); // get the value of the ultrasoon sensor in cm
         switchstate = get_switchState();        // get the value of wich button is pressed
+        // uncomment the following code to set a fixed state for debugging purposes
+        // switchstate = DRAWSTRIP; // or any other state
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
 
         switch (switchstate) {
+
         case DRAWSTRIP:
+        case TIMELCD:
+
             if (get_millis() > prevStripUpdate + 100) {
                 strip_drawTimeMood(unix_timestamp, mood);
                 prevStripUpdate = get_millis();
             }
-            break;
 
-        case TIMELCD:
             // update the lcd every second
             if (get_millis() > prevLCDUpdate + 1000) {
                 LCD_putDateTime(DateTime);
@@ -120,8 +114,8 @@ int main()
         case PENSIOEN:
             lcd_set_cursor(0, 0);
             lcd_print("tijd <> pensioen");
-            strip_drawPensions(person);
-			
+            strip_drawPensions(person, distance_cm);
+
             if (get_millis() > prevPensionUpdate + 2000) {
                 person++;
                 if (person >= developer_amount) {
