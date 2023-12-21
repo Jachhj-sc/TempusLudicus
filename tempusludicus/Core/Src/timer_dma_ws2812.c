@@ -10,7 +10,7 @@ static volatile uint8_t STRIP_dma_buffer[LEDPIXELCOUNT + 1][32];
 #define bitsAmount 32
 #endif
 
-static volatile uint32_t currentBitTimingBuffer = 0ul;
+static volatile uint16_t currentBitTimingBuffer = 0u;
 
 typedef struct {
     uint32_t T0H;
@@ -32,7 +32,7 @@ static STRIP_timing_t STRIP_timing_chart;
 
  */
 static volatile uint8_t DMA_Frame_Update_Done = 1;
-static volatile uint8_t StipUpdateContinuously = 0;
+static volatile uint8_t StripUpdateContinuously = 0;
 
 void conf_dma(void)
 {
@@ -45,13 +45,12 @@ void conf_dma(void)
 
     DMA0->DMA[1].SAR = (uint32_t)(&currentBitTimingBuffer); // Source address
     DMA0->DMA[1].DAR = (uint32_t)(&TPM2->CONTROLS[0].CnV);
-    DMA0->DMA[1].DSR_BCR = DMA_DSR_BCR_BCR((LEDPIXELCOUNT * bitsAmount + 1) * sizeof(uint32_t)); // 4 bytes transfer
-    DMA0->DMA[1].DCR = DMA_DCR_D_REQ_MASK | DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK | DMA_DCR_SSIZE(0) | DMA_DCR_DSIZE(0);
+    DMA0->DMA[1].DSR_BCR = DMA_DSR_BCR_BCR((LEDPIXELCOUNT * bitsAmount + 1) * sizeof(uint16_t)); // 4 bytes transfer
+    DMA0->DMA[1].DCR = DMA_DCR_D_REQ_MASK | DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK | DMA_DCR_SSIZE(2) | DMA_DCR_DSIZE(2);
 
     TPM2->CONTROLS[0].CnV = 0;
 }
 
-// 48 Mhz
 void init_ws2812()
 {
     // enable clocks for port, dma, timer
@@ -120,10 +119,10 @@ void loadStrip_pixel(uint32_t pixel, uint32_t rgb)
 
 void strip_sendContinuous()
 {
-    if (!StipUpdateContinuously) {
+    if (!StripUpdateContinuously) {
         strip_write();
     }
-    StipUpdateContinuously = 1;
+    StripUpdateContinuously = 1;
 }
 
 void strip_write()
@@ -142,7 +141,7 @@ void stopStripDataTransfer()
 {
     // stop timer
     TPM2->SC &= ~TPM_SC_CMOD_MASK;
-    StipUpdateContinuously = 0;
+    StripUpdateContinuously = 0;
 }
 
 void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds)
@@ -161,8 +160,8 @@ void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds)
                                        ((uint32_t)ledarray[i].b << 8 * 1) | ((uint32_t)ledarray[i].w << 8 * 0)));
         }
 #endif
-        // strip_write();
-        strip_sendContinuous();
+        //strip_write();
+    	strip_sendContinuous();
     }
 }
 
@@ -196,7 +195,7 @@ void TPM2_IRQHandler()
     // enable dma req again to be ready for the next transfer
     TPM2->SC |= TPM_SC_DMA_MASK;
 
-    if (StipUpdateContinuously) {
+    if (StripUpdateContinuously) {
         conf_dma();
     } else {
         TPM2->SC &= ~TPM_SC_CMOD_MASK; // stop timer

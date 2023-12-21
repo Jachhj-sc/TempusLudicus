@@ -35,7 +35,6 @@ static uint32_t prevPensionUpdate = 0;
 
 static enum e_mood mood = NORMAL;
 static enum e_developer person = 0;
-static uint32_t debugCounter = 0;
 
 // Variable for mood setting
 char moodSetting = 0;
@@ -85,13 +84,12 @@ int main(void)
         // switchstate = DEBUG; // or any other state
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
+        uint16_t adc_result;
 
         switch (programState) {
 
         case DRAWSTRIP:
-
         case TIMELCD:
-
             if (get_millis() > prevStripUpdate + 100) {
                 strip_drawTimeMood(unix_timestamp, mood);
                 prevStripUpdate = get_millis();
@@ -105,7 +103,6 @@ int main(void)
             break;
 
         case ULTRASOON:
-
             lcd_set_cursor(0, 0);
             lcd_print("ultrasoon sensor");
             lcd_set_cursor(0, 1);
@@ -115,7 +112,6 @@ int main(void)
             break;
 
         case PENSIOEN:
-
             lcd_set_cursor(0, 0);
             lcd_print("tijd <> pensioen");
             strip_drawPensions(person, distance_cm);
@@ -130,7 +126,6 @@ int main(void)
             break;
 
         case DEBUG:
-
             // if object detected turn on strip
             if (get_millis() > prevStripUpdate + 100) {
 
@@ -155,7 +150,7 @@ int main(void)
                 uart0_put_char('S');
 
                 // Send temperature
-                uint16_t adc_result = (uint16_t)read_adc_lm35();
+                adc_result = (uint16_t)read_adc_lm35();
                 float temperature = calculate_temperature_from_lm35(adc_result);
                 addTemperatureToBuffer(temperature);
                 float averageTemperature = calculateAverageTemperature();
@@ -178,7 +173,7 @@ int main(void)
             break;
 
         case TEMPSENSOR:
-            uint16_t adc_result = (uint16_t)read_adc_lm35();
+            adc_result = (uint16_t)read_adc_lm35();
             float temperature = calculate_temperature_from_lm35(adc_result);
             addTemperatureToBuffer(temperature);
             float averageTemperature = calculateAverageTemperature();
@@ -248,9 +243,9 @@ void HardFault_Handler()
 {
     while (1) {
         set_rgb(1, 0, 0);
-        _delay_ms(500);
+        delay_us(500000);
 
         set_rgb(0, 0, 0);
-        _delay_ms(500);
+        delay_us(500000);
     }
 }
