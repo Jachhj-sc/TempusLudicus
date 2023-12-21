@@ -11,7 +11,7 @@
 #include "rgb.h"
 #include "main.h"
 
-void init_rgb()
+void init_rgb(void)
 {
     SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK; // enable clock
     SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;

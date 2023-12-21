@@ -9,7 +9,6 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
-
 #include "lcd_4bit.h"
 #include "ledStripTime.h"
 #include "pit.h"
@@ -19,6 +18,9 @@
 #include "uart0.h"
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
+#include "queue.h"
+#include <ctype.h>
+#include "updateValues.h"
 
 void handleSwitchState(enum e_switchState switchstate);
 void deviceTestSequence(void);
@@ -33,8 +35,12 @@ static uint32_t prevPensionUpdate = 0;
 
 static enum e_mood mood = NORMAL;
 static enum e_developer person = 0;
+static uint32_t debugCounter = 0;
 
-int main()
+// Variable for mood setting
+char moodSetting = 0;
+
+int main(void)
 {
     init_sysTick();
     __enable_irq();
@@ -63,6 +69,14 @@ int main()
 
     while (1) {
 
+        if (!q_empty(&RxQ)) {
+					updateValue ();
+				}
+				else 
+				{
+				
+				}
+					
         ultraS_sensor_process();
         // uart_process();
 
@@ -79,8 +93,9 @@ int main()
         switch (programState) {
 
         case DRAWSTRIP:
+					
         case TIMELCD:
-
+						
             if (get_millis() > prevStripUpdate + 100) {
                 strip_drawTimeMood(unix_timestamp, mood);
                 prevStripUpdate = get_millis();
@@ -94,6 +109,7 @@ int main()
             break;
 
         case ULTRASOON:
+						
             lcd_set_cursor(0, 0);
             lcd_print("ultrasoon sensor");
             lcd_set_cursor(0, 1);
@@ -103,6 +119,7 @@ int main()
             break;
 
         case PENSIOEN:
+						
             lcd_set_cursor(0, 0);
             lcd_print("tijd <> pensioen");
             strip_drawPensions(person, distance_cm);
@@ -117,8 +134,44 @@ int main()
             break;
 
         case DEBUG:
+
+						 // Increment the debug counter
+        debugCounter++;
+				
             lcd_set_cursor(0, 0);
             lcd_print("***debug***     ");
+						
+						if (debugCounter >= 100) {				
+						// Send unix timestamp
+							uart0_put_char('U');
+						uart0_send_uint32(unix_timestamp);
+							uart0_put_char('S');
+							
+							//Send distance
+							uart0_put_char('D');
+						uart0_send_uint32(distance_cm);
+							uart0_put_char('S');
+							
+							// Send mood 
+							uint32_t debugMood = mood;
+							
+							uart0_put_char('M');
+						uart0_send_uint32(debugMood);
+							uart0_put_char('S');
+							
+							// Send temperature 
+            uint16_t adc_result = read_adc_lm35();
+            float temperature = calculate_temperature_from_lm35(adc_result);
+            addTemperatureToBuffer(temperature);
+            float averageTemperature = calculateAverageTemperature();							
+							
+
+							uart0_put_char('T');
+						uart0_send_float(averageTemperature);
+							uart0_put_char('S');
+							
+							debugCounter = 0;
+						}
 
             // if object detected turn on strip
             if (get_millis() > prevStripUpdate + 100) {
@@ -133,6 +186,8 @@ int main()
                 }
                 prevStripUpdate = get_millis();
             }
+						
+							
             break;
 
         case TEMPSENSOR: {
@@ -145,6 +200,8 @@ int main()
             sprintf(text, "Temp: %.2f C   ", averageTemperature);
             lcd_print(text);
         } break;
+	
+
         }
     }
 }

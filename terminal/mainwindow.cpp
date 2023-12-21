@@ -69,6 +69,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_status(new QLabel),
     m_timeStamp(new QTextEdit(this)),
     m_time(new QTextEdit(this)),
+    m_debug(new QTextEdit(this)),
     m_console(new Console),
     m_settings(new SettingsDialog),
     //! [1]
@@ -86,6 +87,7 @@ MainWindow::MainWindow(QWidget *parent) :
     m_ui->statusBar->addWidget(m_status);
     m_ui->centralWidget->layout()->addWidget(m_time);
     m_ui->centralWidget->layout()->addWidget(m_timeStamp);
+    m_ui->centralWidget->layout()->addWidget(m_debug);
 
     initActionsConnections();
 
@@ -115,6 +117,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::buttonClicked(void)
 {
+    // Check if the serial port is open
+    if (!m_serial->isOpen()) {
+        QMessageBox::critical(this, tr("Error"), tr("Serial port is not open!"));
+        return;
+    }
+
     // Create an instance of FetchTimestamp
     FetchTimestamp fetcher;
 
@@ -131,12 +139,13 @@ void MainWindow::buttonClicked(void)
         qDebug() << "Unixtime is" << timestamp << "Sending time through UART!";
 
         // Send serial data
-        m_serial->write(QString::number(timestamp).toUtf8());
-        m_serial->write("r");
+        m_serial->write("U");
+        m_serial->write(QString::number(timestamp).toLocal8Bit());
+        m_serial->write("/S");
 
         // Update m_time QTextEdit with the timestamp
-        m_timeStamp->setPlainText("Unix Timestamp: " + QString::number(timestamp) +
-                             "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
+        m_timeStamp->setPlainText("Sent Unix Timestamp: " + QString::number(timestamp) +
+                                  "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
     } else {
         std::cerr << "Failed to fetch Unix Timestamp." << std::endl;
 
@@ -144,6 +153,7 @@ void MainWindow::buttonClicked(void)
         m_timeStamp->setPlainText("Error: Failed to fetch Unix Timestamp");
     }
 }
+
 
 
 
@@ -205,10 +215,99 @@ void MainWindow::writeData(const QByteArray &data)
 //! [7]
 void MainWindow::readData()
 {
-    const QByteArray data = m_serial->readAll();
-    m_console->putData(data);
-    qDebug() << "Recieved" << data << "through UART!";
+    static QByteArray receivedData; // Static variable to accumulate data between calls
+
+    const QByteArray newData = m_serial->readAll();
+    m_console->putData(newData);
+    qDebug() << "Received" << newData << "through UART!";
+
+    receivedData += newData; // Accumulate received data
+
+    // Check for the end-of-message character 'S'
+    if (receivedData.contains('S')) {
+        // Process the complete message
+        processReceivedData(receivedData);
+
+        // Clear the accumulated data for the next message
+        receivedData.clear();
+    }
 }
+void MainWindow::processReceivedData(const QByteArray &data)
+{
+    static QByteArray partialData; // Static variable to accumulate partial data between calls
+
+    // Append the new data to the accumulated partial data
+    partialData += data;
+
+    // Find complete patterns in the accumulated data
+    while (partialData.contains('S')) {
+        int startIndexU = partialData.indexOf('U');
+        int startIndexD = partialData.indexOf('D');
+        int startIndexM = partialData.indexOf('M');
+        int startIndexT = partialData.indexOf('T');
+
+        // Find the minimum valid startIndex among 'U', 'D', 'M', and 'T'
+        int startIndex = -1;
+        if (startIndexU != -1) {
+            startIndex = (startIndex == -1) ? startIndexU : qMin(startIndex, startIndexU);
+        }
+        if (startIndexD != -1) {
+            startIndex = (startIndex == -1) ? startIndexD : qMin(startIndex, startIndexD);
+        }
+        if (startIndexM != -1) {
+            startIndex = (startIndex == -1) ? startIndexM : qMin(startIndex, startIndexM);
+        }
+        if (startIndexT != -1) {
+            startIndex = (startIndex == -1) ? startIndexT : qMin(startIndex, startIndexT);
+        }
+
+        if (startIndex != -1) {
+            // Check if partialData contains a complete pattern
+            QByteArray patternData = partialData.mid(startIndex, partialData.indexOf('S', startIndex) + 1);
+            processPattern(patternData);
+            // Remove the processed pattern from partialData
+            partialData.remove(0, partialData.indexOf('S', startIndex) + 1);
+        } else {
+            // No valid identifier found, remove everything up to the first 'S'
+            partialData.remove(0, partialData.indexOf('S') + 1);
+        }
+    }
+}
+
+void MainWindow::processPattern(const QByteArray &patternData)
+{
+    char pattern = patternData.at(0);
+
+    // Process the data based on the specified patterns
+    if (pattern == 'U')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText("Recieved Unix Timestamp: " + QString::number(data.toLong()));
+    }
+    else if (pattern == 'D')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Distance state: " + QString::number(data.toInt()));
+    }
+    else if (pattern == 'M')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Mood setting: " + QString::number(data.toInt()));
+    }
+    else if (pattern == 'T')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Temperature state: " + QString::number(data.toDouble()));
+    }
+    else
+    {
+        // Print debug information for unrecognized patterns
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Unknown pattern: " + QString(pattern) + " Data: " + patternData);
+    }
+}
+
+
+
 //! [7]
 
 //! [8]

@@ -30,6 +30,7 @@
  *
  *****************************************************************************/
 #include "uart0.h"
+#include "stdio.h"
 
 queue_t TxQ, RxQ;
 
@@ -148,4 +149,38 @@ void uart0_put_char(char c)
     if (!(UART0->C2 & UART_C2_TIE_MASK)) {
         UART0->C2 |= UART_C2_TIE_MASK;
     }
+}
+
+
+void uart0_send_uint32(uint32_t value)
+{
+    char buffer[11]; // Buffer for 10 digits + null terminator
+
+    // Convert the uint32_t to a string
+    snprintf(buffer, sizeof(buffer), "%zu", value);
+
+    // Send the string using the existing uart0_send_string function
+    uart0_send_string(buffer);
+}
+
+void uart0_send_float(float value)
+{
+    char buffer[20]; // Adjust the buffer size accordingly
+
+    // Convert the float to a string with 2 decimal places
+    snprintf(buffer, sizeof(buffer), "%.2f", value);
+
+    // Send the string using the existing uart0_send_string function
+    uart0_send_string(buffer);
+}
+
+void uart0_send_double(double value)
+{
+    char buffer[20]; // Adjust the buffer size accordingly
+
+    // Convert the double to a string with 2 decimal places
+    snprintf(buffer, sizeof(buffer), "%.2lf", value);
+
+    // Send the string using the existing uart0_send_string function
+    uart0_send_string(buffer);
 }

@@ -43,5 +43,8 @@ uint32_t uart0_num_rx_chars_available(void);
 char uart0_get_char(void);
 void uart0_put_char(char c);
 void uart0_send_string(char *str);
+void uart0_send_uint32(uint32_t value);
+void uart0_send_float(float value);
+void uart0_send_double(double value); 
 
 #endif

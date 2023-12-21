@@ -88,6 +88,8 @@ private slots:
     void about();
     void writeData(const QByteArray &data);
     void readData();
+    void processReceivedData(const QByteArray &data);
+    void processPattern(const QByteArray &patternData);
     void buttonClicked(void);
     void handleError(QSerialPort::SerialPortError error);
 
@@ -102,6 +104,7 @@ private:
     QLabel *m_status = nullptr;
     QTextEdit *m_timeStamp= nullptr;
     QTextEdit *m_time = nullptr;
+    QTextEdit *m_debug = nullptr;
     Console *m_console = nullptr;
     SettingsDialog *m_settings = nullptr;
     QSerialPort *m_serial = nullptr;
