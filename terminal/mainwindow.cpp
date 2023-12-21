@@ -248,6 +248,7 @@ void MainWindow::processReceivedData(const QByteArray &data)
     }
 }
 
+
 void MainWindow::processPattern(const QByteArray &patternData)
 {
     char pattern = patternData.at(0);
@@ -256,20 +257,26 @@ void MainWindow::processPattern(const QByteArray &patternData)
     if (pattern == 'U')
     {
         QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText("Unix Timestamp: " + QString::number(data.toLong()));
-    }
-    else if (pattern == 'M')
-    {
-        QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText("Mood setting: " + QString::number(data.toInt()));
+        m_debug->append("Unix Timestamp: " + QString::number(data.toLong()));
     }
     else if (pattern == 'D')
     {
         QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText("Distance state: " + QString::number(data.toInt()));
+        m_debug->append("Distance state: " + QString::number(data.toInt()));
     }
-    // Add other patterns as needed
+    else if (pattern == 'M')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->append("Mood setting: " + QString::number(data.toInt()));
+    }
+    else
+    {
+        // Print debug information for unrecognized patterns
+        m_debug->append("Unknown pattern: " + QString(pattern) + " Data: " + patternData);
+    }
 }
+
+
 //! [7]
 
 //! [8]

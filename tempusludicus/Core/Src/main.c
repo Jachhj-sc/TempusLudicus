@@ -150,18 +150,23 @@ int main(void)
             lcd_set_cursor(0, 0);
             lcd_print("***debug***     ");
 						if (sentDebuginfo == 0){
+							
+						// Send unix timestamp
 							uart0_put_char('U');
 						uart0_send_uint32(unix_timestamp);
 							uart0_put_char('S');
-							//delay_us (10);
+							
+							//Send distance
 							uart0_put_char('D');
 						uart0_send_uint32(distance_cm);
 							uart0_put_char('S');
-							//delay_us (10);
+							
+							// Send mood 
 							uart0_put_char('M');
 						uart0_send_string(&moodSetting);
 							uart0_put_char('S');
-							//delay_us (10);
+							
+							// Block 
 						sentDebuginfo = 1;
 						}
 
