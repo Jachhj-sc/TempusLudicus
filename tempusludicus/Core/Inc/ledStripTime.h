@@ -39,7 +39,8 @@ enum e_mood {
     WARM,
     EXCITED,
     MELLOW,
-    CHILL
+    CHILL,
+	MoodAmount
 };
 
 enum e_developer {

@@ -336,7 +336,7 @@
             <v6WtE>0</v6WtE>
             <v6Rtti>0</v6Rtti>
             <VariousControls>
-              <MiscControls>-Wno-gnu-binary-literal -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-declaration-after-statement</MiscControls>
+              <MiscControls>-Wno-gnu-binary-literal -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-declaration-after-statement -Wno-double-promotion -Wno-covered-switch-default -Wno-switch-enum</MiscControls>
               <Define>CLOCK_SETUP=1</Define>
               <Undefine></Undefine>
               <IncludePath>.\Core\Inc;.\drivers\LED_StripDriver\</IncludePath>

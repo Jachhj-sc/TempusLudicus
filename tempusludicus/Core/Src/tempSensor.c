@@ -31,7 +31,7 @@ void init_adc_lm35()
     ADC0->CFG1 = 0x9D;
 }
 
-uint16_t read_adc_lm35()
+uint32_t read_adc_lm35()
 {
     // Start de conversie door het SC1-register te schrijven
     ADC0->SC1[0] = ADC_SC1_ADCH(8);
@@ -47,16 +47,18 @@ uint16_t read_adc_lm35()
 float calculate_temperature_from_lm35(uint16_t adc_result)
 {
     // Omzetten van ADC-resultaat naar spanning (aannemend dat ADC referentiespanning 5V is)
-    float measured_voltage = (5.0 / 65536) * adc_result;
+    float measured_voltage = (5.0f / 65536) * adc_result;
 
     // De LM35 geeft 10 mV/C, dus deel de spanning door 0.01
-    float temperature = measured_voltage / 0.01;
+    float temperature = measured_voltage / 0.01f;
 
-    temperature -= 15.6;
+    temperature -= 15.6f;
 
     return temperature;
 }
 
 void addTemperatureToBuffer(float temperature){}
 
-float calculateAverageTemperature(void){}
+float calculateAverageTemperature(void){ 
+	return 0.0;
+}

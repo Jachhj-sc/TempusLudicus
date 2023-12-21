@@ -62,35 +62,33 @@ void sw_init(void)
     NVIC_EnableIRQ(PORTD_IRQn);
 }
 
-uint8_t get_switchState(void)
+enum e_switchState get_switchState(void)
 {
-    static uint16_t timer = 0;
-    static uint8_t timerIsRunning = 0;
-    static uint8_t state = 0;
-    static uint32_t timerStart = 0;
+    enum e_switchState state = NO_SWITCH_PRESSED;
+    static uint8_t timerStarted = 1;
+    static uint32_t debounceStartTime = 0;
 
-    if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
-        state = TESTSEQUENCE;
+	// start the debounce timer
+    if (((buttonState_1 == 1) || (buttonState_2 == 1)) && !timerStarted) {
+        debounceStartTime = get_millis();
+        timerStarted = 1;
+    }
+
+	// wait until a certain amount of time is passed since the last buttonspress
+	// to be sure to catch both buttons to be pressed
+    if (get_millis() > debounceStartTime + DEBOUNCE_TIME) {
+        if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
+            state = SWITCH_1_2_PRESSED;
+        } else if (buttonState_1 == 1) {
+            state = SWITCH_1_PRESSED;
+        } else if (buttonState_2 == 1) {
+            state = SWITCH_2_PRESSED;
+        }
+
         buttonState_1 = 0;
         buttonState_2 = 0;
+        timerStarted = 0;
     }
-
-    if (buttonState_1 == 1) {
-        state = DRAWSTRIP;
-        buttonState_1 = 0;
-    }
-
-    if (buttonState_2 == 1) {
-        if (state < StateAmount) {
-            state++;
-        }else{
-			state = DRAWSTRIP;
-		}
-        buttonState_2 = 0;
-    }
-
-    buttonState_1 = 0;
-    buttonState_2 = 0;
 
     return state;
 }

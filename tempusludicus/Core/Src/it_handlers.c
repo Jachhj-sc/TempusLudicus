@@ -15,9 +15,6 @@
 
 void PORTD_IRQHandler(void)
 {
-    // Clear pending interrupts
-    //NVIC_ClearPendingIRQ(PORTD_IRQn);
-
     // switch 1
     if ((PORTD->ISFR & (1 << 0))) {
         if (PTD->PDIR & MASK(0)) {

@@ -20,21 +20,25 @@
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
 
+void handleSwitchState(enum e_switchState switchstate);
+void deviceTestSequence(void);
+
 static uint16_t distance_cm = 0;
-static uint8_t switchstate = 1;
+static uint8_t programState = 0;
 
 // variables for keeping track of time of ACTION
 static uint32_t prevLCDUpdate = 0;
 static uint32_t prevStripUpdate = 0;
 static uint32_t prevPensionUpdate = 0;
+
 static enum e_mood mood = NORMAL;
 static enum e_developer person = 0;
 
 int main()
 {
-	init_sysTick();
+    init_sysTick();
     __enable_irq();
-	
+
     init_rgb();
     pit_init(); // Initialization of Periodic Interrupt Timer
     ultraS_sensor_init();
@@ -44,7 +48,6 @@ int main()
     init_adc_lm35();
 
     init_strip();
-
 
     datetime_t DateTime;
 
@@ -56,25 +59,7 @@ int main()
     set_rgb(0, 0, 0);
     _delay_ms(10);
 
-    // startup blink
-    setStrip_all(color32(255, 0, 0, 0));
-    Strip_send();
-    set_rgb(1, 0, 0);
-    _delay_ms(500);
-
-    setStrip_all(color32(0, 255, 0, 0));
-    Strip_send();
-    set_rgb(0, 1, 0);
-    _delay_ms(500);
-
-    setStrip_all(color32(0, 0, 255, 0));
-    Strip_send();
-    set_rgb(0, 0, 1);
-    _delay_ms(500);
-
-    setStrip_clear();
-    Strip_send();
-    set_rgb(0, 0, 0);
+    deviceTestSequence();
 
     while (1) {
 
@@ -82,13 +67,16 @@ int main()
         // uart_process();
 
         distance_cm = ultraS_get_distance_cm(); // get the value of the ultrasoon sensor in cm
-        switchstate = get_switchState();        // get the value of wich button is pressed
+
+        // get the value of wich button is pressed
+        handleSwitchState(get_switchState());
+
         //  uncomment the following code to set a fixed state for debugging purposes
         // switchstate = DEBUG; // or any other state
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
 
-        switch (switchstate) {
+        switch (programState) {
 
         case DRAWSTRIP:
         case TIMELCD:
@@ -148,7 +136,7 @@ int main()
             break;
 
         case TEMPSENSOR: {
-            uint16_t adc_result = read_adc_lm35();
+            uint16_t adc_result = (uint16_t)read_adc_lm35();
             float temperature = calculate_temperature_from_lm35(adc_result);
             addTemperatureToBuffer(temperature);
             float averageTemperature = calculateAverageTemperature();
@@ -158,6 +146,59 @@ int main()
             lcd_print(text);
         } break;
         }
+    }
+}
+
+void deviceTestSequence(void)
+{
+    // startup blink
+    setStrip_all(color32(255, 0, 0, 0));
+    Strip_send();
+    set_rgb(1, 0, 0);
+    _delay_ms(500);
+
+    setStrip_all(color32(0, 255, 0, 0));
+    Strip_send();
+    set_rgb(0, 1, 0);
+    _delay_ms(500);
+
+    setStrip_all(color32(0, 0, 255, 0));
+    Strip_send();
+    set_rgb(0, 0, 1);
+    _delay_ms(500);
+
+    setStrip_clear();
+    Strip_send();
+    set_rgb(0, 0, 0);
+}
+
+void handleSwitchState(enum e_switchState switchstate)
+{
+    switch (switchstate) {
+    case SWITCH_1_PRESSED:
+        if (programState < StateAmount) {
+            programState++;
+        } else {
+            programState = 0;
+        }
+        break;
+
+    case SWITCH_2_PRESSED:
+
+        if (mood < MoodAmount) {
+            mood++;
+        } else {
+            mood = 0;
+        }
+        break;
+
+    case SWITCH_1_2_PRESSED:
+        // run test sequence
+        deviceTestSequence();
+        break;
+
+    default:
+        break;
     }
 }
 

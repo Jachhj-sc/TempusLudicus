@@ -34,8 +34,11 @@ void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
         break;
 
     case NORMAL:
+		strip_drawTimeSimple(unix_timestamp);
+	break;
+	
     default:
-        strip_drawTimeSimple(unix_timestamp);
+        
         break;
     }
 }

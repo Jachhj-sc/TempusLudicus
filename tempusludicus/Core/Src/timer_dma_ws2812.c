@@ -9,6 +9,7 @@ static volatile uint8_t STRIP_dma_buffer[LEDPIXELCOUNT + 1][24];
 static volatile uint8_t STRIP_dma_buffer[LEDPIXELCOUNT + 1][32];
 #define bitsAmount 32
 #endif
+
 static volatile uint32_t currentBitTimingBuffer = 0ul;
 
 typedef struct {

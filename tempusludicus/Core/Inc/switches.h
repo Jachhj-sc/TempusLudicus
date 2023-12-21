@@ -35,6 +35,8 @@
 #include <MKL25Z4.h>
 #include <stdbool.h>
 
+#define BUTTON_STATE_KEEP_HIGH_TIME 500ul
+#define DEBOUNCE_TIME 100u //ms
 /// The number of keys available
 
 /// Defines the type for the keys
