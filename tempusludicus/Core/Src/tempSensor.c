@@ -57,8 +57,9 @@ float calculate_temperature_from_lm35(uint16_t adc_result)
     return temperature;
 }
 
-void addTemperatureToBuffer(float temperature){}
+void addTemperatureToBuffer(float temperature) {}
 
-float calculateAverageTemperature(void){ 
-	return 0.0;
+float calculateAverageTemperature(void)
+{
+    return 0.0;
 }

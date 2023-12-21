@@ -38,7 +38,7 @@ void PORTD_IRQHandler(void)
     // pulse from ultrasoon sensor interrupt
     if ((PORTD->ISFR & (1 << 5))) {
         if (PTD->PDIR & MASK(5)) {
-			tpm1_start();
+            tpm1_start();
         }
         if (!(PTD->PDIR & MASK(5))) {
             ultraS_updateDistance(tpm1_stop());

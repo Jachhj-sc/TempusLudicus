@@ -68,14 +68,14 @@ enum e_switchState get_switchState(void)
     static uint8_t timerStarted = 1;
     static uint32_t debounceStartTime = 0;
 
-	// start the debounce timer
+    // start the debounce timer
     if (((buttonState_1 == 1) || (buttonState_2 == 1)) && !timerStarted) {
         debounceStartTime = get_millis();
         timerStarted = 1;
     }
 
-	// wait until a certain amount of time is passed since the last buttonspress
-	// to be sure to catch both buttons to be pressed
+    // wait until a certain amount of time is passed since the last buttonspress
+    // to be sure to catch both buttons to be pressed
     if (get_millis() > debounceStartTime + DEBOUNCE_TIME) {
         if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
             state = SWITCH_1_2_PRESSED;

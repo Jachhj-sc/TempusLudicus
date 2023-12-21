@@ -32,9 +32,9 @@
 #ifndef ULTRASONIC_SENSOR_H
 #define ULTRASONIC_SENSOR_H
 
+#include "common.h"
 #include <MKL25Z4.h>
 #include <stdbool.h>
-#include "common.h"
 
 void ultraS_sensor_process(void);
 

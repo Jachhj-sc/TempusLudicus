@@ -34,11 +34,11 @@ void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
         break;
 
     case NORMAL:
-		strip_drawTimeSimple(unix_timestamp);
-	break;
-	
+        strip_drawTimeSimple(unix_timestamp);
+        break;
+
     default:
-        
+
         break;
     }
 }
@@ -105,4 +105,4 @@ void strip_drawTimeChill(uint32_t unix_timestamp) {}
 
 void strip_drawUltrasoneDistance(uint16_t distance_cm) {}
 
-void strip_drawPensions(enum e_developer person, uint16_t distance_cm){}
+void strip_drawPensions(enum e_developer person, uint16_t distance_cm) {}

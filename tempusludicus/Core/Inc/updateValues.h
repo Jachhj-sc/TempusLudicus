@@ -6,7 +6,11 @@
  *
  *****************************************************************************/
 #ifndef UPDATEVALUES_H
+#define UPDATEVALUES_H
+
 #include "common.h"
- void updateValue (void);
- extern  char moodSetting;
-#endif 
+
+void updateValue(void);
+extern char moodSetting;
+
+#endif
