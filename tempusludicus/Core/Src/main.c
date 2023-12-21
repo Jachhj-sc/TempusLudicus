@@ -134,7 +134,7 @@ int main(void)
             strip_drawPensions(person, distance_cm);
 
             if (get_millis() > prevPensionUpdate + 2000) {
-                person;
+                person++;
                 if (person >= developer_amount) {
                     person = 0;
                 }
