@@ -162,3 +162,25 @@ void uart0_send_uint32(uint32_t value)
     // Send the string using the existing uart0_send_string function
     uart0_send_string(buffer);
 }
+
+void uart0_send_float(float value)
+{
+    char buffer[20]; // Adjust the buffer size accordingly
+
+    // Convert the float to a string with 2 decimal places
+    snprintf(buffer, sizeof(buffer), "%.2f", value);
+
+    // Send the string using the existing uart0_send_string function
+    uart0_send_string(buffer);
+}
+
+void uart0_send_double(double value)
+{
+    char buffer[20]; // Adjust the buffer size accordingly
+
+    // Convert the double to a string with 2 decimal places
+    snprintf(buffer, sizeof(buffer), "%.2lf", value);
+
+    // Send the string using the existing uart0_send_string function
+    uart0_send_string(buffer);
+}

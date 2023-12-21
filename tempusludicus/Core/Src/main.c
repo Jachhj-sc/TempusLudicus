@@ -166,6 +166,17 @@ int main(void)
 						uart0_send_string(&moodSetting);
 							uart0_put_char('S');
 							
+							// Send temperature 
+            uint16_t adc_result = read_adc_lm35();
+            float temperature = calculate_temperature_from_lm35(adc_result);
+            addTemperatureToBuffer(temperature);
+            float averageTemperature = calculateAverageTemperature();							
+							
+
+							uart0_put_char('T');
+						uart0_send_float(averageTemperature);
+							uart0_put_char('S');
+							
 							// Block 
 						sentDebuginfo = 1;
 						}

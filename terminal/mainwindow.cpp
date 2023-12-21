@@ -237,8 +237,9 @@ void MainWindow::processReceivedData(const QByteArray &data)
         int startIndexU = partialData.indexOf('U');
         int startIndexD = partialData.indexOf('D');
         int startIndexM = partialData.indexOf('M');
+        int startIndexT = partialData.indexOf('T');
 
-        // Find the minimum valid startIndex among 'U', 'D', and 'M'
+        // Find the minimum valid startIndex among 'U', 'D', 'M', and 'T'
         int startIndex = -1;
         if (startIndexU != -1) {
             startIndex = (startIndex == -1) ? startIndexU : qMin(startIndex, startIndexU);
@@ -248,6 +249,9 @@ void MainWindow::processReceivedData(const QByteArray &data)
         }
         if (startIndexM != -1) {
             startIndex = (startIndex == -1) ? startIndexM : qMin(startIndex, startIndexM);
+        }
+        if (startIndexT != -1) {
+            startIndex = (startIndex == -1) ? startIndexT : qMin(startIndex, startIndexT);
         }
 
         if (startIndex != -1) {
@@ -262,7 +266,6 @@ void MainWindow::processReceivedData(const QByteArray &data)
         }
     }
 }
-
 
 void MainWindow::processPattern(const QByteArray &patternData)
 {
@@ -284,12 +287,18 @@ void MainWindow::processPattern(const QByteArray &patternData)
         QByteArray data = patternData.mid(1, patternData.length() - 2);
         m_debug->append("Mood setting: " + QString::number(data.toInt()));
     }
+    else if (pattern == 'T')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->append("Temperature state: " + QString::number(data.toDouble()));
+    }
     else
     {
         // Print debug information for unrecognized patterns
         m_debug->append("Unknown pattern: " + QString(pattern) + " Data: " + patternData);
     }
 }
+
 
 
 //! [7]
