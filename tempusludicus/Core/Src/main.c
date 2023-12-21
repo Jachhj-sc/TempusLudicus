@@ -20,7 +20,7 @@
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
 #include "updateValues.h"
-#include <ctype.h>
+#include <ctype.h>	
 
 void handleSwitchState(enum e_switchState switchstate);
 void deviceTestSequence(void);
@@ -79,9 +79,7 @@ int main(void)
 
         // get the value of wich button is pressed
         handleSwitchState(get_switchState());
-
-        //  uncomment the following code to set a fixed state for debugging purposes
-        // switchstate = DEBUG; // or any other state
+        //programState = DEBUG;
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
         uint16_t adc_result;
