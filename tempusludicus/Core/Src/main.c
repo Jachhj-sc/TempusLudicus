@@ -160,7 +160,7 @@ int main(void)
 							uart0_put_char('S');
 							
 							// Send temperature 
-            uint16_t adc_result = read_adc_lm35();
+            uint16_t adc_result = (uint16_t)read_adc_lm35();
             float temperature = calculate_temperature_from_lm35(adc_result);
             addTemperatureToBuffer(temperature);
             float averageTemperature = calculateAverageTemperature();							

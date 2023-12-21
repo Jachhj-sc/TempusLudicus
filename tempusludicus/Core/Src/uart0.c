@@ -31,6 +31,7 @@
  *****************************************************************************/
 #include "uart0.h"
 #include "stdio.h"
+#include "main.h"
 
 queue_t TxQ, RxQ;
 
@@ -93,8 +94,7 @@ void UART0_IRQHandler(void)
 
         if (!q_enqueue(&RxQ, c)) {
             // error - queue full.
-            while (1) {
-            }
+            HardFault_Handler();
         }
     }
     if (UART0->S1 & (UART_S1_OR_MASK | UART_S1_NF_MASK | UART_S1_FE_MASK | UART_S1_PF_MASK)) {
