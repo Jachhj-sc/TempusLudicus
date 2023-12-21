@@ -36,6 +36,7 @@ static uint32_t prevStripUpdate = 0;
 static uint32_t prevPensionUpdate = 0;
 static enum e_mood mood = NORMAL;
 static enum e_developer person = 0;
+static char sentDebuginfo = 0;
 
 // Variable for mood setting
 char moodSetting = 0;
@@ -101,8 +102,11 @@ int main(void)
         switch (switchstate) {
 
         case DRAWSTRIP:
+				{
+					sentDebuginfo = 0;
+				}
         case TIMELCD:
-
+						sentDebuginfo = 0;
             if (get_millis() > prevStripUpdate + 100) {
                 strip_drawTimeMood(unix_timestamp, mood);
                 prevStripUpdate = get_millis();
@@ -116,6 +120,7 @@ int main(void)
             break;
 
         case ULTRASOON:
+						sentDebuginfo = 0;
             lcd_set_cursor(0, 0);
             lcd_print("ultrasoon sensor");
             lcd_set_cursor(0, 1);
@@ -125,12 +130,13 @@ int main(void)
             break;
 
         case PENSIOEN:
+						sentDebuginfo = 0;
             lcd_set_cursor(0, 0);
             lcd_print("tijd <> pensioen");
             strip_drawPensions(person, distance_cm);
 
             if (get_millis() > prevPensionUpdate + 2000) {
-                person++;
+                person;
                 if (person >= developer_amount) {
                     person = 0;
                 }
@@ -139,13 +145,25 @@ int main(void)
             break;
 
         case DEBUG:
+
+						
             lcd_set_cursor(0, 0);
             lcd_print("***debug***     ");
-			
+						if (sentDebuginfo == 0){
+							uart0_put_char('U');
 						uart0_send_uint32(unix_timestamp);
+							uart0_put_char('S');
+							//delay_us (10);
+							uart0_put_char('D');
 						uart0_send_uint32(distance_cm);
-						uart0_send_uint32(distance_cm);
+							uart0_put_char('S');
+							//delay_us (10);
+							uart0_put_char('M');
 						uart0_send_string(&moodSetting);
+							uart0_put_char('S');
+							//delay_us (10);
+						sentDebuginfo = 1;
+						}
 
             // if object detected turn on strip
             if (get_millis() > prevStripUpdate + 100) {

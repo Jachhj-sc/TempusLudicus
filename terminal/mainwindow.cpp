@@ -212,31 +212,30 @@ void MainWindow::readData()
     m_console->putData(data);
     qDebug() << "Received" << data << "through UART!";
 
-    // Check for "/S" indicating the end of data through "bool QByteArray::contains(const QByteArray &ba) const;" function
     {
         // Process the data based on the specified patterns
-        if (data.startsWith("DU:"))
+        if (data.startsWith("U"))
         {
             // Extract the Unix Timestamp data and update m_debug
-            QByteArray timestampData = data.mid(3); // Skip "DU:"
+            QByteArray timestampData = data.mid(1); // Skip "U"
             m_debug->setPlainText("Unix Timestamp: " + QString::number(timestampData.toLong()));
         }
-        else if (data.startsWith("DM:"))
+        else if (data.startsWith("M"))
         {
             // Extract the Mood setting data and update m_debug
-            QByteArray moodData = data.mid(3); // Skip "DM:"
+            QByteArray moodData = data.mid(1); // Skip "M"
             m_debug->setPlainText("Mood setting: " + QString::number(moodData.toInt()));
         }
-        else if (data.startsWith("DD:"))
+        else if (data.startsWith("D"))
         {
             // Extract the Distance reading data and update m_debug
-            QByteArray distanceData = data.mid(3); // Skip "DD:"
+            QByteArray distanceData = data.mid(1); // Skip "D"
             m_debug->setPlainText("Distance state: " + QString::number(distanceData.toInt()));
         }
-        else if (data.startsWith("DT:"))
+        else if (data.startsWith("T"))
         {
             // Extract the Temperature reading data and update m_debug
-            QByteArray tempData = data.mid(3); // Skip "DT:"
+            QByteArray tempData = data.mid(1); // Skip "T"
             m_debug->setPlainText("Temperature state: " + QString::number(tempData.toInt()));
         }
     }
