@@ -234,7 +234,22 @@ void MainWindow::processReceivedData(const QByteArray &data)
 
     // Find complete patterns in the accumulated data
     while (partialData.contains('S')) {
-        int startIndex = partialData.indexOf('U');
+        int startIndexU = partialData.indexOf('U');
+        int startIndexD = partialData.indexOf('D');
+        int startIndexM = partialData.indexOf('M');
+
+        // Find the minimum valid startIndex among 'U', 'D', and 'M'
+        int startIndex = -1;
+        if (startIndexU != -1) {
+            startIndex = (startIndex == -1) ? startIndexU : qMin(startIndex, startIndexU);
+        }
+        if (startIndexD != -1) {
+            startIndex = (startIndex == -1) ? startIndexD : qMin(startIndex, startIndexD);
+        }
+        if (startIndexM != -1) {
+            startIndex = (startIndex == -1) ? startIndexM : qMin(startIndex, startIndexM);
+        }
+
         if (startIndex != -1) {
             // Check if partialData contains a complete pattern
             QByteArray patternData = partialData.mid(startIndex, partialData.indexOf('S', startIndex) + 1);
@@ -242,7 +257,7 @@ void MainWindow::processReceivedData(const QByteArray &data)
             // Remove the processed pattern from partialData
             partialData.remove(0, partialData.indexOf('S', startIndex) + 1);
         } else {
-            // No 'U' found, remove everything up to the first 'S'
+            // No valid identifier found, remove everything up to the first 'S'
             partialData.remove(0, partialData.indexOf('S') + 1);
         }
     }
