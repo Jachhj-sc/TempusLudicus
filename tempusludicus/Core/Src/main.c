@@ -162,8 +162,10 @@ int main(void)
 							uart0_put_char('S');
 							
 							// Send mood 
+							uint32_t debugMood = mood;
+							
 							uart0_put_char('M');
-						uart0_send_string(&moodSetting);
+						uart0_send_uint32(debugMood);
 							uart0_put_char('S');
 							
 							// Send temperature 
