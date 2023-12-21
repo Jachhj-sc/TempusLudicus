@@ -17,12 +17,12 @@
 // Define I/O pin
 ///////////////////////////////////////////////////////////////////////
 // #define RGB
-#define RGBW
+#define RGB
 
 #define sk6812_port C // Data port
 #define sk6812_pin  5 // Data out pin
 
-#define LEDPIXELCOUNT (5u)
+#define LEDPIXELCOUNT (300u)
 
 #define STRIP_COUNT (1)
 /*

@@ -6,11 +6,6 @@
     @version 0.2
     @date	11/11/23
 
-    @todo main logic bijschaven.
-    @todo ledDraw functies maken. william
-    @todo temp sensor implementeren. Maarten
-    @todo
-
     @copyright Copyright (c) 2023
  */
 #include "main.h"
@@ -40,7 +35,7 @@ int main()
     init_rgb();
     pit_init(); // Initialization of Periodic Interrupt Timer
     ultraS_sensor_init();
-    lcd_init();
+    // lcd_init();
     sw_init();
     init_sysTick();
     uart0_init();
@@ -53,21 +48,27 @@ int main()
 
     char text[80];
 
+    setStrip_Brightness(3);
+    setStrip_clear();
+    Strip_send();
+    set_rgb(0, 0, 0);
+    _delay_ms(10);
+
     // startup blink
-    setStrip_all(color32(2, 3, 0, 0));
+    setStrip_all(color32(255, 0, 0, 0));
     Strip_send();
     set_rgb(1, 0, 0);
-    _delay_ms(200);
+    _delay_ms(500);
 
-    setStrip_all(color32(0, 3, 2, 0));
+    setStrip_all(color32(0, 255, 0, 0));
     Strip_send();
     set_rgb(0, 1, 0);
-    _delay_ms(200);
+    _delay_ms(500);
 
-    setStrip_all(color32(0, 3, 0, 2));
+    setStrip_all(color32(0, 0, 255, 0));
     Strip_send();
-    set_rgb(0, 1, 1);
-    _delay_ms(200);
+    set_rgb(0, 0, 1);
+    _delay_ms(500);
 
     setStrip_clear();
     Strip_send();
@@ -80,8 +81,8 @@ int main()
 
         distance_cm = ultraS_get_distance_cm(); // get the value of the ultrasoon sensor in cm
         switchstate = get_switchState();        // get the value of wich button is pressed
-        // uncomment the following code to set a fixed state for debugging purposes
-        // switchstate = DRAWSTRIP; // or any other state
+        //  uncomment the following code to set a fixed state for debugging purposes
+        // switchstate = DEBUG; // or any other state
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
 
@@ -131,8 +132,8 @@ int main()
 
             // if object detected turn on strip
             if (get_millis() > prevStripUpdate + 100) {
-                if (distance_cm < 10) {
-                    setStrip_all(color32(0, 3, 0, 2));
+                if (distance_cm < 10 && distance_cm > 0) {
+                    setStrip_all(color32(255, 255, 0, 0));
                     Strip_send();
                     set_rgb(0, 1, 1);
                 } else {
@@ -155,5 +156,16 @@ int main()
             lcd_print(text);
         } break;
         }
+    }
+}
+
+void HardFault_Handler()
+{
+    while (1) {
+        set_rgb(1, 0, 0);
+        _delay_ms(500);
+
+        set_rgb(0, 0, 0);
+        _delay_ms(500);
     }
 }

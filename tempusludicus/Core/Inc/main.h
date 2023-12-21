@@ -9,9 +9,11 @@ enum switchState {
     ULTRASOON,
     PENSIOEN,
     DEBUG,
-	TEMPSENSOR,
+    TEMPSENSOR,
     StateAmount,
     TESTSEQUENCE
 };
+
+void HardFault_Handler(void);
 
 #endif

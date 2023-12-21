@@ -3,12 +3,13 @@
 
 // +1 is to define one pixel extra that will always hold zero. this is needed for the reset pulse
 #if defined(RGB)
-static volatile uint32_t STRIP_dma_buffer[LEDPIXELCOUNT+1][24];
+static volatile uint8_t STRIP_dma_buffer[LEDPIXELCOUNT + 1][24];
 #define bitsAmount 24
 #elif defined(RGBW)
-static volatile uint16_t STRIP_dma_buffer[LEDPIXELCOUNT + 1][32];
+static volatile uint8_t STRIP_dma_buffer[LEDPIXELCOUNT + 1][32];
 #define bitsAmount 32
 #endif
+static volatile uint32_t currentBitTimingBuffer = 0ul;
 
 typedef struct {
     uint32_t T0H;
@@ -34,12 +35,19 @@ static volatile uint8_t StipUpdateContinuously = 0;
 
 void conf_dma(void)
 {
-    // Configure DMA channel
+    // Configure DMA0 channels
     DMA0->DMA[0].SAR = (uint32_t)(STRIP_dma_buffer); // Source address
-    DMA0->DMA[0].DAR = (uint32_t)(&TPM2->CONTROLS[0].CnV);
-    DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR((LEDPIXELCOUNT * bitsAmount + 1) * sizeof(uint16_t)); // 2 bytes transfer
-    DMA0->DMA[0].DCR = DMA_DCR_D_REQ_MASK | DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK | DMA_DCR_SSIZE(1) | DMA_DCR_DSIZE(2) |
-                       DMA_DCR_SINC_MASK | DMA_DCR_EINT_MASK;
+    DMA0->DMA[0].DAR = (uint32_t)(&currentBitTimingBuffer);
+    DMA0->DMA[0].DSR_BCR = DMA_DSR_BCR_BCR((LEDPIXELCOUNT * bitsAmount + 1) * sizeof(uint8_t)); // 1 byte transfer
+    DMA0->DMA[0].DCR = DMA_DCR_D_REQ_MASK | DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK | DMA_DCR_SSIZE(1) | DMA_DCR_DSIZE(1) |
+                       DMA_DCR_SINC_MASK | DMA_DCR_EINT_MASK | DMA_DCR_LINKCC(2) | DMA_DCR_LCH1(1);
+
+    DMA0->DMA[1].SAR = (uint32_t)(&currentBitTimingBuffer); // Source address
+    DMA0->DMA[1].DAR = (uint32_t)(&TPM2->CONTROLS[0].CnV);
+    DMA0->DMA[1].DSR_BCR = DMA_DSR_BCR_BCR((LEDPIXELCOUNT * bitsAmount + 1) * sizeof(uint32_t)); // 4 bytes transfer
+    DMA0->DMA[1].DCR = DMA_DCR_D_REQ_MASK | DMA_DCR_ERQ_MASK | DMA_DCR_CS_MASK | DMA_DCR_SSIZE(0) | DMA_DCR_DSIZE(0);
+
+    TPM2->CONTROLS[0].CnV = 0;
 }
 
 // 48 Mhz
@@ -152,8 +160,8 @@ void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds)
                                        ((uint32_t)ledarray[i].b << 8 * 1) | ((uint32_t)ledarray[i].w << 8 * 0)));
         }
 #endif
-            // strip_write();
-            strip_sendContinuous();
+        // strip_write();
+        strip_sendContinuous();
     }
 }
 
