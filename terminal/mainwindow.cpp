@@ -117,6 +117,12 @@ MainWindow::~MainWindow()
 
 void MainWindow::buttonClicked(void)
 {
+    // Check if the serial port is open
+    if (!m_serial->isOpen()) {
+        QMessageBox::critical(this, tr("Error"), tr("Serial port is not open!"));
+        return;
+    }
+
     // Create an instance of FetchTimestamp
     FetchTimestamp fetcher;
 
@@ -139,7 +145,7 @@ void MainWindow::buttonClicked(void)
 
         // Update m_time QTextEdit with the timestamp
         m_timeStamp->setPlainText("Unix Timestamp: " + QString::number(timestamp) +
-                             "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
+                                  "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
     } else {
         std::cerr << "Failed to fetch Unix Timestamp." << std::endl;
 
@@ -147,6 +153,7 @@ void MainWindow::buttonClicked(void)
         m_timeStamp->setPlainText("Error: Failed to fetch Unix Timestamp");
     }
 }
+
 
 
 
