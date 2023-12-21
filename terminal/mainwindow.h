@@ -88,6 +88,8 @@ private slots:
     void about();
     void writeData(const QByteArray &data);
     void readData();
+    void processReceivedData(const QByteArray &data);
+    void processPattern(const QByteArray &patternData);
     void buttonClicked(void);
     void handleError(QSerialPort::SerialPortError error);
 

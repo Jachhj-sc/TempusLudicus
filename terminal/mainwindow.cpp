@@ -208,37 +208,67 @@ void MainWindow::writeData(const QByteArray &data)
 //! [7]
 void MainWindow::readData()
 {
-    const QByteArray data = m_serial->readAll();
-    m_console->putData(data);
-    qDebug() << "Received" << data << "through UART!";
+    static QByteArray receivedData; // Static variable to accumulate data between calls
 
-    {
-        // Process the data based on the specified patterns
-        if (data.startsWith("U"))
-        {
-            // Extract the Unix Timestamp data and update m_debug
-            QByteArray timestampData = data.mid(1); // Skip "U"
-            m_debug->setPlainText("Unix Timestamp: " + QString::number(timestampData.toLong()));
-        }
-        else if (data.startsWith("M"))
-        {
-            // Extract the Mood setting data and update m_debug
-            QByteArray moodData = data.mid(1); // Skip "M"
-            m_debug->setPlainText("Mood setting: " + QString::number(moodData.toInt()));
-        }
-        else if (data.startsWith("D"))
-        {
-            // Extract the Distance reading data and update m_debug
-            QByteArray distanceData = data.mid(1); // Skip "D"
-            m_debug->setPlainText("Distance state: " + QString::number(distanceData.toInt()));
-        }
-        else if (data.startsWith("T"))
-        {
-            // Extract the Temperature reading data and update m_debug
-            QByteArray tempData = data.mid(1); // Skip "T"
-            m_debug->setPlainText("Temperature state: " + QString::number(tempData.toInt()));
+    const QByteArray newData = m_serial->readAll();
+    m_console->putData(newData);
+    qDebug() << "Received" << newData << "through UART!";
+
+    receivedData += newData; // Accumulate received data
+
+    // Check for the end-of-message character 'S'
+    if (receivedData.contains('S')) {
+        // Process the complete message
+        processReceivedData(receivedData);
+
+        // Clear the accumulated data for the next message
+        receivedData.clear();
+    }
+}
+void MainWindow::processReceivedData(const QByteArray &data)
+{
+    static QByteArray partialData; // Static variable to accumulate partial data between calls
+
+    // Append the new data to the accumulated partial data
+    partialData += data;
+
+    // Find complete patterns in the accumulated data
+    while (partialData.contains('S')) {
+        int startIndex = partialData.indexOf('U');
+        if (startIndex != -1) {
+            // Check if partialData contains a complete pattern
+            QByteArray patternData = partialData.mid(startIndex, partialData.indexOf('S', startIndex) + 1);
+            processPattern(patternData);
+            // Remove the processed pattern from partialData
+            partialData.remove(0, partialData.indexOf('S', startIndex) + 1);
+        } else {
+            // No 'U' found, remove everything up to the first 'S'
+            partialData.remove(0, partialData.indexOf('S') + 1);
         }
     }
+}
+
+void MainWindow::processPattern(const QByteArray &patternData)
+{
+    char pattern = patternData.at(0);
+
+    // Process the data based on the specified patterns
+    if (pattern == 'U')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText("Unix Timestamp: " + QString::number(data.toLong()));
+    }
+    else if (pattern == 'M')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText("Mood setting: " + QString::number(data.toInt()));
+    }
+    else if (pattern == 'D')
+    {
+        QByteArray data = patternData.mid(1, patternData.length() - 2);
+        m_debug->setPlainText("Distance state: " + QString::number(data.toInt()));
+    }
+    // Add other patterns as needed
 }
 //! [7]
 
