@@ -22,7 +22,7 @@
 #define sk6812_port C // Data port
 #define sk6812_pin  5 // Data out pin
 
-#define LEDPIXELCOUNT (300u)
+#define LEDPIXELCOUNT (180u)
 
 #define STRIP_COUNT (1)
 /*

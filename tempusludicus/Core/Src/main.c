@@ -32,17 +32,19 @@ static enum e_developer person = 0;
 
 int main()
 {
+	init_sysTick();
+    __enable_irq();
+	
     init_rgb();
     pit_init(); // Initialization of Periodic Interrupt Timer
     ultraS_sensor_init();
-    // lcd_init();
+    lcd_init();
     sw_init();
-    init_sysTick();
     uart0_init();
     init_adc_lm35();
 
     init_strip();
-    __enable_irq();
+
 
     datetime_t DateTime;
 

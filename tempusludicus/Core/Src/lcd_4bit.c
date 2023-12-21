@@ -62,7 +62,7 @@
 
 /// \}
 
-uint8_t lcdConnected = 1;
+static volatile uint8_t lcdConnected = 1;
 
 /*!
  * \brief Translate the logic values in x to pin values DB4-DB7
@@ -175,17 +175,15 @@ void lcd_wait_while_busy(void)
 
         if (get_millis() > startTimeWait + LCD_WAIT_TIMEOUT) {
             lcdConnected = 0;
-            break;
+            return;
         }
     } while ((status & 0x80) != 0);
 
-    if (lcdConnected) {
-        // Make all databus pins output
-        PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
-        PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
-        PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
-        PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
-    }
+    // Make all databus pins output
+    PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
+    PIN_DB5_PT->PDDR = PIN_DB5_PT->PDDR | PIN_DB5;
+    PIN_DB6_PT->PDDR = PIN_DB6_PT->PDDR | PIN_DB6;
+    PIN_DB7_PT->PDDR = PIN_DB7_PT->PDDR | PIN_DB7;
 }
 
 /*!
