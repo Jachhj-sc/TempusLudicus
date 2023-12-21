@@ -144,7 +144,7 @@ void MainWindow::buttonClicked(void)
         m_serial->write("/S");
 
         // Update m_time QTextEdit with the timestamp
-        m_timeStamp->setPlainText("Unix Timestamp: " + QString::number(timestamp) +
+        m_timeStamp->setPlainText("Sent Unix Timestamp: " + QString::number(timestamp) +
                                   "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
     } else {
         std::cerr << "Failed to fetch Unix Timestamp." << std::endl;
@@ -282,27 +282,27 @@ void MainWindow::processPattern(const QByteArray &patternData)
     if (pattern == 'U')
     {
         QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText("Unix Timestamp: " + QString::number(data.toLong()));
+        m_debug->setPlainText("Recieved Unix Timestamp: " + QString::number(data.toLong()));
     }
     else if (pattern == 'D')
     {
         QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText(m_debug->toPlainText() + "\nDistance state: " + QString::number(data.toInt()));
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Distance state: " + QString::number(data.toInt()));
     }
     else if (pattern == 'M')
     {
         QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText(m_debug->toPlainText() + "\nMood setting: " + QString::number(data.toInt()));
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Mood setting: " + QString::number(data.toInt()));
     }
     else if (pattern == 'T')
     {
         QByteArray data = patternData.mid(1, patternData.length() - 2);
-        m_debug->setPlainText(m_debug->toPlainText() + "\nTemperature state: " + QString::number(data.toDouble()));
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Temperature state: " + QString::number(data.toDouble()));
     }
     else
     {
         // Print debug information for unrecognized patterns
-        m_debug->setPlainText(m_debug->toPlainText() + "\nUnknown pattern: " + QString(pattern) + " Data: " + patternData);
+        m_debug->setPlainText(m_debug->toPlainText() + "\nRecieved Unknown pattern: " + QString(pattern) + " Data: " + patternData);
     }
 }
 
