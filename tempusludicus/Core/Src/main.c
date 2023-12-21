@@ -71,7 +71,6 @@ int main(void)
 
         if (!q_empty(&RxQ)) {
             updateValue();
-        } else {
         }
 
         ultraS_sensor_process();
@@ -132,13 +131,12 @@ int main(void)
 
         case DEBUG:
 
-            // Increment the debug counter
-            debugCounter++;
+            // if object detected turn on strip
+            if (get_millis() > prevStripUpdate + 100) {
 
-            lcd_set_cursor(0, 0);
-            lcd_print("***debug***     ");
+                lcd_set_cursor(0, 0);
+                lcd_print("***debug***     ");
 
-            if (debugCounter >= 100) {
                 // Send unix timestamp
                 uart0_put_char('U');
                 uart0_send_uint32(unix_timestamp);
@@ -166,11 +164,6 @@ int main(void)
                 uart0_send_float(averageTemperature);
                 uart0_put_char('S');
 
-                debugCounter = 0;
-            }
-
-            // if object detected turn on strip
-            if (get_millis() > prevStripUpdate + 100) {
                 if (distance_cm < 10 && distance_cm > 0) {
                     setStrip_all(color32(255, 255, 0, 0));
                     Strip_send();
@@ -182,10 +175,9 @@ int main(void)
                 }
                 prevStripUpdate = get_millis();
             }
-
             break;
 
-        case TEMPSENSOR: {
+        case TEMPSENSOR:
             uint16_t adc_result = (uint16_t)read_adc_lm35();
             float temperature = calculate_temperature_from_lm35(adc_result);
             addTemperatureToBuffer(temperature);
@@ -194,7 +186,7 @@ int main(void)
             lcd_set_cursor(0, 0);
             sprintf(text, "Temp: %.2f C   ", averageTemperature);
             lcd_print(text);
-        } break;
+            break;
         }
     }
 }

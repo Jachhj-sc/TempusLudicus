@@ -33,9 +33,7 @@ void updateValue(void)
 
             if (isdigit((unsigned char)nextChar)) {
                 receivedTimestamp = receivedTimestamp * 10 + (nextChar - '0');
-            } else
-
-            {
+            } else {
                 // Break the loop if a non-digit character is encountered
                 break;
             }
