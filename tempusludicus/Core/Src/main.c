@@ -184,6 +184,8 @@ int main(void)
     }
 }
 
+
+
 void deviceTestSequence(void)
 {
     // startup blink
@@ -237,7 +239,7 @@ void handleSwitchState(enum e_switchState switchstate)
     }
 }
 
-void HardFault_Handler()
+void HardFault_Handler(void)
 {
     while (1) {
         set_rgb(1, 0, 0);
