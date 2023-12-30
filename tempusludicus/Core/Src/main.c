@@ -22,6 +22,9 @@
 #include "updateValues.h"
 #include <ctype.h>	
 
+#define MIN_TEMPERATURE 2.0f
+#define MAX_TEMPERATURE 120.0f
+
 void handleSwitchState(enum e_switchState switchstate);
 void deviceTestSequence(void);
 
@@ -65,6 +68,9 @@ int main(void)
     _delay_ms(10);
 
     deviceTestSequence();
+		
+		// testsimulatie
+		programState = TEMPSENSOR;
 
     while (1) {
 
@@ -170,16 +176,21 @@ int main(void)
             }
             break;
 
-        case TEMPSENSOR:
-            adc_result = (uint16_t)read_adc_lm35();
-            float temperature = calculate_temperature_from_lm35(adc_result);
-            addTemperatureToBuffer(temperature);
-            float averageTemperature = calculateAverageTemperature();
+case TEMPSENSOR:
+                adc_result = (uint16_t)read_adc_lm35();
+                float temperature = calculate_temperature_from_lm35(adc_result);
+                if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
+                    lcd_set_cursor(0, 0);
+									lcd_print("  Error!  ");
+                } else {
+                    addTemperatureToBuffer(temperature);
+                    float averageTemperature = calculateAverageTemperature();
+                    lcd_set_cursor(0, 0);
+                    sprintf(text, "Temp: %.2f C   ", averageTemperature);
+                    lcd_print(text);
+                }
+                break;
 
-            lcd_set_cursor(0, 0);
-            sprintf(text, "Temp: %.2f C   ", averageTemperature);
-            lcd_print(text);
-            break;
         }
     }
 }
