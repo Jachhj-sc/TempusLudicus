@@ -12,10 +12,13 @@
 void init_adc_lm35()
 {
     // Enable clock to Port B (PTB3_SE13)
-    SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+    SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-    // Configure PTB3 as ADC0_SE13
-    PORTB->PCR[3] = PORT_PCR_MUX(0);
+    // // Configure PTB3 as ADC0_SE13
+    // PORTB->PCR[3] = PORT_PCR_MUX(0);
+
+    // Configure PTD1 as ADC0_SE5b
+    PORTD->PCR[1] = PORT_PCR_MUX(0);
 
     // Enable clock to ADC0
     SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK;
@@ -33,8 +36,11 @@ void init_adc_lm35()
 
 uint32_t read_adc_lm35()
 {
+    // // Start de conversie door het SC1-register te schrijven
+    // ADC0->SC1[0] = ADC_SC1_ADCH(13);
+
     // Start de conversie door het SC1-register te schrijven
-    ADC0->SC1[0] = ADC_SC1_ADCH(8);
+    ADC0->SC1[0] = ADC_SC1_ADCH(5);
 
     // Wacht tot de conversie voltooid is
     while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK))
