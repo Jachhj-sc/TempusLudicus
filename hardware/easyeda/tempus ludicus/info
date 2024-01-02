@@ -1,0 +1,728 @@
+{
+  "uuid": "3fd1d7ec3eceb37db8e82cc380545c71",
+  "path": "Offline/tempus ludicus",
+  "name": "tempus ludicus",
+  "content": "hardware design for the rgb ledstrip clock project, tempus ludicus ",
+  "created_at": "2023-12-30 19:06:58",
+  "updated_at": "2024-01-01 18:58:15",
+  "stick": "",
+  "documents": [
+    {
+      "uuid": "b732ea02159dca34088226ff84ddeb07",
+      "title": "MLK25Z",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "3e6f29258f104200b999f7386a01951c": 1,
+        "ef55ad8c00d44d9e9c861cb9234e511b": 2,
+        "29a9ed4bd7e44ab5b1151bac840be6d3": 1,
+        "fbc9a081bfdb44a9b58b590f7333863a": 1,
+        "e0b0d01b6e0d44dbab9db0ad79a427bc": 1,
+        "b0248eb51e084227889f2cb84eab79c4": 6,
+        "7415ddb9e73b4c299a9282873248f379": 1,
+        "18479f1c4d4749c5a4c4387846c5d657": 2,
+        "d06fd183e0b742e191bf48a41812063c": 2,
+        "612537c043edae2bb24b4bae834f14d8": 1,
+        "4f8a66c9fcc0a59ea943efe56abbd5c2": 1,
+        "eaa76950fd7343a1953943ee7b9978d3": 2,
+        "a2ea98d9f46f490c82ff5140cbb3c89e": 2,
+        "2bfda8c701df4b6db8594acc26a25912": 2,
+        "1eadff5b95d843aeb4cca822cae4fd24": 1,
+        "8cb0931e7aee4571ab281a4f2e7b6e80": 1,
+        "3ec77201bbcd4ecd8722658d581a4e60": 1
+      },
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "10u",
+          2,
+          "CAP-D5.0×F2.0",
+          "C1,C2",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D5.0×F2.0_US",
+            "Manufacturer Part": "",
+            "puuid": "9ab4ba27487f4e968ec8c676394520e2",
+            "uuid": "d06fd183e0b742e191bf48a41812063c"
+          }
+        ],
+        [
+          "1000u",
+          2,
+          "CAP-D12.5×F5.0",
+          "C3,C6",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D12.5×F5.0_US",
+            "Manufacturer Part": "",
+            "puuid": "4cabd9c15bac456496d09a33b7c9d398",
+            "uuid": "a2ea98d9f46f490c82ff5140cbb3c89e"
+          }
+        ],
+        [
+          "0.22u",
+          1,
+          "CAP-D4.0×F1.5",
+          "C4",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D4.0×F1.5_US",
+            "Manufacturer Part": "",
+            "puuid": "d0dcff2f94d04daa9354f40d74908283",
+            "uuid": "2bfda8c701df4b6db8594acc26a25912"
+          }
+        ],
+        [
+          "0.1u",
+          1,
+          "CAP-D4.0×F1.5",
+          "C5",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D4.0×F1.5_US",
+            "Manufacturer Part": "",
+            "puuid": "d0dcff2f94d04daa9354f40d74908283",
+            "uuid": "2bfda8c701df4b6db8594acc26a25912"
+          }
+        ],
+        [
+          "HDR-F-2.54_1x16",
+          1,
+          "HDR-F-2.54_1X16",
+          "H1",
+          {
+            "Supplier Part": "C66987",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-F-2.54_1x16",
+            "puuid": "29c1c15af3f64c36a30bd7e9025580c2",
+            "uuid": "fbc9a081bfdb44a9b58b590f7333863a"
+          }
+        ],
+        [
+          "HDR-F-2.54_1x4",
+          2,
+          "HDR-F-2.54_1X4",
+          "H2,H3",
+          {
+            "Supplier Part": "C225501",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-F-2.54_1x4",
+            "puuid": "21473b495b6340c992965357d5701779",
+            "uuid": "eaa76950fd7343a1953943ee7b9978d3"
+          }
+        ],
+        [
+          "HDR-F-2.54_1x2",
+          1,
+          "HDR-F-2.54_1X2",
+          "H4",
+          {
+            "Supplier Part": "C49661",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "image": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-F-2.54_1x2",
+            "puuid": "36b1306a115341f4b4d9407fb34974e0",
+            "uuid": "3ec77201bbcd4ecd8722658d581a4e60"
+          }
+        ],
+        [
+          "HDR-M-2.54_2x10",
+          1,
+          "HDR-M-2.54_2X10",
+          "J1",
+          {
+            "Supplier Part": "C124359",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-M-2.54_2x10",
+            "puuid": "e76cf636bce14c43815bf1fe21a7cd4f",
+            "uuid": "3e6f29258f104200b999f7386a01951c"
+          }
+        ],
+        [
+          "HDR-M-2.54_2x8",
+          2,
+          "HDR-M-2.54_2X8",
+          "J2,J3",
+          {
+            "Supplier Part": "C68234",
+            "Supplier": "LCSC",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-M-2.54_2x8",
+            "puuid": "31640b9c0b964cd8b0c5b945380a91fb",
+            "uuid": "ef55ad8c00d44d9e9c861cb9234e511b"
+          }
+        ],
+        [
+          "K4-6×6_TH",
+          2,
+          "KEY-TH_4P-L6.0-W6.0-P4.50-LS6.5",
+          "KEY1,KEY2",
+          {
+            "Supplier": "LCSC",
+            "Supplier Part": "C136684",
+            "Manufacturer": "韩国韩荣",
+            "Manufacturer Part": "K2-1102DP-E4SW-04",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "K4-6×6_TH",
+            "puuid": "557c105168d444a992e25584f55bcbb2",
+            "uuid": "18479f1c4d4749c5a4c4387846c5d657"
+          }
+        ],
+        [
+          "CONN-TH_2P-P5.00",
+          1,
+          "CONN-TH_2P-P5.00",
+          "P1",
+          {
+            "Supplier Part": "",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "image": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CONN-TH_2P-P5.00",
+            "puuid": "be1b3456245c4373bfecde52b7e1b1d6",
+            "uuid": "8cb0931e7aee4571ab281a4f2e7b6e80"
+          }
+        ],
+        [
+          "C1815",
+          1,
+          "TO-92-3_L5.1-W4.1-P1.27-L",
+          "Q1",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "SEMTECH",
+            "Manufacturer Part": "2N3904",
+            "Supplier Part": "C118538",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "2N3904(TO-92)",
+            "puuid": "6a8cc0d167d04926a8ac5a757ba65780",
+            "uuid": "7415ddb9e73b4c299a9282873248f379"
+          }
+        ],
+        [
+          "1k",
+          3,
+          "R0603",
+          "R1,R3,R4",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "220",
+          2,
+          "R0603",
+          "R2,R5",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "330",
+          1,
+          "R0603",
+          "R6",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "R_3386P_US",
+          1,
+          "RES-ADJ-TH_3386P",
+          "RP1",
+          {
+            "Supplier Part": "",
+            "Supplier": "LCSC",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "value(Ω)": "10K",
+            "spiceSymbolName": "R_3386P_US",
+            "puuid": "ce6e0cc9b0684cd986edbf86d7075dfd",
+            "uuid": "e0b0d01b6e0d44dbab9db0ad79a427bc"
+          }
+        ],
+        [
+          "SN74HC14N",
+          1,
+          "DIP-14_L19.2-W6.6-P2.54-LS10.9-BL",
+          "U1",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "TI(德州仪器)",
+            "Manufacturer Part": "SN74HC14N",
+            "Supplier Part": "C2907",
+            "JLCPCB Part Class": "Extended Part",
+            "spiceSymbolName": "SN74HC14N",
+            "puuid": "b33782c06f59456891d65206827fb3a9",
+            "uuid": "612537c043edae2bb24b4bae834f14d8"
+          }
+        ],
+        [
+          "LM35DZ",
+          1,
+          "TO-92-3_L4.9-W3.7-P1.27-L",
+          "U2",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "TI(德州仪器)",
+            "Manufacturer Part": "LM35DZ/NOPB",
+            "Supplier Part": "C12165",
+            "JLCPCB Part Class": "Extended Part",
+            "spiceSymbolName": "LM35DZ",
+            "puuid": "6924b36489de4921bb29ca14bf27c33f",
+            "uuid": "4f8a66c9fcc0a59ea943efe56abbd5c2"
+          }
+        ],
+        [
+          "L7805ACP",
+          1,
+          "TO-220FP-3_L10.2-W4.5-P2.54-L",
+          "U3",
+          {
+            "Contributor": "lcsc",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2970962",
+            "Manufacturer": "ST(意法半导体)",
+            "Manufacturer Part": "L7805ACP",
+            "spiceSymbolName": "L7805ACP",
+            "puuid": "5539b95214a44cd99cc7da94d596cb45",
+            "uuid": "1eadff5b95d843aeb4cca822cae4fd24"
+          }
+        ]
+      ],
+      "updateTime": 1704131769,
+      "createTime": 1703959619,
+      "histories": [],
+      "created_at": "2023-12-30 19:06:59",
+      "updated_at": "2024-01-01 18:56:09"
+    },
+    {
+      "uuid": "c1d0d1c4fe9b2b233df272d7ecbc07f1",
+      "title": "strip layout",
+      "description": "",
+      "docType": "1",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {},
+      "BOM": [
+        [
+          "Value",
+          "Quantity",
+          "Package",
+          "Components",
+          "CustomPara"
+        ],
+        [
+          "10u",
+          2,
+          "CAP-D5.0×F2.0",
+          "C1,C2",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D5.0×F2.0_US",
+            "Manufacturer Part": "",
+            "puuid": "9ab4ba27487f4e968ec8c676394520e2",
+            "uuid": "d06fd183e0b742e191bf48a41812063c"
+          }
+        ],
+        [
+          "1000u",
+          1,
+          "CAP-D12.5×F5.0",
+          "C3",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D12.5×F5.0_US",
+            "Manufacturer Part": "",
+            "puuid": "4cabd9c15bac456496d09a33b7c9d398",
+            "uuid": "a2ea98d9f46f490c82ff5140cbb3c89e"
+          }
+        ],
+        [
+          "0.22u",
+          1,
+          "CAP-D4.0×F1.5",
+          "C4",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D4.0×F1.5_US",
+            "Manufacturer Part": "",
+            "puuid": "d0dcff2f94d04daa9354f40d74908283",
+            "uuid": "2bfda8c701df4b6db8594acc26a25912"
+          }
+        ],
+        [
+          "0.1u",
+          1,
+          "CAP-D4.0×F1.5",
+          "C5",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D4.0×F1.5_US",
+            "Manufacturer Part": "",
+            "puuid": "d0dcff2f94d04daa9354f40d74908283",
+            "uuid": "2bfda8c701df4b6db8594acc26a25912"
+          }
+        ],
+        [
+          "1u",
+          1,
+          "CAP-D12.5×F5.0",
+          "C6",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D12.5×F5.0_US",
+            "Manufacturer Part": "",
+            "puuid": "4cabd9c15bac456496d09a33b7c9d398",
+            "uuid": "a2ea98d9f46f490c82ff5140cbb3c89e"
+          }
+        ],
+        [
+          "HDR-F-2.54_1x16",
+          1,
+          "HDR-F-2.54_1X16",
+          "H1",
+          {
+            "Supplier Part": "C66987",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-F-2.54_1x16",
+            "puuid": "29c1c15af3f64c36a30bd7e9025580c2",
+            "uuid": "fbc9a081bfdb44a9b58b590f7333863a"
+          }
+        ],
+        [
+          "HDR-F-2.54_1x4",
+          2,
+          "HDR-F-2.54_1X4",
+          "H2,H3",
+          {
+            "Supplier Part": "C225501",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-F-2.54_1x4",
+            "puuid": "21473b495b6340c992965357d5701779",
+            "uuid": "eaa76950fd7343a1953943ee7b9978d3"
+          }
+        ],
+        [
+          "HDR-F-2.54_1x2",
+          1,
+          "HDR-F-2.54_1X2",
+          "H4",
+          {
+            "Supplier Part": "C49661",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "image": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-F-2.54_1x2",
+            "puuid": "36b1306a115341f4b4d9407fb34974e0",
+            "uuid": "3ec77201bbcd4ecd8722658d581a4e60"
+          }
+        ],
+        [
+          "HDR-M-2.54_2x10",
+          1,
+          "HDR-M-2.54_2X10",
+          "J1",
+          {
+            "Supplier Part": "C124359",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-M-2.54_2x10",
+            "puuid": "e76cf636bce14c43815bf1fe21a7cd4f",
+            "uuid": "3e6f29258f104200b999f7386a01951c"
+          }
+        ],
+        [
+          "HDR-M-2.54_2x8",
+          2,
+          "HDR-M-2.54_2X8",
+          "J2,J3",
+          {
+            "Supplier Part": "C68234",
+            "Supplier": "LCSC",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "HDR-M-2.54_2x8",
+            "puuid": "31640b9c0b964cd8b0c5b945380a91fb",
+            "uuid": "ef55ad8c00d44d9e9c861cb9234e511b"
+          }
+        ],
+        [
+          "K4-6×6_TH",
+          2,
+          "KEY-TH_4P-L6.0-W6.0-P4.50-LS6.5",
+          "KEY1,KEY2",
+          {
+            "Supplier": "LCSC",
+            "Supplier Part": "C136684",
+            "Manufacturer": "韩国韩荣",
+            "Manufacturer Part": "K2-1102DP-E4SW-04",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "K4-6×6_TH",
+            "puuid": "557c105168d444a992e25584f55bcbb2",
+            "uuid": "18479f1c4d4749c5a4c4387846c5d657"
+          }
+        ],
+        [
+          "CONN-TH_2P-P5.00",
+          1,
+          "CONN-TH_2P-P5.00",
+          "P1",
+          {
+            "Supplier Part": "",
+            "Supplier": "LCSC",
+            "Manufacturer": "",
+            "Manufacturer Part": "",
+            "image": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CONN-TH_2P-P5.00",
+            "puuid": "be1b3456245c4373bfecde52b7e1b1d6",
+            "uuid": "8cb0931e7aee4571ab281a4f2e7b6e80"
+          }
+        ],
+        [
+          "C1815",
+          1,
+          "TO-92-3_L5.1-W4.1-P1.27-L",
+          "Q1",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "SEMTECH",
+            "Manufacturer Part": "2N3904",
+            "Supplier Part": "C118538",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "2N3904(TO-92)",
+            "puuid": "6a8cc0d167d04926a8ac5a757ba65780",
+            "uuid": "7415ddb9e73b4c299a9282873248f379"
+          }
+        ],
+        [
+          "1k",
+          3,
+          "R0603",
+          "R1,R3,R4",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "220",
+          2,
+          "R0603",
+          "R2,R5",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "330",
+          1,
+          "R0603",
+          "R6",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "R_0603_US",
+            "Manufacturer Part": "",
+            "puuid": "398691f1f785460098bbe5ee6590333c",
+            "uuid": "b0248eb51e084227889f2cb84eab79c4"
+          }
+        ],
+        [
+          "R_3386P_US",
+          1,
+          "RES-ADJ-TH_3386P",
+          "RP1",
+          {
+            "Supplier Part": "",
+            "Supplier": "LCSC",
+            "Manufacturer Part": "",
+            "Contributor": "LCEDA_Lib",
+            "value(Ω)": "10K",
+            "spiceSymbolName": "R_3386P_US",
+            "puuid": "ce6e0cc9b0684cd986edbf86d7075dfd",
+            "uuid": "e0b0d01b6e0d44dbab9db0ad79a427bc"
+          }
+        ],
+        [
+          "SN74HC14N",
+          1,
+          "DIP-14_L19.2-W6.6-P2.54-LS10.9-BL",
+          "U1",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "TI(德州仪器)",
+            "Manufacturer Part": "SN74HC14N",
+            "Supplier Part": "C2907",
+            "JLCPCB Part Class": "Extended Part",
+            "spiceSymbolName": "SN74HC14N",
+            "puuid": "b33782c06f59456891d65206827fb3a9",
+            "uuid": "612537c043edae2bb24b4bae834f14d8"
+          }
+        ],
+        [
+          "LM35DZ",
+          1,
+          "TO-92-3_L4.9-W3.7-P1.27-L",
+          "U2",
+          {
+            "Supplier": "LCSC",
+            "Manufacturer": "TI(德州仪器)",
+            "Manufacturer Part": "LM35DZ/NOPB",
+            "Supplier Part": "C12165",
+            "JLCPCB Part Class": "Extended Part",
+            "spiceSymbolName": "LM35DZ",
+            "puuid": "6924b36489de4921bb29ca14bf27c33f",
+            "uuid": "4f8a66c9fcc0a59ea943efe56abbd5c2"
+          }
+        ],
+        [
+          "L7805ACP",
+          1,
+          "TO-220FP-3_L10.2-W4.5-P2.54-L",
+          "U3",
+          {
+            "Contributor": "lcsc",
+            "Supplier": "LCSC",
+            "Supplier Part": "C2970962",
+            "Manufacturer": "ST(意法半导体)",
+            "Manufacturer Part": "L7805ACP",
+            "spiceSymbolName": "L7805ACP",
+            "puuid": "5539b95214a44cd99cc7da94d596cb45",
+            "uuid": "1eadff5b95d843aeb4cca822cae4fd24"
+          }
+        ]
+      ],
+      "updateTime": 1704131730,
+      "createTime": 1704131321,
+      "histories": [],
+      "created_at": "2024-01-01 18:48:41",
+      "updated_at": "2024-01-01 18:55:30"
+    },
+    {
+      "uuid": "7d594dc15b302a19695d3daf9c701d97",
+      "puuid": "3fd1d7ec3eceb37db8e82cc380545c71",
+      "title": "PCB_tempus ludicus",
+      "filename": "PCB_tempus ludicus.json",
+      "description": "",
+      "docType": "3",
+      "master": "",
+      "thumb": "/images/thumb-default.png",
+      "components": {
+        "9ab4ba27487f4e968ec8c676394520e2": 2,
+        "4cabd9c15bac456496d09a33b7c9d398": 2,
+        "d0dcff2f94d04daa9354f40d74908283": 2,
+        "29c1c15af3f64c36a30bd7e9025580c2": 1,
+        "21473b495b6340c992965357d5701779": 2,
+        "36b1306a115341f4b4d9407fb34974e0": 1,
+        "e76cf636bce14c43815bf1fe21a7cd4f": 1,
+        "31640b9c0b964cd8b0c5b945380a91fb": 2,
+        "557c105168d444a992e25584f55bcbb2": 2,
+        "be1b3456245c4373bfecde52b7e1b1d6": 1,
+        "6a8cc0d167d04926a8ac5a757ba65780": 1,
+        "398691f1f785460098bbe5ee6590333c": 6,
+        "ce6e0cc9b0684cd986edbf86d7075dfd": 1,
+        "b33782c06f59456891d65206827fb3a9": 1,
+        "6924b36489de4921bb29ca14bf27c33f": 1,
+        "5539b95214a44cd99cc7da94d596cb45": 1
+      },
+      "BOM": [],
+      "updateTime": 1704131895,
+      "createTime": 1704131895,
+      "histories": [],
+      "created_at": "2024-01-01 18:58:15",
+      "updated_at": "2024-01-01 18:58:15"
+    }
+  ],
+  "sort": [
+    "b732ea02159dca34088226ff84ddeb07",
+    "c1d0d1c4fe9b2b233df272d7ecbc07f1"
+  ],
+  "title": "tempus ludicus",
+  "foldername": "tempus ludicus",
+  "schfilename": "tempus ludicus.json",
+  "schfilemtime": 1704131769447
+}
