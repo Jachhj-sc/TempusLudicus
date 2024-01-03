@@ -50,7 +50,7 @@
 /// \{
 #define PIN_DB4_PORT  PORTC
 #define PIN_DB4_PT    PTC
-#define PIN_DB4_SHIFT (0)
+#define PIN_DB4_SHIFT (4)
 #define PIN_DB4       (1 << PIN_DB4_SHIFT)
 /// \}
 
@@ -58,7 +58,7 @@
 /// \{
 #define PIN_DB5_PORT  PORTC
 #define PIN_DB5_PT    PTC
-#define PIN_DB5_SHIFT (4)
+#define PIN_DB5_SHIFT (5)
 #define PIN_DB5       (1 << PIN_DB5_SHIFT)
 /// \}
 
@@ -66,7 +66,7 @@
 /// \{
 #define PIN_DB6_PORT  PORTC
 #define PIN_DB6_PT    PTC
-#define PIN_DB6_SHIFT (5)
+#define PIN_DB6_SHIFT (6)
 #define PIN_DB6       (1 << PIN_DB6_SHIFT)
 /// \}
 
@@ -74,7 +74,7 @@
 /// \{
 #define PIN_DB7_PORT  PORTC
 #define PIN_DB7_PT    PTC
-#define PIN_DB7_SHIFT (6)
+#define PIN_DB7_SHIFT (10)
 #define PIN_DB7       (1 << PIN_DB7_SHIFT)
 /// \}
 
@@ -82,7 +82,7 @@
 /// \{
 #define PIN_RS_PORT  PORTC
 #define PIN_RS_PT    PTC
-#define PIN_RS_SHIFT (11)
+#define PIN_RS_SHIFT (7)
 #define PIN_RS       (1 << PIN_RS_SHIFT)
 /// \}
 
@@ -90,7 +90,7 @@
 /// \{
 #define PIN_RW_PORT  PORTC
 #define PIN_RW_PT    PTC
-#define PIN_RW_SHIFT (10)
+#define PIN_RW_SHIFT (0)
 #define PIN_RW       (1 << PIN_RW_SHIFT)
 /// \}
 
@@ -98,7 +98,7 @@
 /// \{
 #define PIN_E_PORT  PORTC
 #define PIN_E_PT    PTC
-#define PIN_E_SHIFT (7)
+#define PIN_E_SHIFT (3)
 #define PIN_E       (1 << PIN_E_SHIFT)
 /// \}
 

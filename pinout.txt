@@ -21,5 +21,6 @@ SW
 
 temp sensor:
 	PTD1 ADC0_SE5b //old: PTB3 ADC0_SE13 
-
-
+	
+LED strip brightness pot
+	PTD6 ADC0_SE7b
