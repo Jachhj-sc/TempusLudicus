@@ -9,7 +9,7 @@
 FetchTimestamp::FetchTimestamp() {
 }
 
-long long FetchTimestamp::fetchUnixTimestamp() {
+std::pair<long long, int> FetchTimestamp::fetchUnixTimestampAndOffset() {
     // Set up the URL of a time server that provides Unix timestamp
     std::string url = "http://worldtimeapi.org/api/ip";
 
@@ -18,7 +18,7 @@ long long FetchTimestamp::fetchUnixTimestamp() {
 
     if (!pipe) {
         std::cerr << "Error: Unable to open pipe." << std::endl;
-        return -1; // Return -1 on failure
+        return std::make_pair(-1, 0); // Return an error code
     }
 
     // Read the response from the pipe
@@ -80,5 +80,5 @@ long long FetchTimestamp::fetchUnixTimestamp() {
         timestamp += 3600; // Add one hour if daylight saving is in effect
     }
 
-    return timestamp;
+    return std::make_pair(timestamp, utcOffset);
 }
