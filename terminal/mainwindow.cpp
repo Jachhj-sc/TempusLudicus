@@ -145,7 +145,10 @@ void MainWindow::buttonClicked(void)
 
         // Update m_time QTextEdit with the timestamp
         m_timeStamp->setPlainText("Sent Unix Timestamp: " + QString::number(timestamp) +
-                                  "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
+                                  "\nHuman-readable Time: " +
+                                  QDateTime::fromSecsSinceEpoch(timestamp)
+                                      .addSecs(-1 * 3600) // Cheating way apply the UTC offset, otherwise the time in the application would be off.
+                                      .toString("yyyy-MM-dd hh:mm:ss"));
     } else {
         std::cerr << "Failed to fetch Unix Timestamp." << std::endl;
 
