@@ -58,11 +58,11 @@ void ultraS_sensor_process(void)
 void ultraS_sensor_init(void)
 {
     SIM_SCGC6 |= SIM_SCGC6_TPM1_MASK; // enable clock
-    SIM_SCGC5 |= SIM_SCGC5_PORTB_MASK;
+    SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
     SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-    PORTB->PCR[1] = PORT_PCR_MUX(1); // gpio
-    GPIOB->PDDR |= MASK(1);          // output portb 1
+    PORTA->PCR[13] = PORT_PCR_MUX(1); // gpio
+    GPIOA->PDDR |= MASK(1);           // output porta 13
 
     TPM1->SC |= TPM_SC_PS(5); // prescaler 32x
     tpm1_psc = 32;            // add prescaler value to variable for easy calculations

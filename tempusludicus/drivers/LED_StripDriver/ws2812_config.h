@@ -10,16 +10,14 @@
 
 #include "main.h"
 
-#define ws2812_resettime (80)
-
 ///////////////////////////////////////////////////////////////////////
 // Define I/O pin
 ///////////////////////////////////////////////////////////////////////
 
-#define ws2812_port E // Data port
-#define ws2812_pin  4 // Data out pin
+//#define ws2812_port B // Data port
+//#define ws2812_pin  2 // Data out pin
 
-#define LEDPIXELCOUNT (30) /*182*/
+#define LEDPIXELCOUNT (179) /*182*/
 
 /*
     Timing specifications

@@ -54,7 +54,7 @@ void conf_dma(void)
 void init_ws2812()
 {
     // enable clocks for port, dma, timer
-    SIM->SCGC5 |= SIM_SCGC5_PORTB_MASK;
+    SIM->SCGC5 |= SIM_SCGC5_PORTA_MASK;
     SIM->SCGC6 |= SIM_SCGC6_DMAMUX_MASK;
     SIM->SCGC6 |= SIM_SCGC6_TPM2_MASK;
     SIM->SCGC7 |= SIM_SCGC7_DMA_MASK;
@@ -62,7 +62,7 @@ void init_ws2812()
     SIM->SOPT2 |= SIM_SOPT2_TPMSRC(1); // Use MCGFLLCLK as TPM clock source
 
     // set pin to TPM2_CH0
-    PORTB->PCR[2] |= PORT_PCR_MUX(3); // PTB2 TPM2_CH0
+    PORTA->PCR[1] |= PORT_PCR_MUX(3); // PTA1 TPM2_CH0
 
     DMAMUX0->CHCFG[0] = DMAMUX_CHCFG_ENBL_MASK | DMAMUX_CHCFG_SOURCE(56); // TPM2 OVF
 
@@ -160,8 +160,8 @@ void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds)
                                        ((uint32_t)ledarray[i].b << 8 * 1) | ((uint32_t)ledarray[i].w << 8 * 0)));
         }
 #endif
-        //strip_write();
-    	strip_sendContinuous();
+        // strip_write();
+        strip_sendContinuous();
     }
 }
 

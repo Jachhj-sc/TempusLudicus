@@ -19,12 +19,13 @@
 // #define RGB
 #define RGB
 
-#define sk6812_port C // Data port
-#define sk6812_pin  5 // Data out pin
+//#define sk6812_port B // Data port
+//#define sk6812_pin  2 // Data out pin
 
-#define LEDPIXELCOUNT (180u)
+#define LEDPIXELCOUNT (179u)
 
 #define STRIP_COUNT (1)
+
 /*
     Timing specifications
     T0H 0 code ,high voltage time 	0.3us

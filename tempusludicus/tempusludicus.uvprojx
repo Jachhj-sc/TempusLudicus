@@ -571,11 +571,6 @@
               <FilePath>.\drivers\LED_StripDriver\ledcontrol.h</FilePath>
             </File>
             <File>
-              <FileName>ws2812_config.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\drivers\LED_StripDriver\ws2812_config.h</FilePath>
-            </File>
-            <File>
               <FileName>sk6812_config.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\drivers\LED_StripDriver\sk6812_config.h</FilePath>
