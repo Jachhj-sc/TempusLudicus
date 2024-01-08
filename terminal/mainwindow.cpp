@@ -128,7 +128,10 @@ void MainWindow::buttonClicked(void)
 
     // Call the function to fetch the Unix timestamp
     qDebug() << "ButtonClicked, Fetching info through HTTP..";
-    long long timestamp = fetcher.fetchUnixTimestamp();
+    std::pair<long long, int> result = fetcher.fetchUnixTimestampAndOffset();
+
+    long long timestamp = result.first;
+    int utcOffset = result.second;
 
     if (timestamp != -1) {
         // Print the Unix timestamp
@@ -145,7 +148,10 @@ void MainWindow::buttonClicked(void)
 
         // Update m_time QTextEdit with the timestamp
         m_timeStamp->setPlainText("Sent Unix Timestamp: " + QString::number(timestamp) +
-                                  "\nHuman-readable Time: " + QDateTime::fromSecsSinceEpoch(t).toString("yyyy-MM-dd hh:mm:ss"));
+                                  "\nHuman-readable Time: " +
+                                  QDateTime::fromSecsSinceEpoch(timestamp)
+                                      .addSecs(utcOffset * -3600) // Undo the offset done for the microcontroller so the program shows the right time. fromSecSinceEpoch takes account utc offsets from PC.
+                                      .toString("yyyy-MM-dd hh:mm:ss"));
     } else {
         std::cerr << "Failed to fetch Unix Timestamp." << std::endl;
 
