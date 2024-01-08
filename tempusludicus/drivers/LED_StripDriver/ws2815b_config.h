@@ -8,21 +8,15 @@
     @copyright Copyright (c) 2023
 
  */
-#ifndef SK6812_CONFIG_H
-#define SK6812_CONFIG_H
+#ifndef WS2815B_CONFIG_H
+#define WS2815B_CONFIG_H
 
 #include "main.h"
 
-///////////////////////////////////////////////////////////////////////
-// Define I/O pin
-///////////////////////////////////////////////////////////////////////
-// #define RGB
+// #define RGBW
 #define RGB
 
-//#define sk6812_port B // Data port
-//#define sk6812_pin  2 // Data out pin
-
-#define LEDPIXELCOUNT (179u)
+#define LEDPIXELCOUNT (193u)
 
 #define STRIP_COUNT (1)
 
@@ -53,4 +47,4 @@
 // data structure
 // 0x00GGRRBB
 
-#endif /* SK6812_CONFIG_H */
+#endif /* WS2815B_CONFIG_H */

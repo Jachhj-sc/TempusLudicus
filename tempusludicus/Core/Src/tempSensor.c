@@ -28,17 +28,12 @@ void init_adc_lm35(void)
 {
     int cal_res;
 
-    // Enable clock to Port B (PTB3_SE13)
+    // Enable clock to Port B (PTD1_SE5b)
     SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-    // // Configure PTB3 as ADC0_SE13
-    // PORTB->PCR[3] = PORT_PCR_MUX(0);
-
-  /// potential bug
-  #warning "double check this"
     // Configure PTD1 as ADC0_SE5b
     PORTD->PCR[1] = PORT_PCR_MUX(0);
-
+	
     // Enable clock to ADC0
     SIM->SCGC6 |= SIM_SCGC6_ADC0_MASK;
 
@@ -56,14 +51,16 @@ void init_adc_lm35(void)
     // - MODE[1:0] = 11: Single-ended 16-bit conversion
     // - ADICLK[1:0] = 01: Bus clock divided by 2
     ADC0->CFG1 = 0x9D;
+
+	//select b channels, selected PTD1_SE5b
+    ADC0->CFG2 |= ADC_CFG2_MUXSEL(1);
 }
 
 // Function to read ADC value from LM35 sensor
 uint32_t read_adc_lm35(void)
 {
     // Start conversion by writing to the SC1 register
-    ADC0->SC1[0] = ADC_SC1_ADCH(8);
-
+    ADC0->SC1[0] = ADC_SC1_ADCH(5);
 
     // Wait for the conversion to complete
     while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK));

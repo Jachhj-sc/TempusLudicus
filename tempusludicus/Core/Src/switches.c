@@ -52,10 +52,10 @@ void sw_init(void)
     // interrupt handlers config
 
     // switch 1
-    PORTD->PCR[0] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+    PORTD->PCR[0] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1)/* | PORT_PCR_PS(1) | PORT_PCR_PE(1)*/;
 
     // switch 2
-    PORTD->PCR[3] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+    PORTD->PCR[3] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) /* | PORT_PCR_PS(1) | PORT_PCR_PE(1) */ ;
 
     NVIC_SetPriority(PORTD_IRQn, 0);
     NVIC_ClearPendingIRQ(PORTD_IRQn);

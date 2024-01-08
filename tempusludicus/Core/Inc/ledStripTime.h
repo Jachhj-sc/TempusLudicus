@@ -2,7 +2,7 @@
 #define LED_STRIP_TIME_H
 
 #include "common.h"
-#include "timer_dma_ws2812.h"
+#include "timer_dma_ws28xx.h"
 
 /* 	Boundary configuration for the clock strip.
     The strip is one full snake of all the leds, of which every part has boundaries and fullfill different functions,
@@ -17,14 +17,18 @@
 
 #define STRIP_SECONDS_START  0
 #define STRIP_SECONDS_END    59
-#define STRIP_MINUTES_START  60
-#define STRIP_MINUTES_END    119
-#define STRIP_HOURS_START    120
-#define STRIP_HOURS_END      143
-#define STRIP_MONTHDAY_START 144
-#define STRIP_MONTHDAY_END   174
-#define STRIP_WEEKDAY_START  175
-#define STRIP_WEEKDAY_END    181
+
+#define STRIP_MINUTES_START  118
+#define STRIP_MINUTES_END    60
+
+#define STRIP_HOURS_START    119
+#define STRIP_HOURS_END      141
+
+#define STRIP_MONTHDAY_START 172
+#define STRIP_MONTHDAY_END   142
+
+#define STRIP_WEEKDAY_START  173
+#define STRIP_WEEKDAY_END    193
 
 // color definitions
 #define SECONDS_COLOR  COLOR_BLUE

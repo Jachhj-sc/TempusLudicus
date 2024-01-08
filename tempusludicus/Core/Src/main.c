@@ -20,7 +20,8 @@
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
 #include "updateValues.h"
-#include <ctype.h>	
+#include "brightness_pot.h"
+#include <ctype.h>
 
 #define MIN_TEMPERATURE 2.0f
 #define MAX_TEMPERATURE 120.0f
@@ -28,6 +29,7 @@
 void handleSwitchState(enum e_switchState switchstate);
 void deviceTestSequence(void);
 
+static uint8_t brightness = 0;
 static uint16_t distance_cm = 0;
 static uint8_t programState = 0;
 
@@ -54,7 +56,7 @@ int main(void)
     sw_init();
     uart0_init();
     init_adc_lm35();
-
+	init_brightness_pot();
     init_strip();
 
     datetime_t DateTime;
@@ -68,9 +70,9 @@ int main(void)
     _delay_ms(10);
 
     deviceTestSequence();
-		
-		// testsimulatie
-		programState = TEMPSENSOR;
+
+    // testsimulatie
+    programState = DRAWSTRIP;
 
     while (1) {
 
@@ -85,7 +87,7 @@ int main(void)
 
         // get the value of wich button is pressed
         handleSwitchState(get_switchState());
-        //programState = DEBUG;
+        // programState = DEBUG;
 
         RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
         uint16_t adc_result;
@@ -95,12 +97,14 @@ int main(void)
         case DRAWSTRIP:
         case TIMELCD:
             if (get_millis() > prevStripUpdate + 100) {
+				brightness = get_brightness_pot_value();
+				setStrip_Brightness(brightness);
                 strip_drawTimeMood(unix_timestamp, mood);
                 prevStripUpdate = get_millis();
             }
 
-            // update the lcd every second
-            if (get_millis() > prevLCDUpdate + 1000) {
+            // update the lcd at 2 Hz
+            if (get_millis() > prevLCDUpdate + 100) {
                 LCD_putDateTime(DateTime);
                 prevLCDUpdate = get_millis();
             }
@@ -176,26 +180,29 @@ int main(void)
             }
             break;
 
-case TEMPSENSOR:
-                adc_result = (uint16_t)read_adc_lm35();
-                float temperature = calculate_temperature_from_lm35(adc_result);
-                if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
-                    lcd_set_cursor(0, 0);
-									lcd_print("  Error!  ");
-                } else {
-                    addTemperatureToBuffer(temperature);
-                    float averageTemperature = calculateAverageTemperature();
-                    lcd_set_cursor(0, 0);
-                    sprintf(text, "Temp: %.2f C   ", averageTemperature);
-                    lcd_print(text);
-                }
-                break;
-
+        case TEMPSENSOR:
+            adc_result = (uint16_t)read_adc_lm35();
+            float temperature = calculate_temperature_from_lm35(adc_result);
+            if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
+                lcd_set_cursor(0, 0);
+                lcd_print("  Error!  ");
+            } else {
+                addTemperatureToBuffer(temperature);
+                float averageTemperature = calculateAverageTemperature();
+                lcd_set_cursor(0, 0);
+                sprintf(text, "Temp: %.2f C   ", averageTemperature);
+                lcd_print(text);
+            }
+            break;
         }
     }
 }
 
+void handle_brightness_pot(void){
+	// read adc
 
+    brightness = 0;
+}
 
 void deviceTestSequence(void)
 {
@@ -215,6 +222,12 @@ void deviceTestSequence(void)
     set_rgb(0, 0, 1);
     _delay_ms(500);
 
+    setStrip_all(color32(255, 255, 255, 0));
+    Strip_send();
+    set_rgb(1, 1, 1);
+
+    _delay_ms(2000);
+
     setStrip_clear();
     Strip_send();
     set_rgb(0, 0, 0);
@@ -224,15 +237,16 @@ void handleSwitchState(enum e_switchState switchstate)
 {
     switch (switchstate) {
     case SWITCH_1_PRESSED:
+
+        break;
+
+    case SWITCH_2_PRESSED:
         if (programState < StateAmount) {
             programState++;
         } else {
             programState = 0;
         }
-        break;
-
-    case SWITCH_2_PRESSED:
-
+		
         if (mood < MoodAmount) {
             mood++;
         } else {

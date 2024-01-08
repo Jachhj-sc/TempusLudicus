@@ -11,8 +11,8 @@ max update speed ledstrip = x ms per frame & x fps
 #include "ledcontrol.h"
 
 #include "common.h"
-#include "sk6812_config.h"
-#include "timer_dma_ws2812.h"
+#include "ws2815b_config.h"
+#include "timer_dma_ws28xx.h"
 
 /* A PROGMEM (flash mem) table containing 8-bit unsigned sine wave (0-255).
    Copy & paste this snippet into a Python REPL to regenerate:

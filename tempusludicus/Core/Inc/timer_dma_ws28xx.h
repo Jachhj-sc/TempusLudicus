@@ -3,7 +3,7 @@
 
 #include "common.h"
 #include "ledcontrol.h"
-#include "sk6812_config.h"
+#include "ws2815b_config.h"
 
 void init_ws2812(void);
 void loadStrip_pixel(uint32_t pixel, uint32_t rgb);

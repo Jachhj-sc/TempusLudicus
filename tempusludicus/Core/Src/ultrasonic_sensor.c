@@ -66,24 +66,23 @@ void ultraS_sensor_init(void)
 
     TPM1->SC |= TPM_SC_PS(5); // prescaler 32x
     tpm1_psc = 32;            // add prescaler value to variable for easy calculations
-
     TPM1->MOD = 0xFFFF; // set max value
 
     // pulse from ultrasoon sensor falling and rising edge interrupt
-    PORTC->PCR[12] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) /* | PORT_PCR_PS(1) | PORT_PCR_PE(1)*/;
+    PORTD->PCR[5] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1);
 
     NVIC_SetPriority(PORTD_IRQn, 0);
     NVIC_ClearPendingIRQ(PORTD_IRQn);
     NVIC_EnableIRQ(PORTD_IRQn);
 }
 
-void tpm1_start(void)
+void inline tpm1_start(void)
 {
     TPM1->CNT = 0;
     TPM1->SC |= TPM_SC_CMOD(1);
 }
 
-uint32_t tpm1_stop(void)
+uint32_t inline tpm1_stop(void)
 {
     uint32_t stopVal = TPM1->CNT;
     // stop timer and return timer value
@@ -91,7 +90,7 @@ uint32_t tpm1_stop(void)
     return stopVal;
 }
 
-void tpm1_reset(void)
+void inline tpm1_reset(void)
 {
     TPM1->CNT = 0;
 }
