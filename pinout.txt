@@ -20,6 +20,4 @@ SW
 	PTD3 // sw2
 
 temp sensor:
-	PTD1 ADC0_SE5b //old: PTB3 ADC0_SE13 
-
-
+	PTB0
