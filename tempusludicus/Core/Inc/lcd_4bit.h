@@ -48,41 +48,41 @@
 // LCD interface hardware mappings
 /// \name DB4
 /// \{
-#define PIN_DB4_PORT  PORTC
-#define PIN_DB4_PT    PTC
-#define PIN_DB4_SHIFT (0)
+#define PIN_DB4_PORT  PORTB
+#define PIN_DB4_PT    PTB
+#define PIN_DB4_SHIFT (3)
 #define PIN_DB4       (1 << PIN_DB4_SHIFT)
 /// \}
 
 /// \name DB5
 /// \{
-#define PIN_DB5_PORT  PORTC
-#define PIN_DB5_PT    PTC
-#define PIN_DB5_SHIFT (4)
+#define PIN_DB5_PORT  PORTB
+#define PIN_DB5_PT    PTB
+#define PIN_DB5_SHIFT (2)
 #define PIN_DB5       (1 << PIN_DB5_SHIFT)
 /// \}
 
 /// \name DB6
 /// \{
-#define PIN_DB6_PORT  PORTC
-#define PIN_DB6_PT    PTC
-#define PIN_DB6_SHIFT (5)
+#define PIN_DB6_PORT  PORTB
+#define PIN_DB6_PT    PTB
+#define PIN_DB6_SHIFT (1)
 #define PIN_DB6       (1 << PIN_DB6_SHIFT)
 /// \}
 
 /// \name DB7
 /// \{
-#define PIN_DB7_PORT  PORTC
-#define PIN_DB7_PT    PTC
-#define PIN_DB7_SHIFT (6)
+#define PIN_DB7_PORT  PORTB
+#define PIN_DB7_PT    PTB
+#define PIN_DB7_SHIFT (0)
 #define PIN_DB7       (1 << PIN_DB7_SHIFT)
 /// \}
 
 /// \name RS
 /// \{
-#define PIN_RS_PORT  PORTC
-#define PIN_RS_PT    PTC
-#define PIN_RS_SHIFT (11)
+#define PIN_RS_PORT  PORTE
+#define PIN_RS_PT    PTE
+#define PIN_RS_SHIFT (30)
 #define PIN_RS       (1 << PIN_RS_SHIFT)
 /// \}
 
@@ -90,7 +90,7 @@
 /// \{
 #define PIN_RW_PORT  PORTC
 #define PIN_RW_PT    PTC
-#define PIN_RW_SHIFT (10)
+#define PIN_RW_SHIFT (1)
 #define PIN_RW       (1 << PIN_RW_SHIFT)
 /// \}
 
@@ -98,13 +98,13 @@
 /// \{
 #define PIN_E_PORT  PORTC
 #define PIN_E_PT    PTC
-#define PIN_E_SHIFT (7)
+#define PIN_E_SHIFT (2)
 #define PIN_E       (1 << PIN_E_SHIFT)
 /// \}
 
 /// \name Enable Clock for peripheral driving LCD pins
 /// \{
-#define ENABLE_LCD_PORT_CLOCKS SIM->SCGC5 |= SIM_SCGC5_PORTC_MASK
+#define ENABLE_LCD_PORT_CLOCKS SIM->SCGC5 |= (SIM_SCGC5_PORTB_MASK | SIM_SCGC5_PORTC_MASK | SIM_SCGC5_PORTE_MASK)
 /// \}
 
 // ----------------------------------------------------------------------------

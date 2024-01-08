@@ -70,7 +70,7 @@ void ultraS_sensor_init(void)
     TPM1->MOD = 0xFFFF; // set max value
 
     // pulse from ultrasoon sensor falling and rising edge interrupt
-    PORTD->PCR[5] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) /* | PORT_PCR_PS(1) | PORT_PCR_PE(1)*/;
+    PORTC->PCR[12] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) /* | PORT_PCR_PS(1) | PORT_PCR_PE(1)*/;
 
     NVIC_SetPriority(PORTD_IRQn, 0);
     NVIC_ClearPendingIRQ(PORTD_IRQn);
