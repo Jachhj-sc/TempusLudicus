@@ -8,8 +8,12 @@
  *****************************************************************************/
 #include "tempSensor.h"
 #include "common.h"
+#define TEMPERATURE_BUFFER_SIZE 10
 
-void init_adc_lm35()
+static float temperatureBuffer[TEMPERATURE_BUFFER_SIZE] = {0};
+static int temperatureBufferIndex = 0;
+
+void init_adc_lm35(void)
 {
     // Enable clock to Port B (PTB3_SE13)
     SIM->SCGC5 |= SIM_SCGC5_PORTD_MASK;
@@ -34,7 +38,7 @@ void init_adc_lm35()
     ADC0->CFG1 = 0x9D;
 }
 
-uint32_t read_adc_lm35()
+uint32_t read_adc_lm35(void)
 {
     // // Start de conversie door het SC1-register te schrijven
     // ADC0->SC1[0] = ADC_SC1_ADCH(13);
@@ -63,9 +67,17 @@ float calculate_temperature_from_lm35(uint16_t adc_result)
     return temperature;
 }
 
-void addTemperatureToBuffer(float temperature) {}
-
-float calculateAverageTemperature(void)
-{
-    return 0.0;
+void addTemperatureToBuffer(float temperature) {
+    
+    temperatureBuffer[temperatureBufferIndex] = temperature;
+    temperatureBufferIndex = (temperatureBufferIndex + 1) % TEMPERATURE_BUFFER_SIZE;
 }
+
+float calculateAverageTemperature(void) {
+    float sum = 0.0f;
+    for(int i = 0; i < TEMPERATURE_BUFFER_SIZE; i++) {
+        sum += temperatureBuffer[i];
+    }
+    return sum / TEMPERATURE_BUFFER_SIZE;
+}
+
