@@ -13,14 +13,14 @@ ultrasonic sensor.
 	PTD5 (receiver ultrasonic signal)
 
 led strip
-	PTE22 TPM2_CH0 (ws2815B Din) // old PTB2 TPM2_CH0
+	PTE22 TPM2_CH0 (ws2815B Din)
 
 SW
 	PTD0 // sw1
 	PTD2 // sw2
 
 temp sensor:
-	PTD1 ADC0_SE5b //old: PTB3 ADC0_SE13 
+	PTD1 ADC0_SE5b
 
 LED strip brightness pot
 	PTD6 ADC0_SE7b

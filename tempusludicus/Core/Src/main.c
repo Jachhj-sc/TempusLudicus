@@ -173,18 +173,12 @@ void mainProcess()
     case TEMPSENSOR: {
         uint16_t adc_result = (uint16_t)read_adc_lm35();
         float temperature = calculate_temperature_from_lm35(adc_result);
-        if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
-            lcd_set_cursor(0, 0);
-            lcd_print("     Error!     ");
-        } else {
-            addTemperatureToBuffer(temperature);
-            float averageTemperature = calculateAverageTemperature();
-            lcd_set_cursor(0, 0);
-            sprintf(text, "Temp: %.2f C    ", averageTemperature);
-            lcd_print(text);
-        }
-        break;
-    }
+        addTemperatureToBuffer(temperature);
+        float averageTemperature = calculateAverageTemperature();
+        lcd_set_cursor(0, 0);
+        sprintf(text, "Temp: %.2f C    ", averageTemperature);
+        lcd_print(text);
+    } break;
 
     case PROGRAMSTATE_AMOUNT:
     default:
@@ -237,7 +231,7 @@ void process_button_state(enum e_switchState switchstate)
         if (system_state.mood >= MOOD_AMOUNT) {
             system_state.mood = 0;
         }
-		
+
         setStrip_TimeDrawMood(system_state.mood);
         break;
 

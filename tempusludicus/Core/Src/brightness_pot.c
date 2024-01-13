@@ -24,6 +24,9 @@ void init_brightness_pot(void)
     // - ADICLK[1:0] = 01: Bus clock divided by 2
     ADC0->CFG1 = 0x9D;
 
+    // select VDDA as reference voltage
+    ADC0->SC2 |= ADC_SC2_REFSEL(1);
+	
     // select b channels, selected ADC0_SE7b
     ADC0->CFG2 |= ADC_CFG2_MUXSEL(1);
 }
@@ -31,10 +34,13 @@ void init_brightness_pot(void)
 uint8_t get_brightness_pot_value(void)
 {
     uint32_t brightness = 0;
-    // Start conversion by writing to the SC1 register
 
     for (int i = 0; i < 20; i++) {
+		//select b channels
+        ADC0->CFG2 |= ADC_CFG2_MUXSEL(1);
+        // Start conversion by writing to the SC1 register
         ADC0->SC1[0] = ADC_SC1_ADCH(7);
+
         // Wait for the conversion to complete
         while (!(ADC0->SC1[0] & ADC_SC1_COCO_MASK))
             ;
