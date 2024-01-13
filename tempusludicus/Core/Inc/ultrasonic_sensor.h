@@ -36,6 +36,22 @@
 #include <MKL25Z4.h>
 #include <stdbool.h>
 
+/// \name TRIGGER
+/// \{
+#define PIN_TRIGGER_PORT PORTA
+#define PIN_TRIGGER_PT    PTA
+#define PIN_TRIGGER_SHIFT (13)
+#define PIN_TRIGGER       (1 << PIN_TRIGGER_SHIFT)
+/// \}
+
+/// \name ECHO
+/// \{
+#define PIN_ECHO_PORT  PORTD
+#define PIN_ECHO_PT    PTD
+#define PIN_ECHO_SHIFT (5)
+#define PIN_ECHO       (1 << PIN_ECHO_SHIFT)
+/// \}
+
 void process_ultrasonic_sensor(void);
 
 uint16_t get_ultrasonic_distance_cm(void);

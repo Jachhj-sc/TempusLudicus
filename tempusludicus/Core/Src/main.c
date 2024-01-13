@@ -103,7 +103,7 @@ void mainProcess()
         lcd_print("ultrasoon sensor");
         lcd_set_cursor(0, 1);
 
-        sprintf(text, "distance cm = %d   ", distance_cm);
+        sprintf(text, "cm = %d     ", distance_cm);
         lcd_print(text);
 
         strip_drawUltrasoneDistance(distance_cm);

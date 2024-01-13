@@ -47,9 +47,9 @@ void process_ultrasonic_sensor(void)
 {
     if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL) {
         // send pulse
-        GPIOB->PSOR = MASK(1);
+        PIN_TRIGGER_PT->PSOR = PIN_TRIGGER;
         delay_us(10);
-        GPIOB->PCOR = MASK(1);
+        PIN_TRIGGER_PT->PCOR = PIN_TRIGGER;
 
         prevTriggerPulseTime = get_millis();
     }
@@ -61,15 +61,15 @@ void ultraS_sensor_init(void)
     SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
     SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-    PORTA->PCR[13] = PORT_PCR_MUX(1); // gpio
-    GPIOA->PDDR |= MASK(1);           // output porta 13
+    PIN_TRIGGER_PORT->PCR[PIN_TRIGGER_SHIFT] = PORT_PCR_MUX(1); // gpio
+    PIN_TRIGGER_PT->PDDR |= PIN_TRIGGER;                        // output porta 13
 
     TPM1->SC |= TPM_SC_PS(5); // prescaler 32x
     tpm1_psc = 32;            // add prescaler value to variable for easy calculations
-    TPM1->MOD = 0xFFFF; // set max value
+    TPM1->MOD = 0xFFFF;       // set max value
 
     // pulse from ultrasoon sensor falling and rising edge interrupt
-    PORTD->PCR[5] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1);
+    PIN_ECHO_PORT->PCR[PIN_ECHO_SHIFT] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1);
 
     NVIC_SetPriority(PORTD_IRQn, 0);
     NVIC_ClearPendingIRQ(PORTD_IRQn);

@@ -9,7 +9,7 @@ lcd:
 	PTD3	(K)
 	
 ultrasonic sensor.
-	PTA13 (trigger pin ultrasonic sensor) //old PTB 1 
+	PTA13 (trigger pin ultrasonic sensor)
 	PTD5 (receiver ultrasonic signal)
 
 led strip
