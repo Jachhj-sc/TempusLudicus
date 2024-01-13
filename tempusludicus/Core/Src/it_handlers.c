@@ -16,23 +16,23 @@
 void PORTD_IRQHandler(void)
 {
     // switch 1
-    if ((PORTD->ISFR & (1 << 0))) {
-        if (PTD->PDIR & MASK(0)) {
+    if (PIN_SW1_PORT->ISFR & PIN_SW1) {
+        if (PIN_SW1_PT->PDIR & PIN_SW1) {
             buttonState_1 = 1;
         }
 
         // Clear the flag
-        PORTD->ISFR = (1 << 0);
+        PIN_SW1_PORT->ISFR = PIN_SW1;
     }
 
     // switch 2
-    if ((PORTD->ISFR & (1 << 3))) {
-        if (PTD->PDIR & MASK(3)) {
+    if (PIN_SW2_PORT->ISFR & PIN_SW2) {
+        if (PIN_SW2_PT->PDIR & PIN_SW2) {
             buttonState_2 = 1;
         }
 
         // Clear the flag
-        PORTD->ISFR = (1 << 3);
+        PIN_SW2_PORT->ISFR = PIN_SW2;
     }
 
     // pulse from ultrasoon sensor interrupt

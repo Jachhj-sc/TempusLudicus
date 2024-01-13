@@ -10,7 +10,7 @@
 
 #include "common.h"
 
-void updateValue(void);
+void process_uart(void);
 extern char moodSetting;
 
 #endif

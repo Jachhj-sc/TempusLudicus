@@ -3,8 +3,6 @@
 
 #include "common.h"
 
-#define BUTTON_INTERVAL 500u // ms until a new buttonpress can be registered
-
 enum e_switchState {
     NO_SWITCH_PRESSED,
     SWITCH_1_PRESSED,
@@ -19,9 +17,44 @@ enum e_programState {
     PENSIOEN,
     DEBUG,
     TEMPSENSOR,
-    StateAmount,
-    TESTSEQUENCE
+    PROGRAMSTATE_AMOUNT
 };
+
+enum e_mood {
+    DEFAULT_MOOD,
+    COOL,
+    WARM,
+    EXCITED,
+    MELLOW,
+    CHILL,
+    MOOD_AMOUNT
+};
+
+enum e_time_effect {
+    STATIC,
+    RAIN,
+    RAINBOW_DISTINGUISED,
+    HUE,
+	TIME_EFFECT_AMOUNT
+};
+
+enum e_developer {
+    Kevin,
+    Roel,
+    Maarten,
+    William,
+	DEVELOPER_AMOUNT
+};
+
+typedef struct sytem_state_s {
+	enum e_switchState switchState;
+	enum e_programState programState;
+    enum e_mood mood;
+    enum e_time_effect effect;
+    enum e_developer person;
+} system_state_t;
+
+extern volatile system_state_t system_state;
 
 void HardFault_Handler(void);
 

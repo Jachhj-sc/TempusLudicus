@@ -43,7 +43,7 @@ static uint32_t distance_cm = 0;
 static uint16_t tpm1_psc = 0;
 static uint32_t prevTriggerPulseTime = 0;
 
-void ultraS_sensor_process(void)
+void process_ultrasonic_sensor(void)
 {
     if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL) {
         // send pulse
@@ -95,7 +95,7 @@ void inline tpm1_reset(void)
     TPM1->CNT = 0;
 }
 
-uint16_t ultraS_get_distance_cm(void)
+uint16_t get_ultrasonic_distance_cm(void)
 {
     return (uint16_t)distance_cm;
 }

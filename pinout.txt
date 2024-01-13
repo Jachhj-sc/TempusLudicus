@@ -6,7 +6,7 @@ lcd:
 	PTC2	(E)
 	PTC1	(RW)
 	PTE30	(RS)
-	PTD2	(K)
+	PTD3	(K)
 	
 ultrasonic sensor.
 	PTA13 (trigger pin ultrasonic sensor) //old PTB 1 
@@ -17,7 +17,7 @@ led strip
 
 SW
 	PTD0 // sw1
-	PTD3 // sw2
+	PTD2 // sw2
 
 temp sensor:
 	PTD1 ADC0_SE5b //old: PTB3 ADC0_SE13 

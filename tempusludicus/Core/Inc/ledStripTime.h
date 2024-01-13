@@ -1,7 +1,7 @@
 #ifndef LED_STRIP_TIME_H
 #define LED_STRIP_TIME_H
 
-#include "common.h"
+#include "main.h"
 #include "timer_dma_ws28xx.h"
 
 /* 	Boundary configuration for the clock strip.
@@ -16,52 +16,25 @@
 */
 
 #define STRIP_SECONDS_START  0
-#define STRIP_SECONDS_END    59
+#define STRIP_SECONDS_END    58
 
 #define STRIP_MINUTES_START  118
-#define STRIP_MINUTES_END    60
+#define STRIP_MINUTES_END    59
 
-#define STRIP_HOURS_START    119
-#define STRIP_HOURS_END      141
+#define STRIP_HOURS_START    118
+#define STRIP_HOURS_END      140
 
-#define STRIP_MONTHDAY_START 172
-#define STRIP_MONTHDAY_END   142
+#define STRIP_MONTHDAY_START 171
+#define STRIP_MONTHDAY_END   141
 
-#define STRIP_WEEKDAY_START  173
-#define STRIP_WEEKDAY_END    193
+#define STRIP_WEEKDAY_START  172
+#define STRIP_WEEKDAY_END    192
 
-// color definitions
-#define SECONDS_COLOR  COLOR_BLUE
-#define MINUTES_COLOR  COLOR_CHARTREUSE
-#define HOURS_COLOR    COLOR_CYAN
-#define MONTHDAY_COLOR COLOR_AQUAMARINE
-#define WEEKDAY_COLOR  COLOR_ORANGE
+void setStrip_TimeDrawMood(enum e_mood mood);
+void strip_drawTimeEffect(uint32_t unix_timestamp, enum e_time_effect effect);
 
-enum e_mood {
-    NORMAL,
-    COOL,
-    WARM,
-    EXCITED,
-    MELLOW,
-    CHILL,
-    MoodAmount
-};
-
-enum e_developer {
-    Kevin,
-    Roel,
-    Maarten,
-    William,
-    developer_amount
-};
-
-void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood);
 void strip_drawTimeSimple(uint32_t unix_timestamp);
-void strip_drawTimeCool(uint32_t unix_timestamp);
-void strip_drawTimeWarm(uint32_t unix_timestamp);
-void strip_drawTimeExcited(uint32_t unix_timestamp);
-void strip_drawTimeMellow(uint32_t unix_timestamp);
-void strip_drawTimeChill(uint32_t unix_timestamp);
+
 
 void strip_drawUltrasoneDistance(uint16_t distance_cm);
 void strip_drawPensions(enum e_developer person, uint16_t distance_cm);

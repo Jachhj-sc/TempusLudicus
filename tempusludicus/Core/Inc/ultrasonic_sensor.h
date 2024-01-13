@@ -36,9 +36,9 @@
 #include <MKL25Z4.h>
 #include <stdbool.h>
 
-void ultraS_sensor_process(void);
+void process_ultrasonic_sensor(void);
 
-uint16_t ultraS_get_distance_cm(void);
+uint16_t get_ultrasonic_distance_cm(void);
 
 void ultraS_sensor_init(void);
 uint32_t tpm1_stop(void);

@@ -11,6 +11,16 @@
 volatile uint32_t unix_timestamp = 0;
 // volatile bool pit_interrupt_flag = false;
 
+uint32_t get_unix_timestamp(void)
+{
+	return unix_timestamp;
+}
+
+void set_unix_timestamp(uint32_t timestamp)
+{
+	unix_timestamp = timestamp;
+}
+
 /*!
  * \brief Initialises the Periodic Interrupt Timer (PIT)
  */

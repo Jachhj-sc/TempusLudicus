@@ -1,7 +1,7 @@
 #ifndef BRIGHTNESS_POT_H
 #define BRIGHTNESS_POT_H
 
-#include "common.h"
+#include "main.h"
 
 // ----------------------------------------------------------------------------
 // potentiometer hardware mappings
@@ -13,7 +13,8 @@
 #define PIN_B_POT       (1 << PIN_B_POT_SHIFT)
 /// \}
 
-#define MAX_BRIGHTNESS 218
+#define MAX_BRIGHTNESS 218u
+
 void init_brightness_pot(void);
 uint8_t get_brightness_pot_value(void);
 
