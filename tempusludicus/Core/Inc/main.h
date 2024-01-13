@@ -12,7 +12,6 @@ enum e_switchState {
 
 enum e_programState {
     DRAWSTRIP = 0,
-    TIMELCD,
     ULTRASOON,
     PENSIOEN,
     DEBUG,

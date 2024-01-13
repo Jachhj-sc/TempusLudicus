@@ -83,8 +83,7 @@ void mainProcess()
     RTC_HAL_convert_unix_to_datetime(get_unix_timestamp(), &DateTime);
 
     switch (system_state.programState) {
-    case DRAWSTRIP:
-    case TIMELCD: {
+    case DRAWSTRIP: {
         if (get_millis() > prevStripUpdate + 100) {
             // update lcd
             LCD_putDateTime(DateTime);
@@ -103,7 +102,7 @@ void mainProcess()
         lcd_print("ultrasoon sensor");
         lcd_set_cursor(0, 1);
 
-        sprintf(text, "cm = %d     ", distance_cm);
+        sprintf(text, "cm = %d         ", distance_cm);
         lcd_print(text);
 
         strip_drawUltrasoneDistance(distance_cm);
@@ -176,12 +175,12 @@ void mainProcess()
         float temperature = calculate_temperature_from_lm35(adc_result);
         if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
             lcd_set_cursor(0, 0);
-            lcd_print("  Error!  ");
+            lcd_print("     Error!     ");
         } else {
             addTemperatureToBuffer(temperature);
             float averageTemperature = calculateAverageTemperature();
             lcd_set_cursor(0, 0);
-            sprintf(text, "Temp: %.2f C   ", averageTemperature);
+            sprintf(text, "Temp: %.2f C    ", averageTemperature);
             lcd_print(text);
         }
         break;
@@ -226,19 +225,19 @@ void process_button_state(enum e_switchState switchstate)
 {
     switch (switchstate) {
     case SWITCH_1_PRESSED:
-        if (system_state.programState < PROGRAMSTATE_AMOUNT) {
-            system_state.programState++;
-        } else {
+        system_state.programState++;
+
+        if (system_state.programState >= PROGRAMSTATE_AMOUNT) {
             system_state.programState = 0;
         }
         break;
 
     case SWITCH_2_PRESSED:
-        if (system_state.mood < MOOD_AMOUNT) {
-            system_state.mood++;
-        } else {
+        system_state.mood++;
+        if (system_state.mood >= MOOD_AMOUNT) {
             system_state.mood = 0;
         }
+		
         setStrip_TimeDrawMood(system_state.mood);
         break;
 
