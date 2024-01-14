@@ -76,15 +76,17 @@ void mainProcess()
     datetime_t DateTime;
     char text[80];
 
-    static uint32_t prevStripUpdate = 0;
-    static uint32_t prevPensionUpdate = 0;
+    static uint32_t prev_strip_update = 0;
+    static uint32_t prev_ultrasonic_update = 0;
+    static uint32_t prev_pension_update = 0;
+    static uint32_t prev_temp_update = 0;
 
     uint16_t distance_cm = get_ultrasonic_distance_cm();
     RTC_HAL_convert_unix_to_datetime(get_unix_timestamp(), &DateTime);
 
     switch (system_state.programState) {
     case DRAWSTRIP: {
-        if (get_millis() > prevStripUpdate + 100) {
+        if (get_millis() > prev_strip_update + 100) {
             // update lcd
             LCD_putDateTime(DateTime);
 
@@ -92,44 +94,58 @@ void mainProcess()
             uint8_t brightness = get_brightness_pot_value();
             setStrip_Brightness(brightness);
             strip_drawTimeEffect(get_unix_timestamp(), system_state.effect);
-            prevStripUpdate = get_millis();
+
+            prev_strip_update = get_millis();
         }
         break;
     }
 
     case ULTRASOON: {
-        lcd_set_cursor(0, 0);
-        lcd_print("ultrasoon sensor");
-        lcd_set_cursor(0, 1);
+        if (get_millis() > prev_ultrasonic_update + 300) {
+            lcd_set_cursor(0, 0);
+            lcd_print("ultrasoon sensor");
 
-        sprintf(text, "cm = %d         ", distance_cm);
-        lcd_print(text);
+            lcd_set_cursor(0, 1);
+            sprintf(text, "cm = %d         ", distance_cm);
+            lcd_print(text);
 
-        strip_drawUltrasoneDistance(distance_cm);
+            strip_drawUltrasoneDistance(distance_cm);
+
+            prev_ultrasonic_update = get_millis();
+        }
         break;
     }
 
     case PENSIOEN: {
-        lcd_set_cursor(0, 0);
-        lcd_print("tijd <> pensioen");
-        strip_drawPensions(system_state.person, distance_cm);
-
-        if (get_millis() > prevPensionUpdate + 2000) {
+        if (get_millis() > prev_pension_update + 2000) {
             system_state.person++;
             if (system_state.person >= DEVELOPER_AMOUNT) {
                 system_state.person = 0;
             }
-            prevPensionUpdate = get_millis();
+            prev_pension_update = get_millis();
+        }
+
+        if (get_millis() > prev_strip_update + 100) {
+            lcd_set_cursor(0, 0);
+            lcd_print("tijd <> pensioen");
+
+            lcd_set_cursor(0, 1);
+            lcd_print("                ");
+
+            strip_drawPensions(system_state.person, distance_cm);
+            prev_strip_update = get_millis();
         }
         break;
     }
 
     case DEBUG: {
         // if object detected turn on strip
-        if (get_millis() > prevStripUpdate + 100) {
-
+        if (get_millis() > prev_strip_update + 100) {
             lcd_set_cursor(0, 0);
             lcd_print("***debug***     ");
+
+            lcd_set_cursor(0, 1);
+            lcd_print("                ");
 
             // Send unix timestamp
             uart0_put_char('U');
@@ -147,10 +163,7 @@ void mainProcess()
             uart0_put_char('S');
 
             // Send temperature
-            uint16_t adc_result = (uint16_t)read_adc_lm35();
-            float temperature = calculate_temperature_from_lm35(adc_result);
-            addTemperatureToBuffer(temperature);
-            float averageTemperature = calculateAverageTemperature();
+            float averageTemperature = get_average_temperature();
 
             uart0_put_char('T');
             uart0_send_float(averageTemperature);
@@ -165,20 +178,23 @@ void mainProcess()
                 Strip_send();
                 set_rgb(0, 0, 0);
             }
-            prevStripUpdate = get_millis();
+            prev_strip_update = get_millis();
         }
         break;
     }
 
     case TEMPSENSOR: {
-        uint16_t adc_result = (uint16_t)read_adc_lm35();
-        float temperature = calculate_temperature_from_lm35(adc_result);
-        addTemperatureToBuffer(temperature);
-        float averageTemperature = calculateAverageTemperature();
-        lcd_set_cursor(0, 0);
-        sprintf(text, "Temp: %.2f C    ", averageTemperature);
-        lcd_print(text);
-    } break;
+        if (get_millis() > prev_temp_update + 100) {
+            lcd_set_cursor(0, 0);
+            sprintf(text, "Temp: %.1f C    ", get_average_temperature());
+            lcd_print(text);
+
+            lcd_set_cursor(0, 1);
+            lcd_print("                ");
+            prev_temp_update = get_millis();
+        }
+        break;
+    }
 
     case PROGRAMSTATE_AMOUNT:
     default:

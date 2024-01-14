@@ -45,7 +45,7 @@ static uint32_t prevTriggerPulseTime = 0;
 
 void process_ultrasonic_sensor(void)
 {
-    if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL) {
+    if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL + 100) {
         // send pulse
         PIN_TRIGGER_PT->PSOR = PIN_TRIGGER;
         delay_us(10);
@@ -106,5 +106,6 @@ void ultraS_updateDistance(uint32_t tpm_cnt)
     uint32_t PulseDuration_uS =
         (uint32_t)((float)tpm_cnt * (float)((float)1000000UL / (float)((float)F_CPU / (float)tpm1_psc)));
 
-    distance_cm = PulseDuration_uS / 58;
+    distance_cm += PulseDuration_uS / 58;
+	distance_cm /= 2;
 }

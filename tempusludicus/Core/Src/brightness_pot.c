@@ -35,7 +35,7 @@ uint8_t get_brightness_pot_value(void)
 {
     uint32_t brightness = 0;
 
-    for (int i = 0; i < 20; i++) {
+    for (int i = 0; i < 5; i++) {
 		//select b channels
         ADC0->CFG2 |= ADC_CFG2_MUXSEL(1);
         // Start conversion by writing to the SC1 register
@@ -48,7 +48,8 @@ uint8_t get_brightness_pot_value(void)
         // Read and return the conversion result
         brightness += ADC0->R[0];
     }
-    brightness /= 20;
+	
+    brightness /= 5;
     brightness = map_ui(brightness, 0, 65535, 0, MAX_BRIGHTNESS);
 
     return (uint8_t)brightness;
