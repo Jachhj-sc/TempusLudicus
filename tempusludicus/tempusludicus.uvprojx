@@ -469,6 +469,11 @@
               <FileType>1</FileType>
               <FilePath>.\Core\Src\brightness_pot.c</FilePath>
             </File>
+            <File>
+              <FileName>enumerations.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Core\Src\enumerations.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -478,6 +483,11 @@
               <FileName>delay.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Core\Inc\delay.h</FilePath>
+            </File>
+            <File>
+              <FileName>enumerations.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Core\Inc\enumerations.h</FilePath>
             </File>
             <File>
               <FileName>rgb.h</FileName>

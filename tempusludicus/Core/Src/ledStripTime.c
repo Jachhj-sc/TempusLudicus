@@ -41,31 +41,31 @@ uint32_t return_smaller(uint32_t a, uint32_t b)
     }
 }
 
-void strip_drawTimeEffect(uint32_t unix_timestamp, enum e_time_effect effect)
+void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
 {
-    switch (effect) {
-    case STATIC:
+    switch (mood) {
+
+    case RAIN:
         strip_drawTimeSimple(unix_timestamp);
         break;
 
-    case RAIN:
-
+    case RAINBOW:
+        strip_drawTimeSimple(unix_timestamp);
         break;
 
-    case RAINBOW_DISTINGUISED:
-
+    case HUE_GRADIENT:
+        strip_drawTimeSimple(unix_timestamp);
         break;
 
-    case HUE:
-
-        break;
-
+    case DEFAULT_MOOD:
     default:
+        strip_drawTimeSimple(unix_timestamp);
+
         break;
     }
 }
 
-void setStrip_TimeDrawMood(enum e_mood mood)
+void setStrip_TimeDrawMood_color(enum e_mood mood)
 {
     switch (mood) {
     case COOL:
