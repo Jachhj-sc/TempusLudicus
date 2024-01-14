@@ -160,8 +160,8 @@ void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds)
                                        ((uint32_t)ledarray[i].b << 8 * 1) | ((uint32_t)ledarray[i].w << 8 * 0)));
         }
 #endif
-        // strip_write();
-        strip_sendContinuous();
+        strip_write();
+        //strip_sendContinuous();
     }
 }
 

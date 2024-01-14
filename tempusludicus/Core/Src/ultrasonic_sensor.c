@@ -45,7 +45,7 @@ static uint32_t prevTriggerPulseTime = 0;
 
 void process_ultrasonic_sensor(void)
 {
-    if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL + 100) {
+    if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL) {
         // send pulse
         PIN_TRIGGER_PT->PSOR = PIN_TRIGGER;
         delay_us(10);

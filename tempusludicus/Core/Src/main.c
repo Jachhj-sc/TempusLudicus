@@ -104,7 +104,7 @@ void mainProcess()
     }
 
     case ULTRASOON: {
-        if (get_millis() > prev_ultrasonic_update + 300) {
+        if (get_millis() > prev_ultrasonic_update + 80) {
             if (get_millis() > display_update_pause) {
                 lcd_set_cursor(0, 0);
                 lcd_print("ultrasoon sensor");
@@ -252,14 +252,6 @@ void process_button_state(enum e_switchState switchstate)
             system_state.programState = 0;
         }
 
-        // lcd_set_cursor(0, 0);
-        // sprintf(text, "progState = %d  ", system_state.programState);
-        // lcd_print(text);
-
-        // lcd_set_cursor(0, 1);
-        // lcd_print(e_state_name[system_state.programState]);
-
-        // display_update_pause = get_millis() + 2000;
         break;
 
     case SWITCH_2_PRESSED:

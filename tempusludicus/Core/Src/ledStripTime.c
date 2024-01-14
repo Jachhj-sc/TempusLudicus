@@ -159,6 +159,18 @@ void strip_drawTimeSimple(uint32_t unix_timestamp)
     Strip_send();
 }
 
-void strip_drawUltrasoneDistance(uint16_t distance_cm) {}
+void strip_drawUltrasoneDistance(uint16_t distance_cm) {
+	if (distance_cm > LEDPIXELCOUNT) {
+		distance_cm = LEDPIXELCOUNT;
+	}
+
+    setStrip_clear();
+
+    for(uint16_t i = 0; i < distance_cm; i++) {
+        setStrip_part(0, i, seconds_color);
+    }
+
+	Strip_send();
+}
 
 void strip_drawPensions(enum e_developer person, uint16_t distance_cm) {}
