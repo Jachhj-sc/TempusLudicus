@@ -11,8 +11,8 @@
 #include <MKL25Z4.h> // Include the header for the KL25Z microcontroller definitions
 #include <stdbool.h> // Include the standard boolean definitions header
 
-void set_unix_timestamp(uint32_t timestamp);
-uint32_t get_unix_timestamp(void);
+void set_unix_timestamp(uint64_t timestamp);
+uint64_t get_unix_timestamp(void);
 
 void pit_init(void); // Function prototype for pit_init
                      // This function is responsible for initializing the Periodic Interrupt Timer (PIT)
