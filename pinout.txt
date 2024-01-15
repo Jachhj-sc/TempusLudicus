@@ -9,8 +9,8 @@ lcd:
 	PTD3	(K)
 	
 ultrasonic sensor.
-	PTA13 (trigger pin ultrasonic sensor)
-	PTD5 (receiver ultrasonic signal)
+	PTA13 	(trigger pin ultrasonic sensor)
+	PTD5 	(ECHO ultrasonic signal)
 
 led strip
 	PTE22 TPM2_CH0 (ws2815B Din)
@@ -20,7 +20,7 @@ SW
 	PTD2 // sw2
 
 temp sensor:
-	PTD1 ADC0_SE5b
+	PTE20 ADC0_SE0
 
 LED strip brightness pot
 	PTD6 ADC0_SE7b
