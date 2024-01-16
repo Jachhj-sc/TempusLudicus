@@ -107,5 +107,5 @@ void ultraS_updateDistance(uint32_t tpm_cnt)
         (uint32_t)((float)tpm_cnt * (float)((float)1000000UL / (float)((float)F_CPU / (float)tpm1_psc)));
 
     distance_cm += PulseDuration_uS / 58;
-	distance_cm /= 2;
+    distance_cm /= 2;
 }

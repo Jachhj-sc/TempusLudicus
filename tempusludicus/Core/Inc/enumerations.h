@@ -26,9 +26,7 @@ enum e_mood {
     EXCITED,
     MELLOW,
     CHILL,
-    RAIN,
     RAINBOW,
-    HUE_GRADIENT,
     MOOD_AMOUNT
 };
 

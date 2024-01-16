@@ -37,18 +37,19 @@ char text[80];
 
 int main(void)
 {
-    init_sysTick();
-    __enable_irq();
-
     init_rgb();
-    pit_init(); // Initialization of Periodic Interrupt Timer
+    pit_init();
     ultraS_sensor_init();
-    lcd_init();
     sw_init();
     uart0_init();
     init_adc_lm35();
     init_brightness_pot();
     init_strip();
+
+    init_sysTick();
+    __enable_irq();
+
+    lcd_init();
 
     setStrip_Brightness(3);
     setStrip_clear();

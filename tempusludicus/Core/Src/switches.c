@@ -83,10 +83,9 @@ enum e_switchState get_switch_state(void)
 		prevbuttonState_2 = 1;
     }
 
-    // wait until a certain amount of time is passed since the last buttonspress
-    // to be sure to catch both buttons to be pressed
+    // wait until a certain amount of time is passed since the last button press
     if (get_millis() > debounceStartTime + DEBOUNCE_TIME) {
-        // if button is let loose again
+        // if button is let loose again check which button was pressed
         if (!(PIN_SW1_PT->PDIR & PIN_SW1) && !(PIN_SW2_PT->PDIR & PIN_SW2)) {
             if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
                 state = SWITCH_1_2_PRESSED;
