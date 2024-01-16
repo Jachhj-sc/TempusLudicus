@@ -159,7 +159,8 @@ void mainProcess()
 
             // Send unix timestamp
             uart0_put_char('U');
-            uart0_send_uint32(get_unix_timestamp());
+#warning "this typecast wont work in 30 years! for the future make the function 64-bit capable"
+            uart0_send_uint32((uint32_t)get_unix_timestamp());
             uart0_put_char('S');
 
             // Send distance

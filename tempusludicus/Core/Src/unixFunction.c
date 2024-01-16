@@ -19,9 +19,9 @@ static const uint8_t LY[] = {0U, 31U, 29U, 31U, 30U, 31U, 30U, 31U, 31U, 30U, 31
 /* Number of days from begin of the non Leap-year*/
 static const uint16_t MONTH_DAYS[] = {0U, 0U, 31U, 59U, 90U, 120U, 151U, 181U, 212U, 243U, 273U, 304U, 334U};
 
-void RTC_HAL_convert_unix_to_datetime(const uint32_t seconds, datetime_t *datetime)
+void RTC_HAL_convert_unix_to_datetime(const uint64_t seconds, datetime_t *datetime)
 {
-    uint32_t Seconds, Days, Days_in_year;
+    uint64_t Seconds, Days, Days_in_year;
     const uint8_t *Days_in_month;
     /* Start from 1970-01-01*/
     Seconds = seconds;
@@ -65,7 +65,7 @@ void RTC_HAL_convert_unix_to_datetime(const uint32_t seconds, datetime_t *dateti
     datetime->day = (uint16_t)Days;
 }
 
-void RTC_HAL_convert_datetime_to_unix(const datetime_t *datetime, uint32_t *seconds)
+void RTC_HAL_convert_datetime_to_unix(const datetime_t *datetime, uint64_t *seconds)
 {
     /* Compute number of days from 1970 till given year*/
     *seconds = (datetime->year - 1970U) * DAYS_IN_A_YEAR;

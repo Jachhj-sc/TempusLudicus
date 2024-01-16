@@ -31,11 +31,12 @@
 #define STRIP_WEEKDAY_END   192
 
 void setStrip_TimeDrawMood_color(enum e_mood mood);
-void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood);
+void strip_drawTimeMood(uint64_t unix_timestamp, enum e_mood mood);
 
-void strip_drawTimeSimple(uint32_t unix_timestamp);
+void strip_drawTimeSimple(uint64_t unix_timestamp);
 
 void strip_drawUltrasoneDistance(uint16_t distance_cm);
 void strip_drawPensions(enum e_developer person, uint16_t distance_cm);
+void strip_drawTime_HUE(uint64_t unix_timestamp);
 
 #endif // LED_STRIP_TIME_H

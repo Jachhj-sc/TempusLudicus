@@ -41,20 +41,12 @@ uint32_t return_smaller(uint32_t a, uint32_t b)
     }
 }
 
-void strip_drawTimeMood(uint32_t unix_timestamp, enum e_mood mood)
+void strip_drawTimeMood(uint64_t unix_timestamp, enum e_mood mood)
 {
     switch (mood) {
 
-    case RAIN:
-        strip_drawTimeSimple(unix_timestamp);
-        break;
-
     case RAINBOW:
-        strip_drawTimeSimple(unix_timestamp);
-        break;
-
-    case HUE_GRADIENT:
-        strip_drawTimeSimple(unix_timestamp);
+        strip_drawTime_HUE(unix_timestamp);
         break;
 
     case DEFAULT_MOOD:
@@ -122,7 +114,7 @@ void setStrip_TimeDrawMood_color(enum e_mood mood)
     }
 }
 
-void strip_drawTimeSimple(uint32_t unix_timestamp)
+void strip_drawTimeSimple(uint64_t unix_timestamp)
 {
     uint16_t startPos = 0;
     uint16_t endPos = 0;
@@ -174,3 +166,7 @@ void strip_drawUltrasoneDistance(uint16_t distance_cm) {
 }
 
 void strip_drawPensions(enum e_developer person, uint16_t distance_cm) {}
+
+void strip_drawTime_HUE(uint64_t unix_timestamp){
+
+}

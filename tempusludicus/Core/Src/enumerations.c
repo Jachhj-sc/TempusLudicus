@@ -12,6 +12,4 @@ const char *e_mood_name[MOOD_AMOUNT] = {"DEFAULT_MOOD    ",
                                         "EXCITED         ",
                                         "MELLOW          ",
                                         "CHILL           ",
-                                        "RAIN            ",
-                                        "RAINBOW         ",
-                                        "HUE_GRADIENT    "};
+                                        "RAINBOW         "};
