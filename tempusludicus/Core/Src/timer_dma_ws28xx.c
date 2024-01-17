@@ -150,13 +150,13 @@ void ws2812_setleds(struct cRGBW *ledarray, const uint16_t num_leds)
 #ifdef RGB
         for (uint16_t i = 0; i < num_leds && i < LEDPIXELCOUNT; i++) {
             loadStrip_pixel(i,
-                            (uint32_t)(((uint32_t)ledarray[i].r << 8 * 1) | ((uint32_t)ledarray[i].g << 8 * 2) |
+                            (uint32_t)(((uint32_t)ledarray[i].g << 8 * 1) | ((uint32_t)ledarray[i].r << 8 * 2) |
                                        ((uint32_t)ledarray[i].b << 8 * 0)));
         }
 #else
         for (uint16_t i = 0; i < num_leds && i < LEDPIXELCOUNT; i++) {
             loadStrip_pixel(i,
-                            (uint32_t)(((uint32_t)ledarray[i].r << 8 * 2) | ((uint32_t)ledarray[i].g << 8 * 3) |
+                            (uint32_t)(((uint32_t)ledarray[i].g << 8 * 2) | ((uint32_t)ledarray[i].r << 8 * 3) |
                                        ((uint32_t)ledarray[i].b << 8 * 1) | ((uint32_t)ledarray[i].w << 8 * 0)));
         }
 #endif

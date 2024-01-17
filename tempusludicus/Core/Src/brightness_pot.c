@@ -54,7 +54,7 @@ uint8_t get_brightness_pot_value(void)
     }
 
     float averagebrightness = (float)(brightness / (float)ADC_AVERGAGING);
-    brightness = mapf(averagebrightness, 0.0f, 65535.0f, 0.0f, (float)MAX_BRIGHTNESS);
+    brightness = mapf(averagebrightness, 100.0f, 65535.0f, (float)MIN_BRIGHTNESS, (float)MAX_BRIGHTNESS);
 
     // round to the half a degree precision with hysterisis
     if (averagebrightness > prev_brightness + 0.9f) {

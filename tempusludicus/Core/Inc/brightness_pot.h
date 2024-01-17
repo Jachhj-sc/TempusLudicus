@@ -10,9 +10,10 @@
 #define PIN_B_POT_PORT PORTD
 #define PIN_B_POT_PT   PTD
 #define PIN_B_POT_SHIFT (6)
-#define PIN_B_POT       (1 << PIN_B_POT_SHIFT)
+#define PIN_B_POT       (1 << PIN_B_POT_SHIFT)	
 /// \}
 
+#define MIN_BRIGHTNESS 4u
 #define MAX_BRIGHTNESS 218u
 
 void init_brightness_pot(void);
