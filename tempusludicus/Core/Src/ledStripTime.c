@@ -123,14 +123,13 @@ void strip_drawTimeSimple(uint64_t unix_timestamp)
     setStrip_clear();
 
     // draw seconds
-    startPos = (STRIP_SECONDS_START > STRIP_SECONDS_END) ? STRIP_SECONDS_START+1 : STRIP_SECONDS_START;
+    startPos = (STRIP_SECONDS_START > STRIP_SECONDS_END) ? STRIP_SECONDS_START + 1 : STRIP_SECONDS_START;
     endPos = (STRIP_SECONDS_START > STRIP_SECONDS_END) ? (startPos - dateTime.second) : (startPos + dateTime.second);
     setStrip_part(return_smaller(startPos, endPos), return_bigger(startPos, endPos), seconds_color);
 
     // draw minutes
     startPos = (STRIP_MINUTES_START > STRIP_MINUTES_END) ? STRIP_MINUTES_START + 1 : STRIP_MINUTES_START;
-    endPos = (STRIP_MINUTES_START > STRIP_MINUTES_END) ? (startPos - dateTime.minute)
-                                                                          : (startPos + dateTime.minute);
+    endPos = (STRIP_MINUTES_START > STRIP_MINUTES_END) ? (startPos - dateTime.minute) : (startPos + dateTime.minute);
     setStrip_part(return_smaller(startPos, endPos), return_bigger(startPos, endPos), minutes_color);
 
     // draw hours
@@ -145,30 +144,32 @@ void strip_drawTimeSimple(uint64_t unix_timestamp)
 
     // draw weekday MONTHDAY TODO: fix this
     startPos = (STRIP_WEEKDAY_START > STRIP_WEEKDAY_END) ? STRIP_WEEKDAY_START + 1 : STRIP_WEEKDAY_START;
-    endPos = (STRIP_WEEKDAY_START > STRIP_WEEKDAY_END) ? (startPos - ((dateTime.day % 7) * 3))
-                                                       : (startPos + ((dateTime.day % 7) * 3));
+    endPos = (STRIP_WEEKDAY_START > STRIP_WEEKDAY_END) ? (startPos - ((((dateTime.day - 1) % 7) + 1) * 3))
+                                                       : (startPos + ((((dateTime.day - 1) % 7) + 1) * 3));
     setStrip_part(return_smaller(startPos, endPos), return_bigger(startPos, endPos), weekday_color);
 
     Strip_send();
 }
 
-void strip_drawUltrasoneDistance(uint16_t distance_cm) {
-	if (distance_cm > LEDPIXELCOUNT) {
-		distance_cm = LEDPIXELCOUNT;
-	}
+void strip_drawUltrasoneDistance(uint16_t distance_cm)
+{
+    if (distance_cm > LEDPIXELCOUNT) {
+        distance_cm = LEDPIXELCOUNT;
+    }
 
     setStrip_clear();
 
-    for(uint16_t i = 0; i < distance_cm; i++) {
+    for (uint16_t i = 0; i < distance_cm; i++) {
         setStrip_part(0, i, seconds_color);
     }
 
-	Strip_send();
+    Strip_send();
 }
 
 void strip_drawPensions(enum e_developer person, uint16_t distance_cm) {}
 
-void strip_drawTime_HUE(uint64_t unix_timestamp){
+void strip_drawTime_HUE(uint64_t unix_timestamp)
+{
     uint16_t startPos = 0;
     uint16_t endPos = 0;
 
