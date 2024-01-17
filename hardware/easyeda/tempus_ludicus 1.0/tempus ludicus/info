@@ -1,10 +1,10 @@
 {
   "uuid": "3fd1d7ec3eceb37db8e82cc380545c71",
-  "path": "Offline/tempus ludicus",
+  "path": "Offline/tempus%20ludicus",
   "name": "tempus ludicus",
   "content": "hardware design for the rgb ledstrip clock project, tempus ludicus ",
   "created_at": "2023-12-30 19:06:58",
-  "updated_at": "2024-01-14 23:04:12",
+  "updated_at": "2024-01-16 19:51:56",
   "stick": "",
   "documents": [
     {
@@ -467,11 +467,11 @@
           }
         ]
       ],
-      "updateTime": 1705269852,
+      "updateTime": 1705431116,
       "createTime": 1703959619,
       "histories": [],
       "created_at": "2023-12-30 19:06:59",
-      "updated_at": "2024-01-14 23:04:12"
+      "updated_at": "2024-01-16 19:51:56"
     },
     {
       "uuid": "ab49ec480dafe30f7b5e8e757d454b16",
@@ -511,21 +511,6 @@
           }
         ],
         [
-          "1000u",
-          2,
-          "CAP-D12.5×F5.0",
-          "C3,C6",
-          {
-            "Supplier Part": "",
-            "Supplier": "",
-            "Contributor": "LCEDA_Lib",
-            "spiceSymbolName": "CE_TH_D12.5×F5.0_US",
-            "Manufacturer Part": "",
-            "puuid": "4cabd9c15bac456496d09a33b7c9d398",
-            "uuid": "a2ea98d9f46f490c82ff5140cbb3c89e"
-          }
-        ],
-        [
           "0.22u",
           1,
           "CAP-D4.0×F1.5",
@@ -553,6 +538,21 @@
             "Manufacturer Part": "",
             "puuid": "d0dcff2f94d04daa9354f40d74908283",
             "uuid": "2bfda8c701df4b6db8594acc26a25912"
+          }
+        ],
+        [
+          "1000u",
+          1,
+          "CAP-D12.5×F5.0",
+          "C6",
+          {
+            "Supplier Part": "",
+            "Supplier": "",
+            "Contributor": "LCEDA_Lib",
+            "spiceSymbolName": "CE_TH_D12.5×F5.0_US",
+            "Manufacturer Part": "",
+            "puuid": "4cabd9c15bac456496d09a33b7c9d398",
+            "uuid": "a2ea98d9f46f490c82ff5140cbb3c89e"
           }
         ],
         [
@@ -922,11 +922,11 @@
           }
         ]
       ],
-      "updateTime": 1705269057,
+      "updateTime": 1705429576,
       "createTime": 1704235135,
       "histories": [],
       "created_at": "2024-01-02 23:38:55",
-      "updated_at": "2024-01-14 22:50:57"
+      "updated_at": "2024-01-16 19:26:16"
     },
     {
       "uuid": "807c8c85c216cde8682c4e76ea9cb18f",
@@ -941,6 +941,8 @@
         "29c1c15af3f64c36a30bd7e9025580c2": 2,
         "398691f1f785460098bbe5ee6590333c": 6,
         "31640b9c0b964cd8b0c5b945380a91fb": 1,
+        "e76cf636bce14c43815bf1fe21a7cd4f": 1,
+        "4dd21fdff65e48e89ebd6165b3a5cb41": 1,
         "6936e2e7c7bc4ca383ee5cfd778c9c62": 3,
         "b73ecc946600486997b70f149e556e90": 1,
         "9ab4ba27487f4e968ec8c676394520e2": 2,
@@ -948,7 +950,6 @@
         "d0dcff2f94d04daa9354f40d74908283": 2,
         "9a1173efdc4849d787ee474cbdb227ab": 2,
         "b42d4e6dde404e2b857f879256cb57ba": 2,
-        "4b9e423a569449a2b51949a532ae73f7": 1,
         "557c105168d444a992e25584f55bcbb2": 2,
         "a7d732f115d54a63a056cc79b2f969a5": 1,
         "b52b03f4616f42e7ba32f9f2b361a4ad": 1,
@@ -956,15 +957,14 @@
         "6924b36489de4921bb29ca14bf27c33f": 1,
         "5539b95214a44cd99cc7da94d596cb45": 1,
         "6a8cc0d167d04926a8ac5a757ba65780": 1,
-        "e76cf636bce14c43815bf1fe21a7cd4f": 1,
-        "4dd21fdff65e48e89ebd6165b3a5cb41": 1
+        "4b9e423a569449a2b51949a532ae73f7": 1
       },
       "BOM": [],
-      "updateTime": 1705269217,
+      "updateTime": 1705274217,
       "createTime": 1704375122,
       "histories": [],
       "created_at": "2024-01-04 14:32:02",
-      "updated_at": "2024-01-14 22:53:37"
+      "updated_at": "2024-01-15 00:16:57"
     }
   ],
   "sort": [
@@ -974,5 +974,5 @@
   "title": "tempus ludicus",
   "foldername": "tempus ludicus",
   "schfilename": "tempus ludicus.json",
-  "schfilemtime": 1705269852687
+  "schfilemtime": 1705431116304
 }
