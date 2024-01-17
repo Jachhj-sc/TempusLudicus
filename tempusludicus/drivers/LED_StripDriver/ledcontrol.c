@@ -90,7 +90,7 @@ void setStrip_pixel(uint16_t pixel, uint32_t color32)
 }
 
 void setStrip_part(uint16_t start, uint16_t end, uint32_t color){
-	for (uint16_t i = start; i <= end; i++) {
+	for (uint16_t i = start; i < end; i++) {
 		setStrip_pixel(i, color);
 	}
 }
