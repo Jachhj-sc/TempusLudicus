@@ -14,6 +14,8 @@
 #include "unixFunction.h"
 #include <math.h>
 
+#define SECONDS_IN_A_DAY (86400UL)
+
 static datetime_t dateTime;
 
 // color definitions
@@ -118,6 +120,7 @@ void strip_drawTimeSimple(uint64_t unix_timestamp)
 {
     uint16_t startPos = 0;
     uint16_t endPos = 0;
+    uint32_t weekday_day = unix_timestamp / SECONDS_IN_A_DAY + 1;
 
     RTC_HAL_convert_unix_to_datetime(unix_timestamp, &dateTime);
     setStrip_clear();
@@ -144,8 +147,8 @@ void strip_drawTimeSimple(uint64_t unix_timestamp)
 
     // draw weekday MONTHDAY TODO: fix this
     startPos = (STRIP_WEEKDAY_START > STRIP_WEEKDAY_END) ? STRIP_WEEKDAY_START + 1 : STRIP_WEEKDAY_START;
-    endPos = (STRIP_WEEKDAY_START > STRIP_WEEKDAY_END) ? (startPos - ((((dateTime.day - 1) % 7) + 1) * 3))
-                                                       : (startPos + ((((dateTime.day - 1) % 7) + 1) * 3));
+    endPos = (STRIP_WEEKDAY_START > STRIP_WEEKDAY_END) ? (startPos - ((((weekday_day + 2) % 7) + 1) * 3))
+                                                       : (startPos + ((((weekday_day + 2) % 7) + 1) * 3));
     setStrip_part(return_smaller(startPos, endPos), return_bigger(startPos, endPos), weekday_color);
 
     Strip_send();
