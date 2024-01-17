@@ -43,13 +43,13 @@ static uint32_t distance_cm = 0;
 static uint16_t tpm1_psc = 0;
 static uint32_t prevTriggerPulseTime = 0;
 
-void ultraS_sensor_process(void)
+void process_ultrasonic_sensor(void)
 {
     if (get_millis() > prevTriggerPulseTime + MINIMAL_PULSE_INTERVAL) {
         // send pulse
-        GPIOB->PSOR = MASK(1);
+        PIN_TRIGGER_PT->PSOR = PIN_TRIGGER;
         delay_us(10);
-        GPIOB->PCOR = MASK(1);
+        PIN_TRIGGER_PT->PCOR = PIN_TRIGGER;
 
         prevTriggerPulseTime = get_millis();
     }
@@ -61,29 +61,28 @@ void ultraS_sensor_init(void)
     SIM_SCGC5 |= SIM_SCGC5_PORTA_MASK;
     SIM_SCGC5 |= SIM_SCGC5_PORTD_MASK;
 
-    PORTA->PCR[13] = PORT_PCR_MUX(1); // gpio
-    GPIOA->PDDR |= MASK(1);           // output porta 13
+    PIN_TRIGGER_PORT->PCR[PIN_TRIGGER_SHIFT] = PORT_PCR_MUX(1); // gpio
+    PIN_TRIGGER_PT->PDDR |= PIN_TRIGGER;                        // output porta 13
 
     TPM1->SC |= TPM_SC_PS(5); // prescaler 32x
     tpm1_psc = 32;            // add prescaler value to variable for easy calculations
-
-    TPM1->MOD = 0xFFFF; // set max value
+    TPM1->MOD = 0xFFFF;       // set max value
 
     // pulse from ultrasoon sensor falling and rising edge interrupt
-    PORTD->PCR[5] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) /* | PORT_PCR_PS(1) | PORT_PCR_PE(1)*/;
+    PIN_ECHO_PORT->PCR[PIN_ECHO_SHIFT] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1);
 
     NVIC_SetPriority(PORTD_IRQn, 0);
     NVIC_ClearPendingIRQ(PORTD_IRQn);
     NVIC_EnableIRQ(PORTD_IRQn);
 }
 
-void tpm1_start(void)
+void inline tpm1_start(void)
 {
     TPM1->CNT = 0;
     TPM1->SC |= TPM_SC_CMOD(1);
 }
 
-uint32_t tpm1_stop(void)
+uint32_t inline tpm1_stop(void)
 {
     uint32_t stopVal = TPM1->CNT;
     // stop timer and return timer value
@@ -91,12 +90,12 @@ uint32_t tpm1_stop(void)
     return stopVal;
 }
 
-void tpm1_reset(void)
+void inline tpm1_reset(void)
 {
     TPM1->CNT = 0;
 }
 
-uint16_t ultraS_get_distance_cm(void)
+uint16_t get_ultrasonic_distance_cm(void)
 {
     return (uint16_t)distance_cm;
 }
@@ -107,5 +106,6 @@ void ultraS_updateDistance(uint32_t tpm_cnt)
     uint32_t PulseDuration_uS =
         (uint32_t)((float)tpm_cnt * (float)((float)1000000UL / (float)((float)F_CPU / (float)tpm1_psc)));
 
-    distance_cm = PulseDuration_uS / 58;
+    distance_cm += PulseDuration_uS / 58;
+    distance_cm /= 2;
 }

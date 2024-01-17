@@ -34,9 +34,26 @@
 
 #include <MKL25Z4.h>
 #include <stdbool.h>
+#include "main.h"
 
-#define BUTTON_STATE_KEEP_HIGH_TIME 500ul
-#define DEBOUNCE_TIME               100u // ms
+/// \name SW1
+/// \{
+#define PIN_SW1_PORT  PORTD
+#define PIN_SW1_PT    PTD
+#define PIN_SW1_SHIFT (0)
+#define PIN_SW1       (1 << PIN_SW1_SHIFT)
+/// \}
+
+/// \name SW2
+/// \{
+#define PIN_SW2_PORT  PORTD
+#define PIN_SW2_PT    PTD
+#define PIN_SW2_SHIFT (2)
+#define PIN_SW2       (1 << PIN_SW2_SHIFT)
+/// \}
+
+//#define BUTTON_STATE_KEEP_HIGH_TIME 500ul
+#define DEBOUNCE_TIME               50ul // ms
 /// The number of keys available
 
 /// Defines the type for the keys
@@ -45,6 +62,6 @@ extern volatile uint8_t buttonState_2;
 
 // Function prototypes
 void sw_init(void);
-uint8_t get_switchState(void);
+enum e_switchState get_switch_state(void);
 
 #endif // SWITCHES_H

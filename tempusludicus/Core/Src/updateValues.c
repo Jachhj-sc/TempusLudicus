@@ -1,8 +1,10 @@
 #include "updateValues.h"
+#include "main.h"
 #include "pit.h"
 #include "queue.h"
 #include "uart0.h"
 #include <ctype.h>
+
 /*
 receivedTimestamp * 10: This part of the expression multiplies the existing value of receivedTimestamp by 10.
 It effectively shifts the existing digits to the left by one position, making room for the new digit.
@@ -19,36 +21,38 @@ If nextChar is '3', then (nextChar - '0') evaluates to 3.
 If nextChar is '9', then (nextChar - '0') evaluates to 9.
 
 */
-void updateValue(void)
+void process_uart(void)
 {
-    char receivedChar = uart0_get_char();
+    if (!q_empty(&RxQ)) {
+        char receivedChar = uart0_get_char();
 
-    if (receivedChar == 'U') {
-        // Handle the Unix timestamp reception
-        uint32_t receivedTimestamp = 0;
+        if (receivedChar == 'U') {
+            // Handle the Unix timestamp reception
+            uint32_t receivedTimestamp = 0;
 
-        // Assuming that the Unix timestamp is sent as a sequence of digits
-        do {
+            // Assuming that the Unix timestamp is sent as a sequence of digits
+            do {
+                char nextChar = uart0_get_char();
+
+                if (isdigit((unsigned char)nextChar)) {
+                    receivedTimestamp = receivedTimestamp * 10 + (nextChar - '0');
+                } else {
+                    // Break the loop if a non-digit character is encountered
+                    break;
+                }
+            } while (q_empty(&RxQ) == true);
+
+            // Now 'receivedTimestamp' contains the Unix timestamp received via UART
+            // Update unix_timestamp with the received value
+            set_unix_timestamp(receivedTimestamp);
+        }
+
+        if (receivedChar == 'M') {
+            char receivedMoodsetting = 0;
             char nextChar = uart0_get_char();
 
-            if (isdigit((unsigned char)nextChar)) {
-                receivedTimestamp = receivedTimestamp * 10 + (nextChar - '0');
-            } else {
-                // Break the loop if a non-digit character is encountered
-                break;
-            }
-        } while (q_empty(&RxQ) == true);
-
-        // Now 'receivedTimestamp' contains the Unix timestamp received via UART
-        // Update unix_timestamp with the received value
-        unix_timestamp = receivedTimestamp;
-    }
-
-    if (receivedChar == 'M') {
-        char receivedMoodsetting = 0;
-        char nextChar = uart0_get_char();
-
-        receivedMoodsetting = nextChar;
-        moodSetting = receivedMoodsetting;
+            receivedMoodsetting = nextChar;
+            system_state.mood = receivedMoodsetting;
+        }
     }
 }

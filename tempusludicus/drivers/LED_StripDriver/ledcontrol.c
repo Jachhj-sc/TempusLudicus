@@ -11,8 +11,8 @@ max update speed ledstrip = x ms per frame & x fps
 #include "ledcontrol.h"
 
 #include "common.h"
-#include "sk6812_config.h"
-#include "timer_dma_ws2812.h"
+#include "timer_dma_ws28xx.h"
+#include "ws2815b_config.h"
 
 /* A PROGMEM (flash mem) table containing 8-bit unsigned sine wave (0-255).
    Copy & paste this snippet into a Python REPL to regenerate:
@@ -65,8 +65,8 @@ static struct cRGBW led[LEDPIXELCOUNT + 1]; // array that holds pixel values
 static uint8_t brightness = 255;
 
 // exclusion boundaries
-static uint16_t exLow = -1;
-static uint16_t exHigh = -1;
+// static int16_t exLow = -1;
+// static int16_t exHigh = -1;
 
 void init_strip(void)
 {
@@ -75,31 +75,25 @@ void init_strip(void)
 
 void setStrip_pixel(uint16_t pixel, uint32_t color32)
 {
-    if (pixel < exLow || pixel >= exHigh) {
-        applyBrightness(&color32, brightness);
-        led[pixel].r = (uint8_t)((color32 >> 8 * 3) & 0xFF);
-        led[pixel].g = (uint8_t)((color32 >> 8 * 2) & 0xFF);
-        led[pixel].b = (uint8_t)((color32 >> 8 * 1) & 0xFF);
-        led[pixel].w = (uint8_t)(color32 & 0xFF);
-    } else {
-        led[pixel].r = 0;
-        led[pixel].g = 0;
-        led[pixel].b = 0;
-        led[pixel].w = 0;
+    applyBrightness(&color32, brightness);
+    led[pixel].r = (uint8_t)((color32 >> 8 * 3) & 0xFF);
+    led[pixel].g = (uint8_t)((color32 >> 8 * 2) & 0xFF);
+    led[pixel].b = (uint8_t)((color32 >> 8 * 1) & 0xFF);
+    led[pixel].w = (uint8_t)(color32 & 0xFF);
+}
+
+void setStrip_part(uint16_t start, uint16_t end, uint32_t color)
+{
+    for (uint16_t i = start; i < end; i++) {
+        setStrip_pixel(i, color);
     }
 }
 
-void setStrip_part(uint16_t start, uint16_t end, uint32_t color){
-	for (uint16_t i = start; i < end; i++) {
-		setStrip_pixel(i, color);
-	}
-}
-
-void setStrip_ExBounds(uint16_t low, uint16_t high)
-{
-    exLow = low;
-    exHigh = high;
-}
+// void setStrip_ExBounds(uint16_t low, uint16_t high)
+// {
+//     exLow = low;
+//     exHigh = high;
+// }
 
 void setStrip_all(uint32_t color)
 {

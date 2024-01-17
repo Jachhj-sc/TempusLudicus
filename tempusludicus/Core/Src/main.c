@@ -9,6 +9,8 @@
     @copyright Copyright (c) 2023
  */
 #include "main.h"
+
+#include "brightness_pot.h"
 #include "lcd_4bit.h"
 #include "ledStripTime.h"
 #include "pit.h"
@@ -20,46 +22,34 @@
 #include "ultrasonic_sensor.h"
 #include "unixFunction.h"
 #include "updateValues.h"
-#include <ctype.h>	
 
 #define MIN_TEMPERATURE 2.0f
 #define MAX_TEMPERATURE 120.0f
 
-void handleSwitchState(enum e_switchState switchstate);
-void deviceTestSequence(void);
+void mainProcess();
+void device_test_sequence(void);
+void process_button_state(enum e_switchState switchstate);
 
-static uint16_t distance_cm = 0;
-static uint8_t programState = 0;
+volatile system_state_t system_state;
+static uint32_t display_update_pause = 0;
 
-// variables for keeping track of time of ACTION
-static uint32_t prevLCDUpdate = 0;
-static uint32_t prevStripUpdate = 0;
-static uint32_t prevPensionUpdate = 0;
-
-static enum e_mood mood = NORMAL;
-static enum e_developer person = 0;
-
-// Variable for mood setting
-char moodSetting = 0;
+char text[80];
 
 int main(void)
 {
-    init_sysTick();
-    __enable_irq();
-
     init_rgb();
-    pit_init(); // Initialization of Periodic Interrupt Timer
+    pit_init();
     ultraS_sensor_init();
-    lcd_init();
     sw_init();
     uart0_init();
     init_adc_lm35();
-
+    init_brightness_pot();
     init_strip();
 
-    datetime_t DateTime;
+    init_sysTick();
+    __enable_irq();
 
-    char text[80];
+    lcd_init();
 
     setStrip_Brightness(3);
     setStrip_clear();
@@ -67,137 +57,165 @@ int main(void)
     set_rgb(0, 0, 0);
     _delay_ms(10);
 
-    deviceTestSequence();
-		
-		// testsimulatie
-		programState = TEMPSENSOR;
+    device_test_sequence();
+
+    system_state.mood = DEFAULT_MOOD;
+    system_state.person = 0;
+    system_state.switchState = NO_SWITCH_PRESSED;
+    system_state.programState = DRAWSTRIP;
+    setStrip_TimeDrawMood_color(system_state.mood);
 
     while (1) {
+        process_uart();
+        process_ultrasonic_sensor();
+        process_button_state(get_switch_state());
 
-        if (!q_empty(&RxQ)) {
-            updateValue();
-        }
-
-        ultraS_sensor_process();
-        // uart_process();
-
-        distance_cm = ultraS_get_distance_cm(); // get the value of the ultrasoon sensor in cm
-
-        // get the value of wich button is pressed
-        handleSwitchState(get_switchState());
-        //programState = DEBUG;
-
-        RTC_HAL_ConvertSecsToDatetime(&unix_timestamp, &DateTime);
-        uint16_t adc_result;
-
-        switch (programState) {
-
-        case DRAWSTRIP:
-        case TIMELCD:
-            if (get_millis() > prevStripUpdate + 100) {
-                strip_drawTimeMood(unix_timestamp, mood);
-                prevStripUpdate = get_millis();
-            }
-
-            // update the lcd every second
-            if (get_millis() > prevLCDUpdate + 1000) {
-                LCD_putDateTime(DateTime);
-                prevLCDUpdate = get_millis();
-            }
-            break;
-
-        case ULTRASOON:
-            lcd_set_cursor(0, 0);
-            lcd_print("ultrasoon sensor");
-            lcd_set_cursor(0, 1);
-            sprintf(text, "distance cm = %d   ", distance_cm);
-            strip_drawUltrasoneDistance(distance_cm);
-            lcd_print(text);
-            break;
-
-        case PENSIOEN:
-            lcd_set_cursor(0, 0);
-            lcd_print("tijd <> pensioen");
-            strip_drawPensions(person, distance_cm);
-
-            if (get_millis() > prevPensionUpdate + 2000) {
-                person++;
-                if (person >= developer_amount) {
-                    person = 0;
-                }
-                prevPensionUpdate = get_millis();
-            }
-            break;
-
-        case DEBUG:
-            // if object detected turn on strip
-            if (get_millis() > prevStripUpdate + 100) {
-
-                lcd_set_cursor(0, 0);
-                lcd_print("***debug***     ");
-
-                // Send unix timestamp
-                uart0_put_char('U');
-                uart0_send_uint32(unix_timestamp);
-                uart0_put_char('S');
-
-                // Send distance
-                uart0_put_char('D');
-                uart0_send_uint32(distance_cm);
-                uart0_put_char('S');
-
-                // Send mood
-                uint32_t debugMood = mood;
-
-                uart0_put_char('M');
-                uart0_send_uint32(debugMood);
-                uart0_put_char('S');
-
-                // Send temperature
-                adc_result = (uint16_t)read_adc_lm35();
-                float temperature = calculate_temperature_from_lm35(adc_result);
-                addTemperatureToBuffer(temperature);
-                float averageTemperature = calculateAverageTemperature();
-
-                uart0_put_char('T');
-                uart0_send_float(averageTemperature);
-                uart0_put_char('S');
-
-                if (distance_cm < 10 && distance_cm > 0) {
-                    setStrip_all(color32(255, 255, 0, 0));
-                    Strip_send();
-                    set_rgb(0, 1, 1);
-                } else {
-                    setStrip_all(0);
-                    Strip_send();
-                    set_rgb(0, 0, 0);
-                }
-                prevStripUpdate = get_millis();
-            }
-            break;
-
-case TEMPSENSOR:
-                adc_result = (uint16_t)read_adc_lm35();
-                float temperature = calculate_temperature_from_lm35(adc_result);
-                if (temperature < MIN_TEMPERATURE || temperature > MAX_TEMPERATURE) {
-                    lcd_set_cursor(0, 0);
-									lcd_print("  Error!  ");
-                } else {
-                    addTemperatureToBuffer(temperature);
-                    float averageTemperature = calculateAverageTemperature();
-                    lcd_set_cursor(0, 0);
-                    sprintf(text, "Temp: %.2f C   ", averageTemperature);
-                    lcd_print(text);
-                }
-                break;
-
-        }
+        mainProcess();
     }
 }
 
+void mainProcess()
+{
+    datetime_t DateTime;
 
+    static uint32_t prev_strip_update = 0;
+    static uint32_t prev_ultrasonic_update = 0;
+    static uint32_t prev_pension_update = 0;
+    static uint32_t prev_temp_update = 0;
 
-void deviceTestSequence(void)
+    uint16_t distance_cm = get_ultrasonic_distance_cm();
+    RTC_HAL_convert_unix_to_datetime(get_unix_timestamp(), &DateTime);
+
+    switch (system_state.programState) {
+    case DRAWSTRIP: {
+        if (get_millis() > prev_strip_update + 100) {
+
+            if (get_millis() > display_update_pause) {
+                LCD_putDateTime(DateTime);
+            }
+
+            // update strip
+            uint8_t brightness = get_brightness_pot_value();
+            setStrip_Brightness(brightness);
+            strip_drawTimeMood(get_unix_timestamp(), system_state.mood);
+
+            prev_strip_update = get_millis();
+        }
+        break;
+    }
+
+    case ULTRASOON: {
+        if (get_millis() > prev_ultrasonic_update + 80) {
+            if (get_millis() > display_update_pause) {
+                lcd_set_cursor(0, 0);
+                lcd_print("ultrasoon sensor");
+
+                lcd_set_cursor(0, 1);
+                sprintf(text, "cm = %d         ", distance_cm);
+                lcd_print(text);
+            }
+
+            strip_drawUltrasoneDistance(distance_cm);
+
+            prev_ultrasonic_update = get_millis();
+        }
+        break;
+    }
+
+    case PENSIOEN: {
+        if (get_millis() > prev_pension_update + 2000) {
+            system_state.person++;
+            if (system_state.person >= DEVELOPER_AMOUNT) {
+                system_state.person = 0;
+            }
+            prev_pension_update = get_millis();
+        }
+
+        if (get_millis() > prev_strip_update + 100) {
+            if (get_millis() > display_update_pause) {
+                lcd_set_cursor(0, 0);
+                lcd_print("tijd <> pensioen");
+
+                lcd_set_cursor(0, 1);
+                lcd_print("                ");
+            }
+
+            strip_drawPensions(distance_cm);
+            prev_strip_update = get_millis();
+        }
+        break;
+    }
+
+    case DEBUG: {
+        // if object detected turn on strip
+        if (get_millis() > prev_strip_update + 100) {
+            if (get_millis() > display_update_pause) {
+                lcd_set_cursor(0, 0);
+                lcd_print("***debug***     ");
+
+                lcd_set_cursor(0, 1);
+                lcd_print("                ");
+            }
+
+            // Send unix timestamp
+            uart0_put_char('U');
+#warning "this typecast wont work in 30 years! for the future make the function 64-bit capable"
+            uart0_send_uint32((uint32_t)get_unix_timestamp());
+            uart0_put_char('S');
+
+            // Send distance
+            uart0_put_char('D');
+            uart0_send_uint32(distance_cm);
+            uart0_put_char('S');
+
+            // Send mood
+            uart0_put_char('M');
+            uart0_send_uint32(system_state.mood);
+            uart0_put_char('S');
+
+            // Send temperature
+            float averageTemperature = get_average_temperature();
+
+            uart0_put_char('T');
+            uart0_send_float(averageTemperature);
+            uart0_put_char('S');
+
+            if (distance_cm < 10 && distance_cm > 0) {
+                setStrip_all(color32(255, 255, 0, 0));
+                Strip_send();
+                set_rgb(0, 1, 1);
+            } else {
+                setStrip_all(0);
+                Strip_send();
+                set_rgb(0, 0, 0);
+            }
+            prev_strip_update = get_millis();
+        }
+        break;
+    }
+
+    case TEMPSENSOR: {
+        if (get_millis() > prev_temp_update + 100) {
+            if (get_millis() > display_update_pause) {
+                lcd_set_cursor(0, 0);
+                sprintf(text, "Temp: %.1f C    ", get_average_temperature());
+                lcd_print(text);
+
+                lcd_set_cursor(0, 1);
+                lcd_print("                ");
+            }
+            prev_temp_update = get_millis();
+        }
+        break;
+    }
+
+    case PROGRAMSTATE_AMOUNT:
+    default:
+        break;
+    }
+}
+
+void device_test_sequence(void)
 {
     // startup blink
     setStrip_all(color32(255, 0, 0, 0));
@@ -215,34 +233,50 @@ void deviceTestSequence(void)
     set_rgb(0, 0, 1);
     _delay_ms(500);
 
+    setStrip_all(color32(255, 255, 255, 0));
+    Strip_send();
+    set_rgb(1, 1, 1);
+
+    _delay_ms(1000);
+
     setStrip_clear();
     Strip_send();
     set_rgb(0, 0, 0);
 }
 
-void handleSwitchState(enum e_switchState switchstate)
+void process_button_state(enum e_switchState switchstate)
 {
     switch (switchstate) {
     case SWITCH_1_PRESSED:
-        if (programState < StateAmount) {
-            programState++;
-        } else {
-            programState = 0;
+        system_state.programState++;
+
+        if (system_state.programState >= PROGRAMSTATE_AMOUNT) {
+            system_state.programState = 0;
         }
+
         break;
 
     case SWITCH_2_PRESSED:
-
-        if (mood < MoodAmount) {
-            mood++;
-        } else {
-            mood = 0;
+        system_state.mood++;
+        if (system_state.mood >= MOOD_AMOUNT) {
+            system_state.mood = 0;
         }
+
+        setStrip_TimeDrawMood_color(system_state.mood);
+
+        lcd_set_cursor(0, 0);
+        sprintf(text, "MOOD = %d        ", system_state.mood);
+        lcd_print(text);
+
+        lcd_set_cursor(0, 1);
+        lcd_print(e_mood_name[system_state.mood]);
+
+        display_update_pause = get_millis() + 2000;
         break;
 
     case SWITCH_1_2_PRESSED:
         // run test sequence
-        deviceTestSequence();
+        device_test_sequence();
         break;
 
     default:

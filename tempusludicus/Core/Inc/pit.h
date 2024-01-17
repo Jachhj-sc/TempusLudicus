@@ -11,10 +11,8 @@
 #include <MKL25Z4.h> // Include the header for the KL25Z microcontroller definitions
 #include <stdbool.h> // Include the standard boolean definitions header
 
-extern volatile uint32_t unix_timestamp; // Declare an external global variable for Unix timestamp
-                                         // 'extern' keyword indicates that the unix_timestamp variable
-                                         // is defined in another file, making it accessible to files
-                                         // that include this header.
+void set_unix_timestamp(uint64_t timestamp);
+uint64_t get_unix_timestamp(void);
 
 void pit_init(void); // Function prototype for pit_init
                      // This function is responsible for initializing the Periodic Interrupt Timer (PIT)

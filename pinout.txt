@@ -1,23 +1,26 @@
 lcd:
-	PTC0	(DB4)
-	PTC4	(DB5)
-	PTC5	(DB6)
-	PTC6	(DB7)
-	PTC11	(E)
-	PTC10	(RS)
-	PTC7	(RW)
-	PTD2	(K)
+	PTB0	(DB7)
+	PTB1	(DB6)
+	PTB2	(DB5)
+	PTB3	(DB4)
+	PTC2	(E)
+	PTC1	(RW)
+	PTE30	(RS)
+	PTD3	(K)
 	
 ultrasonic sensor.
-	PTA13 (trigger pin ultrasonic sensor) //old PTB 1 
-	PTD5 (receiver ultrasonic signal)
+	PTA13 	(trigger pin ultrasonic sensor)
+	PTD5 	(ECHO ultrasonic signal)
 
 led strip
-	PTA1 TPM2_CH0 (ws2815B Din) // old PTB2 TPM2_CH0
+	PTE22 TPM2_CH0 (ws2815B Din)
 
 SW
 	PTD0 // sw1
-	PTD3 // sw2
+	PTD2 // sw2
 
 temp sensor:
-	PTB0
+	PTE20 ADC0_SE0
+
+LED strip brightness pot
+	PTD6 ADC0_SE7b

@@ -8,8 +8,18 @@
 
 #include "pit.h"
 
-volatile uint32_t unix_timestamp = 0;
+volatile uint64_t unix_timestamp = 0;
 // volatile bool pit_interrupt_flag = false;
+
+uint64_t get_unix_timestamp(void)
+{
+	return unix_timestamp;
+}
+
+void set_unix_timestamp(uint64_t timestamp)
+{
+	unix_timestamp = timestamp;
+}
 
 /*!
  * \brief Initialises the Periodic Interrupt Timer (PIT)

@@ -52,42 +52,54 @@ void sw_init(void)
     // interrupt handlers config
 
     // switch 1
-    PORTD->PCR[0] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+    PIN_SW1_PORT->PCR[PIN_SW1_SHIFT] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1);
 
     // switch 2
-    PORTD->PCR[3] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1) | PORT_PCR_PS(1) | PORT_PCR_PE(1);
+    PIN_SW2_PORT->PCR[PIN_SW2_SHIFT] = PORT_PCR_IRQC(11) | PORT_PCR_MUX(1);
 
-    NVIC_SetPriority(PORTD_IRQn, 0);
+    NVIC_SetPriority(PORTD_IRQn, 128);
     NVIC_ClearPendingIRQ(PORTD_IRQn);
     NVIC_EnableIRQ(PORTD_IRQn);
 }
 
-enum e_switchState get_switchState(void)
+enum e_switchState get_switch_state(void)
 {
     enum e_switchState state = NO_SWITCH_PRESSED;
-    static uint8_t timerStarted = 1;
+    
+	static uint8_t timerStarted = 1;
     static uint32_t debounceStartTime = 0;
 
+	static uint8_t prevbuttonState_1 = 0;
+	static uint8_t prevbuttonState_2 = 0;
+
     // start the debounce timer
-    if (((buttonState_1 == 1) || (buttonState_2 == 1)) && !timerStarted) {
+    if (buttonState_1 == 1 && prevbuttonState_1 == 0){
         debounceStartTime = get_millis();
-        timerStarted = 1;
+        prevbuttonState_1 = 1;
     }
 
-    // wait until a certain amount of time is passed since the last buttonspress
-    // to be sure to catch both buttons to be pressed
-    if (get_millis() > debounceStartTime + DEBOUNCE_TIME) {
-        if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
-            state = SWITCH_1_2_PRESSED;
-        } else if (buttonState_1 == 1) {
-            state = SWITCH_1_PRESSED;
-        } else if (buttonState_2 == 1) {
-            state = SWITCH_2_PRESSED;
-        }
+    if (buttonState_2 == 1 && prevbuttonState_2 == 0) {
+        debounceStartTime = get_millis();
+		prevbuttonState_2 = 1;
+    }
 
-        buttonState_1 = 0;
-        buttonState_2 = 0;
-        timerStarted = 0;
+    // wait until a certain amount of time is passed since the last button press
+    if (get_millis() > debounceStartTime + DEBOUNCE_TIME) {
+        // if button is let loose again check which button was pressed
+        if (!(PIN_SW1_PT->PDIR & PIN_SW1) && !(PIN_SW2_PT->PDIR & PIN_SW2)) {
+            if ((buttonState_1 == 1) && (buttonState_2 == 1)) {
+                state = SWITCH_1_2_PRESSED;
+            } else if (buttonState_1 == 1) {
+                state = SWITCH_1_PRESSED;
+            } else if (buttonState_2 == 1) {
+                state = SWITCH_2_PRESSED;
+            }
+
+            buttonState_1 = 0;
+            buttonState_2 = 0;
+			prevbuttonState_1 = 0;
+			prevbuttonState_2 = 0;
+        }
     }
 
     return state;

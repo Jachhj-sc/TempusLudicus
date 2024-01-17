@@ -253,7 +253,7 @@ void lcd_init_port(void)
     // Enable clocks for peripherals
     ENABLE_LCD_PORT_CLOCKS;
     SIM->SCGC5 |= SIM_SCGC5_PORTB(1) | SIM_SCGC5_PORTD(1);
-    SIM->SCGC6 |= SIM_SCGC6_TPM0(1) | SIM_SCGC6_TPM2(1);
+    SIM->SCGC6 |= SIM_SCGC6_TPM0(1);
 
     // Setting all pins to output mode
     PIN_DB4_PT->PDDR = PIN_DB4_PT->PDDR | PIN_DB4;
@@ -274,15 +274,11 @@ void lcd_init_port(void)
     PIN_RW_PORT->PCR[PIN_RW_SHIFT] = PORT_PCR_MUX(1);
 
     // alternative function for lcd backlight
-    PORTD->PCR[2] = PORT_PCR_MUX(4); // TPM0_CH2 - PTD2
-
-    lcd_bl_pwmcontrol(0);
+    PORTD->PCR[3] = PORT_PCR_MUX(4); // TPM0_CH3 - PTD3
 
     TPM0->MOD = 0xFFFF;
-
     // Set channel to edge-aligned high-true PWM.
     TPM0->CONTROLS[2].CnSC = TPM_CnSC_MSB(1) | TPM_CnSC_ELSB(1);
-
     // start tpm, prescaler at default
     TPM0->SC = TPM_SC_CMOD(1);
 
@@ -422,8 +418,8 @@ void lcd_print(const char *string)
 
 inline void lcd_bl_pwmcontrol(const uint16_t val)
 {
-    // Set the channel compare value
-    TPM0->CONTROLS[2].CnV = val;
+    // Set the channel compare value TPM0_CH3
+    TPM0->CONTROLS[3].CnV = val;
 }
 
 inline void lcd_bl_on(const bool on)

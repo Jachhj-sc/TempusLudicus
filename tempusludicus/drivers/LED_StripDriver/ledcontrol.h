@@ -40,7 +40,7 @@ struct cRGBW {
 #define COLOR_PURPLE     0x8C00FF00
 
 void init_strip(void);
-void setStrip_ExBounds(uint16_t low, uint16_t high);
+//void setStrip_ExBounds(uint16_t low, uint16_t high);
 void setStrip_Brightness(uint8_t bright);
 
 void setStrip_all(uint32_t color);
