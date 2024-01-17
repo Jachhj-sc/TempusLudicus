@@ -140,7 +140,7 @@ void mainProcess()
                 lcd_print("                ");
             }
 
-            strip_drawPensions(system_state.person, distance_cm);
+            strip_drawPensions(distance_cm);
             prev_strip_update = get_millis();
         }
         break;

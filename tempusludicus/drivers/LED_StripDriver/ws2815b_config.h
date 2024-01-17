@@ -16,7 +16,7 @@
 // #define RGBW
 #define RGB
 
-#define LEDPIXELCOUNT (193u)
+#define LEDPIXELCOUNT (194u)
 
 #define STRIP_COUNT (1)
 

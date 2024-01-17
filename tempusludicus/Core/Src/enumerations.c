@@ -13,3 +13,5 @@ const char *e_mood_name[MOOD_AMOUNT] = {"DEFAULT_MOOD    ",
                                         "MELLOW          ",
                                         "CHILL           ",
                                         "RAINBOW         "};
+
+const char *e_developer_name[DEVELOPER_AMOUNT] = {"Kevin", "Roel", "Maarten", "William"};

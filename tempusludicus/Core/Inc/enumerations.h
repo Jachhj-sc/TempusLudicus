@@ -40,4 +40,6 @@ enum e_developer {
     DEVELOPER_AMOUNT
 };
 
+extern const char *e_developer_name[DEVELOPER_AMOUNT];
+
 #endif // ENUMERATIONS_H
